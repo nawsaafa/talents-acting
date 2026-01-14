@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Container } from './Container';
 import { Navigation } from './Navigation';
+import { AuthStatus } from '@/components/auth';
 
 export function Header() {
   return (
@@ -19,8 +20,11 @@ export function Header() {
             </span>
           </Link>
 
-          {/* Navigation */}
-          <Navigation />
+          {/* Navigation and Auth */}
+          <div className="flex items-center gap-6">
+            <Navigation />
+            <AuthStatus />
+          </div>
         </div>
       </Container>
     </header>
