@@ -1,0 +1,17 @@
+// Prisma schema file
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Placeholder model - will be replaced in Session 02 (Database Schema)
+model HealthCheck {
+  id        String   @id @default(uuid())
+  timestamp DateTime @default(now())
+}
