@@ -10,8 +10,241 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Placeholder model - will be replaced in Session 02 (Database Schema)
-model HealthCheck {
-  id        String   @id @default(uuid())
-  timestamp DateTime @default(now())
+// =============================================================================
+// ENUMS
+// =============================================================================
+
+// T003: User roles for access control
+enum Role {
+  VISITOR // Unauthenticated or basic access
+  TALENT // Actors, comedians, performers
+  PROFESSIONAL // Film professionals seeking talent
+  COMPANY // Production companies, agencies
+  ADMIN // Platform administrators
+}
+
+// T004: Profile validation workflow status
+enum ValidationStatus {
+  PENDING // Awaiting admin review
+  APPROVED // Validated and visible
+  REJECTED // Rejected by admin
+  SUSPENDED // Temporarily disabled
+}
+
+// T005: Gender options for talent profiles
+enum Gender {
+  MALE
+  FEMALE
+  NON_BINARY
+  OTHER
+}
+
+// T006: Body physique types
+enum Physique {
+  SLIM
+  AVERAGE
+  ATHLETIC
+  MUSCULAR
+  CURVY
+  PLUS_SIZE
+}
+
+// Additional enums for talent attributes
+enum HairColor {
+  BLACK
+  BROWN
+  BLONDE
+  RED
+  GRAY
+  WHITE
+  OTHER
+}
+
+enum EyeColor {
+  BROWN
+  BLUE
+  GREEN
+  HAZEL
+  GRAY
+  OTHER
+}
+
+enum HairLength {
+  BALD
+  SHORT
+  MEDIUM
+  LONG
+}
+
+enum BeardType {
+  NONE
+  STUBBLE
+  SHORT
+  MEDIUM
+  LONG
+  FULL
+}
+
+// =============================================================================
+// MODELS
+// =============================================================================
+
+// T007: Base user model for all user types
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String // Hashed password
+  role      Role      @default(VISITOR)
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
+
+  // Profile relationships (one-to-one based on role)
+  talentProfile       TalentProfile?
+  professionalProfile ProfessionalProfile?
+  companyProfile      CompanyProfile?
+
+  @@index([email])
+  @@index([role])
+}
+
+// T008-T013: Complete talent profile with all 40+ fields
+model TalentProfile {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // === T008: Basic Info ===
+  firstName   String
+  lastName    String
+  gender      Gender
+  ageRangeMin Int // Playable age range minimum
+  ageRangeMax Int // Playable age range maximum
+  dateOfBirth DateTime? // Actual DOB (premium field)
+  photo       String? // Primary headshot URL
+
+  // === T009: Physical Attributes ===
+  height           Int? // Height in centimeters
+  physique         Physique?
+  ethnicAppearance String? // Free text for casting descriptions
+  hairColor        HairColor?
+  eyeColor         EyeColor?
+  hairLength       HairLength?
+
+  // === T010: Unique Traits ===
+  beardType         BeardType?
+  hasTattoos        Boolean    @default(false)
+  hasScars          Boolean    @default(false)
+  tattooDescription String? // Description if hasTattoos is true
+  scarDescription   String? // Description if hasScars is true
+
+  // === T011: Skills Arrays (PostgreSQL arrays) ===
+  languages          String[] // e.g., ["Arabic", "English", "French"]
+  accents            String[] // e.g., ["British", "American", "Gulf Arabic"]
+  athleticSkills     String[] // e.g., ["Swimming", "Martial Arts", "Horse Riding"]
+  musicalInstruments String[] // e.g., ["Piano", "Guitar", "Oud"]
+  performanceSkills  String[] // e.g., ["Stand-up Comedy", "Improvisation", "Voice Acting"]
+  danceStyles        String[] // e.g., ["Contemporary", "Hip Hop", "Traditional"]
+
+  // === T012: Media and Availability ===
+  presentationVideo String? // Video introduction URL
+  showreel          String? // Demo reel URL
+  hasShowreel       Boolean  @default(false)
+  isAvailable       Boolean  @default(true)
+  dailyRate         Decimal? @db.Decimal(10, 2) // Rate in local currency
+  rateNegotiable    Boolean  @default(true)
+
+  // === T013: Validation and Visibility ===
+  validationStatus ValidationStatus @default(PENDING)
+  validatedAt      DateTime?
+  validatedBy      String? // Admin user ID who validated
+  rejectionReason  String? // Reason if rejected
+  isPublic         Boolean          @default(true)
+  bio              String?          @db.Text // Long text biography
+  location         String? // City/region
+  contactEmail     String? // Contact email (premium field)
+  contactPhone     String? // Contact phone (premium field)
+  portfolio        String[] // Additional portfolio URLs
+  socialMedia      Json? // JSON object for social links
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // === T016: Indexes for filtering ===
+  @@index([gender])
+  @@index([ageRangeMin, ageRangeMax])
+  @@index([validationStatus])
+  @@index([isPublic])
+  @@index([isAvailable])
+  @@index([location])
+  @@index([physique])
+  @@index([createdAt])
+}
+
+// T014: Professional profile for film industry professionals
+model ProfessionalProfile {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Professional details
+  firstName    String
+  lastName     String
+  profession   String // e.g., "Casting Director", "Film Director", "Producer"
+  company      String? // Associated company name
+  accessReason String? @db.Text // Why they need access to talent database
+
+  // Validation
+  validationStatus ValidationStatus @default(PENDING)
+  validatedAt      DateTime?
+  validatedBy      String?
+  rejectionReason  String?
+
+  // Contact (verified professionals only)
+  contactEmail String?
+  contactPhone String?
+  website      String?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([validationStatus])
+  @@index([profession])
+}
+
+// T015: Company profile for production companies and agencies
+model CompanyProfile {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Company details
+  companyName  String
+  industry     String? // e.g., "Film Production", "TV Broadcasting", "Talent Agency"
+  description  String? @db.Text
+  website      String?
+  contactEmail String
+  contactPhone String?
+  address      String?
+  city         String?
+  country      String?
+
+  // Verification
+  validationStatus   ValidationStatus @default(PENDING)
+  validatedAt        DateTime?
+  validatedBy        String?
+  rejectionReason    String?
+  businessLicenseUrl String? // Uploaded business license for verification
+  isVerifiedCompany  Boolean          @default(false)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([validationStatus])
+  @@index([industry])
+  @@index([city])
 }
