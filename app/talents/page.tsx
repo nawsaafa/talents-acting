@@ -1,21 +1,15 @@
 import { Suspense } from "react";
 import { Container } from "@/components/layout";
 import { Loading } from "@/components/ui";
-import { TalentCard, TalentFilters } from "@/components/talents";
+import { TalentCard, FilterPanel } from "@/components/talents";
 import { getPublicTalents } from "@/lib/talents/queries";
+import { parseFilterParams } from "@/lib/talents/filters";
 import { talentFilterSchema } from "@/lib/talents/validation";
 import { ChevronLeft, ChevronRight, Users } from "lucide-react";
 import Link from "next/link";
 
 interface TalentsPageProps {
-  searchParams: Promise<{
-    search?: string;
-    gender?: string;
-    ageMin?: string;
-    ageMax?: string;
-    available?: string;
-    page?: string;
-  }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }
 
 export const metadata = {
@@ -26,21 +20,14 @@ export const metadata = {
 async function TalentGrid({
   searchParams,
 }: {
-  searchParams: Awaited<TalentsPageProps["searchParams"]>;
+  searchParams: Record<string, string | undefined>;
 }) {
-  // Parse and validate filters
+  // Parse URL params and validate with schema
+  const parsedParams = parseFilterParams(searchParams);
   const filters = talentFilterSchema.parse({
-    search: searchParams.search,
-    gender: searchParams.gender,
-    ageMin: searchParams.ageMin ? parseInt(searchParams.ageMin) : undefined,
-    ageMax: searchParams.ageMax ? parseInt(searchParams.ageMax) : undefined,
-    isAvailable:
-      searchParams.available === "true"
-        ? true
-        : searchParams.available === "false"
-        ? false
-        : undefined,
-    page: searchParams.page ? parseInt(searchParams.page) : 1,
+    ...parsedParams,
+    page: parsedParams.page || 1,
+    limit: parsedParams.limit || 12,
   });
 
   const { talents, total, page, totalPages } = await getPublicTalents(filters);
@@ -59,6 +46,14 @@ async function TalentGrid({
     );
   }
 
+  // Build current search params for pagination links
+  const currentParams = new URLSearchParams();
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (value && key !== "page") {
+      currentParams.set(key, value);
+    }
+  });
+
   return (
     <>
       {/* Results count */}
@@ -66,8 +61,8 @@ async function TalentGrid({
         Showing {talents.length} of {total} talents
       </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {/* Grid - adjusted for sidebar layout */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {talents.map((talent) => (
           <TalentCard key={talent.id} talent={talent} />
         ))}
@@ -79,7 +74,7 @@ async function TalentGrid({
           {page > 1 && (
             <Link
               href={`/talents?${new URLSearchParams({
-                ...searchParams,
+                ...Object.fromEntries(currentParams),
                 page: String(page - 1),
               }).toString()}`}
               className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
@@ -96,7 +91,7 @@ async function TalentGrid({
           {page < totalPages && (
             <Link
               href={`/talents?${new URLSearchParams({
-                ...searchParams,
+                ...Object.fromEntries(currentParams),
                 page: String(page + 1),
               }).toString()}`}
               className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
@@ -124,21 +119,30 @@ export default async function TalentsPage({ searchParams }: TalentsPageProps) {
         </p>
       </div>
 
-      {/* Filters */}
-      <Suspense fallback={<div className="h-20 bg-gray-100 rounded-lg animate-pulse" />}>
-        <TalentFilters />
-      </Suspense>
+      {/* Main content with sidebar layout */}
+      <div className="flex gap-8">
+        {/* Filter Panel (sidebar on desktop, drawer on mobile) */}
+        <Suspense
+          fallback={
+            <div className="hidden lg:block w-72 h-96 bg-gray-100 rounded-lg animate-pulse" />
+          }
+        >
+          <FilterPanel />
+        </Suspense>
 
-      {/* Talent Grid */}
-      <Suspense
-        fallback={
-          <div className="flex justify-center py-12">
-            <Loading size="lg" />
-          </div>
-        }
-      >
-        <TalentGrid searchParams={params} />
-      </Suspense>
+        {/* Talent Grid */}
+        <div className="flex-1 min-w-0">
+          <Suspense
+            fallback={
+              <div className="flex justify-center py-12">
+                <Loading size="lg" />
+              </div>
+            }
+          >
+            <TalentGrid searchParams={params} />
+          </Suspense>
+        </div>
+      </div>
     </Container>
   );
 }

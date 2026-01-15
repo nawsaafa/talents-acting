@@ -102,13 +102,34 @@ export const createProfileSchema = z.object({
 // Profile update schema - all fields optional
 export const updateProfileSchema = createProfileSchema.partial();
 
-// Filter schema for talent listing
+// Filter schema for talent listing - extended for advanced filtering
 export const talentFilterSchema = z.object({
+  // Basic filters
   search: z.string().optional(),
   gender: GenderSchema.optional(),
   ageMin: z.number().int().min(1).max(100).optional(),
   ageMax: z.number().int().min(1).max(100).optional(),
+
+  // Physical attribute filters
+  minHeight: z.number().int().min(50).max(300).optional(),
+  maxHeight: z.number().int().min(50).max(300).optional(),
+  physique: z.array(PhysiqueSchema).optional(),
+  hairColor: z.array(HairColorSchema).optional(),
+  eyeColor: z.array(EyeColorSchema).optional(),
+  hairLength: z.array(HairLengthSchema).optional(),
+
+  // Skills filters (arrays of strings for flexible matching)
+  languages: z.array(z.string()).optional(),
+  athleticSkills: z.array(z.string()).optional(),
+  danceStyles: z.array(z.string()).optional(),
+  performanceSkills: z.array(z.string()).optional(),
+
+  // Professional filters
   isAvailable: z.boolean().optional(),
+  minRate: z.number().positive().optional(),
+  maxRate: z.number().positive().optional(),
+
+  // Pagination
   page: z.number().int().min(1).default(1),
   limit: z.number().int().min(1).max(50).default(12),
 });

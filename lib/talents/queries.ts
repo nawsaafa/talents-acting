@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { ValidationStatus, Prisma } from "@prisma/client";
 import type { TalentFilterInput } from "./validation";
+import { buildTalentFilterQuery } from "./filters";
 
 // Public fields visible to all users
 const publicSelect = {
@@ -74,19 +75,10 @@ export type FullTalentProfile = Prisma.TalentProfileGetPayload<{
 
 // Get talents for public listing (approved and public only)
 export async function getPublicTalents(filters: TalentFilterInput) {
-  const { search, gender, ageMin, ageMax, isAvailable, page, limit } = filters;
+  const { page = 1, limit = 12 } = filters;
 
-  const where: Prisma.TalentProfileWhereInput = {
-    validationStatus: ValidationStatus.APPROVED,
-    isPublic: true,
-    ...(search && {
-      firstName: { contains: search, mode: "insensitive" as const },
-    }),
-    ...(gender && { gender }),
-    ...(ageMin && { ageRangeMax: { gte: ageMin } }),
-    ...(ageMax && { ageRangeMin: { lte: ageMax } }),
-    ...(isAvailable !== undefined && { isAvailable }),
-  };
+  // Use the filter query builder for all filtering logic
+  const where = buildTalentFilterQuery(filters);
 
   const [talents, total] = await Promise.all([
     prisma.talentProfile.findMany({

@@ -2,7 +2,7 @@
   "version": "2.0",
   "project_name": "Talents Acting",
   "description": "A talent management platform for actors, comedians, and performers - showcasing profiles, connecting with film professionals, and managing talent databases for the Acting Institute",
-  "current_phase": 0,
+  "current_phase": 1,
   "current_session": null,
   "phases": {
     "0": {
@@ -10,6 +10,12 @@
       "description": "Core infrastructure, database design, authentication, UI framework, talent profiles, and admin dashboard",
       "status": "complete",
       "session_count": 6
+    },
+    "1": {
+      "name": "Talent Management",
+      "description": "Advanced filtering, media uploads, search, profile enhancement, and public gallery",
+      "status": "in_progress",
+      "session_count": 5
     }
   },
   "completed_sessions": [
@@ -18,7 +24,8 @@
     "phase00-session03-core_ui_framework",
     "phase00-session04-authentication",
     "phase00-session05-talent_profile_foundation",
-    "phase00-session06-admin_dashboard"
+    "phase00-session06-admin_dashboard",
+    "phase01-session01-advanced_filtering"
   ],
   "next_session_history": [
     {
@@ -164,6 +171,31 @@
     {
       "date": "2026-01-15",
       "session": "phase00-session06-admin_dashboard",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase01-session01-advanced_filtering",
+      "status": "recommended"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase01-session01-advanced_filtering",
+      "status": "spec_created"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase01-session01-advanced_filtering",
+      "status": "tasks_created"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase01-session01-advanced_filtering",
+      "status": "validated"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase01-session01-advanced_filtering",
       "status": "completed"
     }
   ]
