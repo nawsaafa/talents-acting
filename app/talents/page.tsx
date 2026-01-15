@@ -2,10 +2,11 @@ import { Suspense } from "react";
 import { Container } from "@/components/layout";
 import { Loading } from "@/components/ui";
 import { TalentCard, FilterPanel } from "@/components/talents";
+import { SearchBar } from "@/components/search";
 import { getPublicTalents } from "@/lib/talents/queries";
 import { parseFilterParams } from "@/lib/talents/filters";
 import { talentFilterSchema } from "@/lib/talents/validation";
-import { ChevronLeft, ChevronRight, Users } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, Search } from "lucide-react";
 import Link from "next/link";
 
 interface TalentsPageProps {
@@ -30,18 +31,32 @@ async function TalentGrid({
     limit: parsedParams.limit || 12,
   });
 
-  const { talents, total, page, totalPages } = await getPublicTalents(filters);
+  const { talents, total, page, totalPages, searchQuery } = await getPublicTalents(filters);
 
   if (talents.length === 0) {
     return (
       <div className="text-center py-12">
-        <Users className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
-          No talents found
-        </h3>
-        <p className="text-gray-600">
-          Try adjusting your filters or check back later.
-        </p>
+        {searchQuery ? (
+          <>
+            <Search className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No results for &quot;{searchQuery}&quot;
+            </h3>
+            <p className="text-gray-600">
+              Try a different search term or adjust your filters.
+            </p>
+          </>
+        ) : (
+          <>
+            <Users className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No talents found
+            </h3>
+            <p className="text-gray-600">
+              Try adjusting your filters or check back later.
+            </p>
+          </>
+        )}
       </div>
     );
   }
@@ -64,7 +79,7 @@ async function TalentGrid({
       {/* Grid - adjusted for sidebar layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {talents.map((talent) => (
-          <TalentCard key={talent.id} talent={talent} />
+          <TalentCard key={talent.id} talent={talent} searchQuery={searchQuery || undefined} />
         ))}
       </div>
 
@@ -111,12 +126,19 @@ export default async function TalentsPage({ searchParams }: TalentsPageProps) {
 
   return (
     <Container className="py-8">
-      {/* Header */}
+      {/* Header with Search */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Discover Talents</h1>
         <p className="mt-2 text-gray-600">
           Browse our database of actors, comedians, and performers
         </p>
+
+        {/* Search Bar */}
+        <div className="mt-6 max-w-2xl">
+          <Suspense fallback={<div className="h-11 bg-gray-100 rounded-lg animate-pulse" />}>
+            <SearchBar />
+          </Suspense>
+        </div>
       </div>
 
       {/* Main content with sidebar layout */}

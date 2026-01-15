@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { MapPin, CheckCircle } from "lucide-react";
 import { Card } from "@/components/ui";
+import { SearchHighlight } from "@/components/search";
 import type { PublicTalentProfile } from "@/lib/talents/queries";
 
 interface TalentCardProps {
   talent: PublicTalentProfile;
+  searchQuery?: string;
 }
 
 const GENDER_LABELS: Record<string, string> = {
@@ -15,7 +17,7 @@ const GENDER_LABELS: Record<string, string> = {
   OTHER: "Other",
 };
 
-export function TalentCard({ talent }: TalentCardProps) {
+export function TalentCard({ talent, searchQuery }: TalentCardProps) {
   // Use primary photo, or first from photos array, or null
   const displayPhoto =
     talent.photo || (talent.photos && talent.photos.length > 0 ? talent.photos[0] : null);
@@ -53,7 +55,11 @@ export function TalentCard({ talent }: TalentCardProps) {
         {/* Info */}
         <div className="p-4">
           <h3 className="font-semibold text-lg text-gray-900 group-hover:text-blue-600 transition-colors">
-            {talent.firstName}
+            {searchQuery ? (
+              <SearchHighlight text={talent.firstName} query={searchQuery} />
+            ) : (
+              talent.firstName
+            )}
           </h3>
 
           <div className="mt-1 flex items-center gap-2 text-sm text-gray-600">

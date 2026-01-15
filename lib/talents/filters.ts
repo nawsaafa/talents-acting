@@ -107,7 +107,12 @@ export function parseFilterParams(
 ): Partial<TalentFilterInput> {
   const params: Partial<TalentFilterInput> = {};
 
-  // Basic filters
+  // Search query (full-text search)
+  if (searchParams.q) {
+    params.q = searchParams.q;
+  }
+
+  // Basic filters (legacy search param)
   if (searchParams.search) {
     params.search = searchParams.search;
   }

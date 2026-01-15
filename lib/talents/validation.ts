@@ -104,8 +104,11 @@ export const updateProfileSchema = createProfileSchema.partial();
 
 // Filter schema for talent listing - extended for advanced filtering
 export const talentFilterSchema = z.object({
+  // Search query (full-text search)
+  q: z.string().max(100).optional(),
+
   // Basic filters
-  search: z.string().optional(),
+  search: z.string().optional(), // Legacy - use q instead
   gender: GenderSchema.optional(),
   ageMin: z.number().int().min(1).max(100).optional(),
   ageMax: z.number().int().min(1).max(100).optional(),

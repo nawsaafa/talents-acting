@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { ValidationStatus, Prisma } from "@prisma/client";
 import type { TalentFilterInput } from "./validation";
 import { buildTalentFilterQuery } from "./filters";
+import { buildSearchWhere } from "@/lib/search/search-queries";
 
 // Public fields visible to all users
 const publicSelect = {
@@ -82,7 +83,10 @@ export async function getPublicTalents(filters: TalentFilterInput) {
   const { page = 1, limit = 12 } = filters;
 
   // Use the filter query builder for all filtering logic
-  const where = buildTalentFilterQuery(filters);
+  const baseWhere = buildTalentFilterQuery(filters);
+
+  // Apply search query if present (q param for FTS)
+  const where = await buildSearchWhere(filters.q, baseWhere);
 
   const [talents, total] = await Promise.all([
     prisma.talentProfile.findMany({
@@ -100,6 +104,7 @@ export async function getPublicTalents(filters: TalentFilterInput) {
     total,
     page,
     totalPages: Math.ceil(total / limit),
+    searchQuery: filters.q || null,
   };
 }
 
