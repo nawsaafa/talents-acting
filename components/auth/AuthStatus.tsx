@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "@/components/ui";
 import { logout } from "@/lib/auth/actions";
+import { User } from "lucide-react";
 
 export function AuthStatus() {
   const { data: session, status } = useSession();
@@ -17,9 +18,19 @@ export function AuthStatus() {
   }
 
   if (session?.user) {
+    const isTalent = session.user.role === "TALENT";
+
     return (
-      <div className="flex items-center gap-4">
-        <span className="text-sm text-gray-600">
+      <div className="flex items-center gap-3">
+        {isTalent && (
+          <Link href="/dashboard/profile">
+            <Button variant="ghost" size="sm">
+              <User className="w-4 h-4 mr-1" />
+              My Profile
+            </Button>
+          </Link>
+        )}
+        <span className="text-sm text-gray-600 hidden sm:inline">
           {session.user.email}
         </span>
         <form action={logout}>

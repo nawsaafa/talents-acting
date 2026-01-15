@@ -16,7 +16,8 @@
     "phase00-session01-project_setup",
     "phase00-session02-database_schema",
     "phase00-session03-core_ui_framework",
-    "phase00-session04-authentication"
+    "phase00-session04-authentication",
+    "phase00-session05-talent_profile_foundation"
   ],
   "next_session_history": [
     {
@@ -112,6 +113,31 @@
     {
       "date": "2026-01-14",
       "session": "phase00-session04-authentication",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-14",
+      "session": "phase00-session05-talent_profile_foundation",
+      "status": "recommended"
+    },
+    {
+      "date": "2026-01-14",
+      "session": "phase00-session05-talent_profile_foundation",
+      "status": "spec_created"
+    },
+    {
+      "date": "2026-01-14",
+      "session": "phase00-session05-talent_profile_foundation",
+      "status": "tasks_created"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase00-session05-talent_profile_foundation",
+      "status": "validated"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase00-session05-talent_profile_foundation",
       "status": "completed"
     }
   ]

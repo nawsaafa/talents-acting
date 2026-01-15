@@ -1,208 +1,114 @@
-'use client';
+import Link from "next/link";
+import { Container } from "@/components/layout";
+import { Button, Card, CardBody } from "@/components/ui";
+import { getApprovedTalentCount } from "@/lib/talents/queries";
+import { Search, UserPlus, Star, Users, Shield, Eye } from "lucide-react";
 
-import { useState } from 'react';
-import { Container } from '@/components/layout';
-import {
-  Button,
-  Input,
-  Select,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Modal,
-  Loading,
-} from '@/components/ui';
-import { Star, Send, Search } from 'lucide-react';
+// Force dynamic rendering to avoid build-time database access
+export const dynamic = "force-dynamic";
 
-export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-  const [selectValue, setSelectValue] = useState('');
-
-  const categoryOptions = [
-    { value: 'actor', label: 'Actor' },
-    { value: 'comedian', label: 'Comedian' },
-    { value: 'performer', label: 'Performer' },
-    { value: 'model', label: 'Model' },
-  ];
+export default async function Home() {
+  let talentCount = 0;
+  try {
+    talentCount = await getApprovedTalentCount();
+  } catch {
+    // Database not available during build or initial render
+  }
 
   return (
     <Container as="section" className="py-12">
       {/* Hero Section */}
       <div className="text-center mb-16">
-        <h1 className="mb-4">Discover Amazing Talent</h1>
-        <p className="text-lg text-[var(--color-neutral-600)] max-w-2xl mx-auto">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          Discover Amazing Talent
+        </h1>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
           Connect with actors, comedians, and performers. Find the perfect
           talent for your next production.
         </p>
-        <div className="flex justify-center gap-4 mt-8">
-          <Button size="lg" leftIcon={<Search size={20} />}>
-            Browse Talents
-          </Button>
-          <Button variant="outline" size="lg">
-            Join as Talent
-          </Button>
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link href="/talents">
+            <Button size="lg" leftIcon={<Search size={20} />}>
+              Browse {talentCount > 0 ? `${talentCount} ` : ""}Talents
+            </Button>
+          </Link>
+          <Link href="/register">
+            <Button variant="outline" size="lg" leftIcon={<UserPlus size={20} />}>
+              Join as Talent
+            </Button>
+          </Link>
         </div>
       </div>
 
-      {/* Component Demo Section */}
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {/* Button Variants Card */}
+      {/* Features Section */}
+      <div className="grid gap-6 md:grid-cols-3 mb-16">
         <Card hover>
-          <CardHeader>
-            <h3 className="text-lg font-semibold">Button Variants</h3>
-          </CardHeader>
-          <CardBody>
-            <div className="flex flex-wrap gap-2">
-              <Button variant="primary" size="sm">
-                Primary
-              </Button>
-              <Button variant="secondary" size="sm">
-                Secondary
-              </Button>
-              <Button variant="outline" size="sm">
-                Outline
-              </Button>
-              <Button variant="ghost" size="sm">
-                Ghost
-              </Button>
-              <Button variant="danger" size="sm">
-                Danger
-              </Button>
+          <CardBody className="text-center py-8">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-100 rounded-full mb-4">
+              <Users className="w-7 h-7 text-blue-600" />
             </div>
-          </CardBody>
-          <CardFooter>
-            <Button isLoading size="sm">
-              Loading State
-            </Button>
-          </CardFooter>
-        </Card>
-
-        {/* Form Inputs Card */}
-        <Card hover>
-          <CardHeader>
-            <h3 className="text-lg font-semibold">Form Components</h3>
-          </CardHeader>
-          <CardBody>
-            <div className="space-y-4">
-              <Input
-                label="Search Talents"
-                placeholder="Enter name or skill..."
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                helperText="Search by name, skill, or location"
-              />
-              <Select
-                label="Category"
-                options={categoryOptions}
-                value={selectValue}
-                onChange={(e) => setSelectValue(e.target.value)}
-                placeholder="Select category"
-              />
-            </div>
-          </CardBody>
-          <CardFooter>
-            <Input label="With Error" error="This field is required" required />
-          </CardFooter>
-        </Card>
-
-        {/* Loading & Modal Card */}
-        <Card hover>
-          <CardHeader>
-            <h3 className="text-lg font-semibold">Loading & Modal</h3>
-          </CardHeader>
-          <CardBody>
-            <div className="flex items-center gap-4 mb-4">
-              <Loading size="sm" color="primary" />
-              <Loading size="md" color="secondary" />
-              <Loading size="lg" color="primary" />
-            </div>
-            <p className="text-sm text-[var(--color-neutral-500)] mb-4">
-              Loading spinners in different sizes
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Diverse Talent Pool
+            </h3>
+            <p className="text-gray-600">
+              Browse through a wide range of actors, comedians, and performers
+              with varied skills and experience levels.
             </p>
           </CardBody>
-          <CardFooter>
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              leftIcon={<Star size={16} />}
-            >
-              Open Modal
-            </Button>
-          </CardFooter>
         </Card>
 
-        {/* Icon Buttons Card */}
         <Card hover>
-          <CardHeader>
-            <h3 className="text-lg font-semibold">Buttons with Icons</h3>
-          </CardHeader>
-          <CardBody>
-            <div className="space-y-3">
-              <Button leftIcon={<Star size={16} />} className="w-full">
-                Featured Talents
-              </Button>
-              <Button
-                variant="secondary"
-                rightIcon={<Send size={16} />}
-                className="w-full"
-              >
-                Send Message
-              </Button>
-              <Button variant="outline" className="w-full" disabled>
-                Disabled State
-              </Button>
+          <CardBody className="text-center py-8">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-purple-100 rounded-full mb-4">
+              <Shield className="w-7 h-7 text-purple-600" />
             </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Verified Profiles
+            </h3>
+            <p className="text-gray-600">
+              All talent profiles are reviewed and verified to ensure quality
+              and authenticity for your productions.
+            </p>
           </CardBody>
         </Card>
 
-        {/* Card Variations */}
-        <Card padding="lg" shadow="lg" className="md:col-span-2">
-          <CardHeader>
-            <h3 className="text-lg font-semibold">Card Variations</h3>
-          </CardHeader>
-          <CardBody>
-            <p className="text-[var(--color-neutral-600)]">
-              Cards can have different padding sizes (none, sm, md, lg) and
-              shadow depths (none, sm, md, lg). They can also have a hover
-              effect for interactive elements.
-            </p>
-            <div className="grid grid-cols-3 gap-4 mt-4">
-              <Card padding="sm" shadow="none" className="text-center">
-                <p className="text-sm">No Shadow</p>
-              </Card>
-              <Card padding="sm" shadow="sm" className="text-center">
-                <p className="text-sm">Small Shadow</p>
-              </Card>
-              <Card padding="sm" shadow="md" className="text-center">
-                <p className="text-sm">Medium Shadow</p>
-              </Card>
+        <Card hover>
+          <CardBody className="text-center py-8">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-green-100 rounded-full mb-4">
+              <Eye className="w-7 h-7 text-green-600" />
             </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Premium Access
+            </h3>
+            <p className="text-gray-600">
+              Professionals and companies get full access to contact details
+              and complete talent information.
+            </p>
           </CardBody>
         </Card>
       </div>
 
-      {/* Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Welcome to Talents Acting"
-        size="md"
-      >
-        <div className="space-y-4">
-          <p className="text-[var(--color-neutral-600)]">
-            This modal demonstrates focus trap and keyboard support. Press Tab
-            to cycle through focusable elements, and Escape to close.
+      {/* CTA Section */}
+      <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <CardBody className="text-center py-12">
+          <Star className="w-10 h-10 mx-auto mb-4 text-yellow-300" />
+          <h2 className="text-2xl md:text-3xl font-bold mb-3">
+            Ready to Showcase Your Talent?
+          </h2>
+          <p className="text-blue-100 mb-6 max-w-xl mx-auto">
+            Create your profile today and get discovered by casting directors,
+            production companies, and industry professionals.
           </p>
-          <Input label="Your Name" placeholder="Enter your name" />
-          <div className="flex justify-end gap-2">
-            <Button variant="ghost" onClick={() => setIsModalOpen(false)}>
-              Cancel
+          <Link href="/register">
+            <Button
+              size="lg"
+              className="bg-white text-blue-600 hover:bg-blue-50"
+            >
+              Create Your Profile
             </Button>
-            <Button onClick={() => setIsModalOpen(false)}>Continue</Button>
-          </div>
-        </div>
-      </Modal>
+          </Link>
+        </CardBody>
+      </Card>
     </Container>
   );
 }
