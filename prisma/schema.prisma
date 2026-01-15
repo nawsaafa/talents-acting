@@ -148,6 +148,8 @@ model TalentProfile {
   danceStyles        String[] // e.g., ["Contemporary", "Hip Hop", "Traditional"]
 
   // === T012: Media and Availability ===
+  photos            String[] // Array of photo URLs (max 10, first is primary)
+  videoUrls         String[] // Array of embedded video URLs (YouTube/Vimeo)
   presentationVideo String? // Video introduction URL
   showreel          String? // Demo reel URL
   hasShowreel       Boolean  @default(false)

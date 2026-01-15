@@ -8,6 +8,8 @@ const publicSelect = {
   id: true,
   firstName: true,
   photo: true,
+  photos: true,
+  videoUrls: true,
   gender: true,
   ageRangeMin: true,
   ageRangeMax: true,
@@ -51,6 +53,8 @@ const premiumSelect = {
 // Full profile for editing (includes all fields)
 const fullSelect = {
   ...premiumSelect,
+  photos: true,
+  videoUrls: true,
   validationStatus: true,
   validatedAt: true,
   rejectionReason: true,

@@ -25,7 +25,8 @@
     "phase00-session04-authentication",
     "phase00-session05-talent_profile_foundation",
     "phase00-session06-admin_dashboard",
-    "phase01-session01-advanced_filtering"
+    "phase01-session01-advanced_filtering",
+    "phase01-session02-media_upload_system"
   ],
   "next_session_history": [
     {
@@ -196,6 +197,31 @@
     {
       "date": "2026-01-15",
       "session": "phase01-session01-advanced_filtering",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase01-session02-media_upload_system",
+      "status": "recommended"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase01-session02-media_upload_system",
+      "status": "spec_created"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase01-session02-media_upload_system",
+      "status": "tasks_created"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase01-session02-media_upload_system",
+      "status": "validated"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase01-session02-media_upload_system",
       "status": "completed"
     }
   ]

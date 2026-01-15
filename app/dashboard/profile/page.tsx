@@ -15,6 +15,7 @@ import {
   Plus,
   MapPin,
   Calendar,
+  Camera,
 } from "lucide-react";
 
 const VALIDATION_STATUS_CONFIG = {
@@ -259,6 +260,12 @@ export default async function ProfileDashboardPage() {
                 <Button variant="outline" className="w-full justify-start">
                   <Edit className="w-4 h-4 mr-2" />
                   Edit Profile
+                </Button>
+              </Link>
+              <Link href="/dashboard/profile/media" className="block">
+                <Button variant="outline" className="w-full justify-start">
+                  <Camera className="w-4 h-4 mr-2" />
+                  Manage Media
                 </Button>
               </Link>
               {profile.validationStatus === "APPROVED" && profile.isPublic && (

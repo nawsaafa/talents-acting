@@ -16,14 +16,18 @@ const GENDER_LABELS: Record<string, string> = {
 };
 
 export function TalentCard({ talent }: TalentCardProps) {
+  // Use primary photo, or first from photos array, or null
+  const displayPhoto =
+    talent.photo || (talent.photos && talent.photos.length > 0 ? talent.photos[0] : null);
+
   return (
     <Link href={`/talents/${talent.id}`}>
       <Card className="group overflow-hidden hover:shadow-lg transition-shadow duration-200">
         {/* Photo */}
         <div className="relative aspect-[3/4] bg-gray-100">
-          {talent.photo ? (
+          {displayPhoto ? (
             <Image
-              src={talent.photo}
+              src={displayPhoto}
               alt={talent.firstName}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-200"
