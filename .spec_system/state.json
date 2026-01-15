@@ -8,7 +8,7 @@
     "0": {
       "name": "Foundation",
       "description": "Core infrastructure, database design, authentication, UI framework, talent profiles, and admin dashboard",
-      "status": "in_progress",
+      "status": "complete",
       "session_count": 6
     }
   },
@@ -17,7 +17,8 @@
     "phase00-session02-database_schema",
     "phase00-session03-core_ui_framework",
     "phase00-session04-authentication",
-    "phase00-session05-talent_profile_foundation"
+    "phase00-session05-talent_profile_foundation",
+    "phase00-session06-admin_dashboard"
   ],
   "next_session_history": [
     {
@@ -138,6 +139,31 @@
     {
       "date": "2026-01-15",
       "session": "phase00-session05-talent_profile_foundation",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase00-session06-admin_dashboard",
+      "status": "recommended"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase00-session06-admin_dashboard",
+      "status": "spec_created"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase00-session06-admin_dashboard",
+      "status": "tasks_created"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase00-session06-admin_dashboard",
+      "status": "validated"
+    },
+    {
+      "date": "2026-01-15",
+      "session": "phase00-session06-admin_dashboard",
       "status": "completed"
     }
   ]

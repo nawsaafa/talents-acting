@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "@/components/ui";
 import { logout } from "@/lib/auth/actions";
-import { User } from "lucide-react";
+import { User, Shield } from "lucide-react";
 
 export function AuthStatus() {
   const { data: session, status } = useSession();
@@ -19,9 +19,18 @@ export function AuthStatus() {
 
   if (session?.user) {
     const isTalent = session.user.role === "TALENT";
+    const isAdmin = session.user.role === "ADMIN";
 
     return (
       <div className="flex items-center gap-3">
+        {isAdmin && (
+          <Link href="/admin">
+            <Button variant="ghost" size="sm">
+              <Shield className="w-4 h-4 mr-1" />
+              Admin
+            </Button>
+          </Link>
+        )}
         {isTalent && (
           <Link href="/dashboard/profile">
             <Button variant="ghost" size="sm">
