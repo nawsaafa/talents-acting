@@ -3,6 +3,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/layout";
 import { Button, Card, CardBody } from "@/components/ui";
+import {
+  ProfileCompleteness,
+  ProfilePreview,
+} from "@/components/profile";
 import { auth } from "@/lib/auth/auth";
 import { getTalentProfileByUserId } from "@/lib/talents/queries";
 import {
@@ -16,6 +20,7 @@ import {
   MapPin,
   Calendar,
   Camera,
+  Sparkles,
 } from "lucide-react";
 
 const VALIDATION_STATUS_CONFIG = {
@@ -113,20 +118,19 @@ export default async function ProfileDashboardPage() {
         <Card>
           <CardBody className="text-center py-12">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full mb-6">
-              <Plus className="w-10 h-10 text-blue-600" />
+              <Sparkles className="w-10 h-10 text-blue-600" />
             </div>
             <h2 className="text-2xl font-semibold text-gray-900 mb-3">
               Create Your Profile
             </h2>
             <p className="text-gray-600 mb-6 max-w-md mx-auto">
               Showcase your talent to casting directors, production companies,
-              and industry professionals. Your profile will be reviewed before
-              going public.
+              and industry professionals. Our step-by-step wizard makes it easy!
             </p>
             <Link href="/dashboard/profile/edit">
               <Button size="lg">
                 <Plus className="w-5 h-5 mr-2" />
-                Create Profile
+                Get Started
               </Button>
             </Link>
           </CardBody>
@@ -318,36 +322,18 @@ export default async function ProfileDashboardPage() {
         </Card>
       </div>
 
-      {/* Profile Completeness Hint */}
-      {(!profile.bio || !profile.photo || !profile.contactEmail) && (
-        <Card className="mt-6">
-          <CardBody>
-            <h3 className="font-semibold text-gray-900 mb-2">
-              Complete Your Profile
-            </h3>
-            <p className="text-sm text-gray-600 mb-4">
-              A complete profile increases your chances of being discovered.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {!profile.photo && (
-                <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
-                  Add a photo
-                </span>
-              )}
-              {!profile.bio && (
-                <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
-                  Write a bio
-                </span>
-              )}
-              {!profile.contactEmail && (
-                <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
-                  Add contact email
-                </span>
-              )}
-            </div>
-          </CardBody>
-        </Card>
-      )}
+      {/* Profile Completeness */}
+      <div className="mt-6">
+        <ProfileCompleteness profile={profile} showDetails />
+      </div>
+
+      {/* Profile Preview */}
+      <div className="mt-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          Profile Preview
+        </h2>
+        <ProfilePreview profile={profile} />
+      </div>
     </Container>
   );
 }

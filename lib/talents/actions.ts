@@ -250,3 +250,44 @@ export async function deleteTalentProfile(): Promise<ActionResult> {
 export async function redirectToProfile() {
   redirect("/dashboard/profile");
 }
+
+// Inline update for single field (used by InlineEdit component)
+export async function updateProfileField(
+  field: string,
+  value: unknown
+): Promise<ActionResult> {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return { success: false, error: "You must be logged in" };
+  }
+
+  // Get current profile
+  const existingProfile = await getTalentProfileByUserId(session.user.id);
+  if (!existingProfile) {
+    return { success: false, error: "Profile not found" };
+  }
+
+  // Validate the single field update
+  const input = { [field]: value };
+  const parsed = updateProfileSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0].message };
+  }
+
+  try {
+    await prisma.talentProfile.update({
+      where: { userId: session.user.id },
+      data: { [field]: value },
+    });
+
+    revalidatePath("/talents");
+    revalidatePath("/dashboard/profile");
+    revalidatePath(`/talents/${existingProfile.id}`);
+
+    return { success: true };
+  } catch (error) {
+    console.error(`Failed to update profile field ${field}:`, error);
+    return { success: false, error: "Failed to update. Please try again." };
+  }
+}

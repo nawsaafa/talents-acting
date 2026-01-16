@@ -27,7 +27,8 @@
     "phase00-session06-admin_dashboard",
     "phase01-session01-advanced_filtering",
     "phase01-session02-media_upload_system",
-    "phase01-session03-talent_search_discovery"
+    "phase01-session03-talent_search_discovery",
+    "phase01-session04-profile_enhancement"
   ],
   "next_session_history": [
     {
@@ -248,6 +249,31 @@
     {
       "date": "2026-01-16",
       "session": "phase01-session03-talent_search_discovery",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-16",
+      "session": "phase01-session04-profile_enhancement",
+      "status": "recommended"
+    },
+    {
+      "date": "2026-01-16",
+      "session": "phase01-session04-profile_enhancement",
+      "status": "spec_created"
+    },
+    {
+      "date": "2026-01-16",
+      "session": "phase01-session04-profile_enhancement",
+      "status": "tasks_created"
+    },
+    {
+      "date": "2026-01-16",
+      "session": "phase01-session04-profile_enhancement",
+      "status": "validated"
+    },
+    {
+      "date": "2026-01-16",
+      "session": "phase01-session04-profile_enhancement",
       "status": "completed"
     }
   ]

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Container } from "@/components/layout";
-import { ProfileForm } from "@/components/talents";
+import { ProfileWizard } from "@/components/profile";
 import { auth } from "@/lib/auth/auth";
 import { getTalentProfileByUserId } from "@/lib/talents/queries";
 import { ArrowLeft } from "lucide-react";
@@ -46,13 +46,16 @@ export default async function ProfileEditPage() {
         </h1>
         <p className="mt-2 text-gray-600">
           {mode === "create"
-            ? "Fill in your details to get discovered by casting directors and production companies."
+            ? "Complete these steps to get discovered by casting directors and production companies."
             : "Update your profile information. Changes will be reviewed before going public."}
         </p>
       </div>
 
-      {/* Form */}
-      <ProfileForm profile={profile} mode={mode} />
+      {/* Profile Wizard */}
+      <ProfileWizard
+        initialData={profile ?? undefined}
+        profileId={profile?.id}
+      />
     </Container>
   );
 }
