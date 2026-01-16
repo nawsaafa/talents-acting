@@ -8,10 +8,12 @@ import { Role, ValidationStatus } from "@prisma/client";
 import {
   createProfileSchema,
   updateProfileSchema,
+  talentFilterSchema,
   type CreateProfileInput,
   type UpdateProfileInput,
+  type TalentFilterInput,
 } from "./validation";
-import { getTalentProfileByUserId } from "./queries";
+import { getTalentProfileByUserId, getPublicTalents, type PublicTalentProfile } from "./queries";
 
 type ActionResult = {
   success: boolean;
@@ -249,6 +251,27 @@ export async function deleteTalentProfile(): Promise<ActionResult> {
 // Redirect helper for after profile creation
 export async function redirectToProfile() {
   redirect("/dashboard/profile");
+}
+
+// Load more talents for infinite scroll (public, no auth required)
+export async function loadMoreTalents(
+  page: number,
+  filters: TalentFilterInput,
+  searchQuery?: string
+): Promise<{ talents: PublicTalentProfile[]; hasMore: boolean }> {
+  const validatedFilters = talentFilterSchema.parse({
+    ...filters,
+    q: searchQuery,
+    page,
+    limit: 12,
+  });
+
+  const result = await getPublicTalents(validatedFilters);
+
+  return {
+    talents: result.talents,
+    hasMore: result.page < result.totalPages,
+  };
 }
 
 // Inline update for single field (used by InlineEdit component)
