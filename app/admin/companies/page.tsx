@@ -98,28 +98,33 @@ export default async function CompanyQueuePage({ searchParams }: PageProps) {
               <div className="flex items-center gap-4">
                 {/* Avatar */}
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-[var(--color-primary-50)] flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-[var(--color-primary)]"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                      />
-                    </svg>
-                  </div>
+                  <Link href={`/admin/companies/${company.id}`}>
+                    <div className="w-12 h-12 rounded-full bg-[var(--color-primary-50)] flex items-center justify-center">
+                      <svg
+                        className="w-6 h-6 text-[var(--color-primary)]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                        />
+                      </svg>
+                    </div>
+                  </Link>
                 </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-lg font-medium text-[var(--color-neutral-900)]">
+                  <Link
+                    href={`/admin/companies/${company.id}`}
+                    className="text-lg font-medium text-[var(--color-neutral-900)] hover:text-[var(--color-primary)]"
+                  >
                     {company.companyName}
-                  </p>
+                  </Link>
                   <p className="text-sm text-[var(--color-neutral-600)]">{company.industry}</p>
                   <div className="flex items-center gap-4 mt-1 text-sm text-[var(--color-neutral-500)]">
                     <span>{company.user.email}</span>
@@ -133,7 +138,13 @@ export default async function CompanyQueuePage({ searchParams }: PageProps) {
                 </div>
 
                 {/* Actions */}
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 flex items-center gap-2">
+                  <Link
+                    href={`/admin/companies/${company.id}`}
+                    className="px-3 py-1.5 text-sm font-medium text-[var(--color-neutral-600)] bg-white border border-[var(--color-neutral-300)] rounded-[var(--radius-md)] hover:bg-[var(--color-neutral-50)]"
+                  >
+                    View
+                  </Link>
                   {status === 'PENDING' && (
                     <ValidationActions profileId={company.id} profileType="company" />
                   )}

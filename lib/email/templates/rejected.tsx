@@ -3,11 +3,17 @@ import { getAppUrl } from '../send';
 interface RejectedEmailProps {
   firstName: string;
   reason: string;
+  accountType?: 'professional' | 'company';
 }
 
-export function getRejectedEmailHtml({ firstName, reason }: RejectedEmailProps): string {
+export function getRejectedEmailHtml({
+  firstName,
+  reason,
+  accountType = 'professional',
+}: RejectedEmailProps): string {
   const appUrl = getAppUrl();
   const contactUrl = `${appUrl}/contact`;
+  const accountLabel = accountType === 'company' ? 'company' : 'professional';
 
   return `
 <!DOCTYPE html>
@@ -37,7 +43,7 @@ export function getRejectedEmailHtml({ firstName, reason }: RejectedEmailProps):
               </h2>
 
               <p style="margin: 0 0 20px; color: #52525b; font-size: 16px; line-height: 1.6;">
-                We have reviewed your professional registration request for Talents Acting. Unfortunately, we are unable to approve your account at this time.
+                We have reviewed your ${accountLabel} registration request for Talents Acting. Unfortunately, we are unable to approve your account at this time.
               </p>
 
               <!-- Reason Box -->
@@ -89,13 +95,18 @@ export function getRejectedEmailHtml({ firstName, reason }: RejectedEmailProps):
   `.trim();
 }
 
-export function getRejectedEmailText({ firstName, reason }: RejectedEmailProps): string {
+export function getRejectedEmailText({
+  firstName,
+  reason,
+  accountType = 'professional',
+}: RejectedEmailProps): string {
   const appUrl = getAppUrl();
+  const accountLabel = accountType === 'company' ? 'company' : 'professional';
 
   return `
 Hello ${firstName},
 
-We have reviewed your professional registration request for Talents Acting. Unfortunately, we are unable to approve your account at this time.
+We have reviewed your ${accountLabel} registration request for Talents Acting. Unfortunately, we are unable to approve your account at this time.
 
 Reason:
 ${reason}

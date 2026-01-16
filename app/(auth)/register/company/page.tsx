@@ -1,132 +1,57 @@
-'use client';
+import { Metadata } from 'next';
+import { RegistrationWizard } from '@/components/company/RegistrationWizard';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Card, CardHeader, CardBody, Button, Input, Select } from '@/components/ui';
-import { registerCompany } from '@/lib/auth/actions';
-
-const industryOptions = [
-  { value: 'Film Production', label: 'Film Production' },
-  { value: 'TV Broadcasting', label: 'TV Broadcasting' },
-  { value: 'Talent Agency', label: 'Talent Agency' },
-  { value: 'Advertising Agency', label: 'Advertising Agency' },
-  { value: 'Theater Production', label: 'Theater Production' },
-  { value: 'Event Production', label: 'Event Production' },
-  { value: 'Other', label: 'Other' },
-];
+export const metadata: Metadata = {
+  title: 'Company Registration - Talents Acting',
+  description: 'Register your company to access the Talents Acting database',
+};
 
 export default function CompanyRegistrationPage() {
-  const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function handleSubmit(formData: FormData) {
-    setError(null);
-    setIsLoading(true);
-
-    try {
-      const result = await registerCompany(formData);
-
-      if (result.success) {
-        router.push('/login?registered=true&pending=true');
-      } else {
-        setError(result.error || 'Registration failed');
-      }
-    } catch {
-      setError('An unexpected error occurred');
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   return (
-    <Card>
-      <CardHeader>
-        <h1 className="text-xl font-bold text-gray-900">Company Registration</h1>
-        <p className="text-sm text-gray-600">Register your company to access talent</p>
-      </CardHeader>
-      <CardBody>
-        <form action={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg">
-              {error}
-            </div>
-          )}
-
-          <div className="p-3 bg-amber-50 border border-amber-200 text-amber-700 text-sm rounded-lg">
-            Company accounts require admin approval before accessing premium content.
-          </div>
-
-          <Input label="Company Name" name="companyName" required placeholder="Acme Productions" />
-
-          <Select label="Industry" name="industry" options={industryOptions} />
-
-          <Input
-            label="Login Email"
-            name="email"
-            type="email"
-            required
-            placeholder="admin@company.com"
-            helperText="This will be your login email"
-          />
-
-          <Input
-            label="Contact Email"
-            name="contactEmail"
-            type="email"
-            required
-            placeholder="contact@company.com"
-            helperText="Public contact email for your company"
-          />
-
-          <Input
-            label="Contact Phone (Optional)"
-            name="contactPhone"
-            type="tel"
-            placeholder="+1 234 567 8900"
-          />
-
-          <Input
-            label="Website (Optional)"
-            name="website"
-            type="url"
-            placeholder="https://company.com"
-          />
-
-          <div className="grid grid-cols-2 gap-4">
-            <Input label="City (Optional)" name="city" placeholder="Los Angeles" />
-            <Input label="Country (Optional)" name="country" placeholder="United States" />
-          </div>
-
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            required
-            placeholder="Min 8 characters"
-            helperText="Must include uppercase, lowercase, and number"
-          />
-
-          <Input
-            label="Confirm Password"
-            name="confirmPassword"
-            type="password"
-            required
-            placeholder="Confirm your password"
-          />
-
-          <Button type="submit" className="w-full" isLoading={isLoading}>
-            Create Company Account
-          </Button>
-        </form>
-
-        <div className="mt-4 text-center text-sm text-gray-600">
-          <Link href="/register" className="text-primary-600 hover:text-primary-500">
-            Choose a different account type
-          </Link>
+    <div className="min-h-screen bg-zinc-50 py-12 sm:py-16">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
+            Company Registration
+          </h1>
+          <p className="mt-3 text-lg text-zinc-600">
+            Register your production company, talent agency, or organization to access our
+            comprehensive talent database.
+          </p>
         </div>
-      </CardBody>
-    </Card>
+
+        {/* Info Box */}
+        <div className="mb-8 rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg
+                className="h-5 w-5 text-blue-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <div className="ml-3 text-sm text-blue-700">
+              <p>
+                <strong>Registration Process:</strong> After completing this form, you will receive
+                a verification email. Once your email is verified, our team will review your
+                application. Approved companies gain full access to the talent database and can
+                invite team members.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Registration Form */}
+        <RegistrationWizard />
+      </div>
+    </div>
   );
 }

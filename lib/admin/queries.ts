@@ -283,6 +283,63 @@ export async function getCompanyValidationQueue(filters: ValidationFilterInput) 
   };
 }
 
+// Get full company details for admin review
+const companyFullSelect = {
+  id: true,
+  userId: true,
+  companyName: true,
+  industry: true,
+  description: true,
+  website: true,
+  contactEmail: true,
+  contactPhone: true,
+  address: true,
+  city: true,
+  country: true,
+  emailVerified: true,
+  subscriptionStatus: true,
+  subscriptionEndsAt: true,
+  termsAcceptedAt: true,
+  validationStatus: true,
+  validatedAt: true,
+  validatedBy: true,
+  rejectionReason: true,
+  createdAt: true,
+  updatedAt: true,
+  user: {
+    select: {
+      id: true,
+      email: true,
+      isActive: true,
+      createdAt: true,
+    },
+  },
+  members: {
+    select: {
+      id: true,
+      email: true,
+      firstName: true,
+      lastName: true,
+      role: true,
+      status: true,
+      acceptedAt: true,
+      createdAt: true,
+    },
+    orderBy: { createdAt: 'asc' as const },
+  },
+} as const;
+
+export type CompanyFullDetails = Prisma.CompanyProfileGetPayload<{
+  select: typeof companyFullSelect;
+}>;
+
+export async function getCompanyForReview(id: string) {
+  return prisma.companyProfile.findUnique({
+    where: { id },
+    select: companyFullSelect,
+  });
+}
+
 // User management
 const userListSelect = {
   id: true,

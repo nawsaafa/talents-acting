@@ -259,6 +259,11 @@ model CompanyProfile {
   city         String?
   country      String?
 
+  // Email verification
+  emailVerified       Boolean   @default(false)
+  verificationToken   String?   @unique
+  verificationExpires DateTime?
+
   // Verification
   validationStatus   ValidationStatus @default(PENDING)
   validatedAt        DateTime?
@@ -267,6 +272,16 @@ model CompanyProfile {
   businessLicenseUrl String? // Uploaded business license for verification
   isVerifiedCompany  Boolean          @default(false)
 
+  // Subscription
+  subscriptionStatus SubscriptionStatus @default(NONE)
+  subscriptionEndsAt DateTime?
+
+  // Terms acceptance
+  termsAcceptedAt DateTime?
+
+  // Team members
+  members CompanyMember[]
+
   // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -274,4 +289,52 @@ model CompanyProfile {
   @@index([validationStatus])
   @@index([industry])
   @@index([city])
+  @@index([verificationToken])
+}
+
+// Company member status for team invitations
+enum CompanyMemberStatus {
+  PENDING  // Invitation sent, not yet accepted
+  ACTIVE   // Member has accepted and is active
+  INACTIVE // Member deactivated
+}
+
+// Company member role within the company
+enum CompanyMemberRole {
+  ADMIN  // Can manage team, edit company profile
+  MEMBER // Can access talent database
+}
+
+// T016: Company team member for multi-user company accounts
+model CompanyMember {
+  id        String @id @default(uuid())
+  companyId String
+  company   CompanyProfile @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  // Member details
+  email     String
+  firstName String?
+  lastName  String?
+
+  // User link (null until invitation accepted)
+  userId String?
+
+  // Invitation
+  inviteToken   String?   @unique
+  invitedAt     DateTime  @default(now())
+  invitedBy     String?   // User ID of who sent the invite
+
+  // Status and role
+  status CompanyMemberStatus @default(PENDING)
+  role   CompanyMemberRole   @default(MEMBER)
+
+  // Timestamps
+  acceptedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([companyId, email])
+  @@index([email])
+  @@index([status])
+  @@index([inviteToken])
 }

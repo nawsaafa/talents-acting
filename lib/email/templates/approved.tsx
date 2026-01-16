@@ -2,11 +2,16 @@ import { getAppUrl } from '../send';
 
 interface ApprovedEmailProps {
   firstName: string;
+  accountType?: 'professional' | 'company';
 }
 
-export function getApprovedEmailHtml({ firstName }: ApprovedEmailProps): string {
+export function getApprovedEmailHtml({
+  firstName,
+  accountType = 'professional',
+}: ApprovedEmailProps): string {
   const appUrl = getAppUrl();
   const loginUrl = `${appUrl}/login`;
+  const accountLabel = accountType === 'company' ? 'company' : 'professional';
 
   return `
 <!DOCTYPE html>
@@ -43,7 +48,7 @@ export function getApprovedEmailHtml({ firstName }: ApprovedEmailProps): string 
               </h2>
 
               <p style="margin: 0 0 20px; color: #52525b; font-size: 16px; line-height: 1.6;">
-                Your professional account has been approved. You now have full access to the Talents Acting database.
+                Your ${accountLabel} account has been approved. You now have full access to the Talents Acting database.
               </p>
 
               <p style="margin: 0 0 30px; color: #52525b; font-size: 16px; line-height: 1.6;">
@@ -92,14 +97,18 @@ export function getApprovedEmailHtml({ firstName }: ApprovedEmailProps): string 
   `.trim();
 }
 
-export function getApprovedEmailText({ firstName }: ApprovedEmailProps): string {
+export function getApprovedEmailText({
+  firstName,
+  accountType = 'professional',
+}: ApprovedEmailProps): string {
   const appUrl = getAppUrl();
   const loginUrl = `${appUrl}/login`;
+  const accountLabel = accountType === 'company' ? 'company' : 'professional';
 
   return `
 Congratulations, ${firstName}!
 
-Your professional account on Talents Acting has been approved.
+Your ${accountLabel} account on Talents Acting has been approved.
 
 You now have full access to the talent database. With your account, you can:
 - Browse detailed talent profiles

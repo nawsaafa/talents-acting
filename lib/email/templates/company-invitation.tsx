@@ -1,19 +1,26 @@
-import { getVerificationUrl, getAppUrl } from '../send';
+import { getAppUrl } from '../send';
 
-interface VerificationEmailProps {
-  firstName: string;
-  verificationToken: string;
-  accountType?: 'professional' | 'company';
+interface CompanyInviteEmailProps {
+  companyName: string;
+  inviterEmail: string;
+  inviteToken: string;
+  firstName?: string;
 }
 
-export function getVerificationEmailHtml({
-  firstName,
-  verificationToken,
-  accountType = 'professional',
-}: VerificationEmailProps): string {
-  const verificationUrl = getVerificationUrl(verificationToken);
+function getInviteUrl(token: string): string {
   const appUrl = getAppUrl();
-  const accountLabel = accountType === 'company' ? 'a company' : 'a professional';
+  return `${appUrl}/invite?token=${token}`;
+}
+
+export function getCompanyInviteEmailHtml({
+  companyName,
+  inviterEmail,
+  inviteToken,
+  firstName,
+}: CompanyInviteEmailProps): string {
+  const inviteUrl = getInviteUrl(inviteToken);
+  const appUrl = getAppUrl();
+  const greeting = firstName ? `Hi ${firstName},` : 'Hello,';
 
   return `
 <!DOCTYPE html>
@@ -21,7 +28,7 @@ export function getVerificationEmailHtml({
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verify Your Email - Talents Acting</title>
+  <title>You're Invited to Join ${companyName} - Talents Acting</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f5;">
   <table role="presentation" style="width: 100%; border-collapse: collapse;">
@@ -38,22 +45,37 @@ export function getVerificationEmailHtml({
           <!-- Content -->
           <tr>
             <td style="padding: 40px;">
-              <h2 style="margin: 0 0 20px; color: #18181b; font-size: 20px; font-weight: 600;">Welcome, ${firstName}!</h2>
+              <h2 style="margin: 0 0 20px; color: #18181b; font-size: 20px; font-weight: 600;">You're Invited!</h2>
 
               <p style="margin: 0 0 20px; color: #52525b; font-size: 16px; line-height: 1.6;">
-                Thank you for registering as ${accountLabel} on Talents Acting. Please verify your email address to continue with your registration.
+                ${greeting}
               </p>
 
+              <p style="margin: 0 0 20px; color: #52525b; font-size: 16px; line-height: 1.6;">
+                You have been invited to join <strong>${companyName}</strong> on Talents Acting by ${inviterEmail}.
+              </p>
+
+              <p style="margin: 0 0 20px; color: #52525b; font-size: 16px; line-height: 1.6;">
+                As a team member, you will have access to:
+              </p>
+
+              <ul style="margin: 0 0 20px; padding-left: 20px; color: #52525b; font-size: 16px; line-height: 1.8;">
+                <li>Browse and search the talent database</li>
+                <li>View detailed talent profiles</li>
+                <li>Contact talent directly</li>
+                <li>Collaborate with your team</li>
+              </ul>
+
               <p style="margin: 0 0 30px; color: #52525b; font-size: 16px; line-height: 1.6;">
-                Click the button below to verify your email:
+                Click the button below to accept the invitation and set up your account:
               </p>
 
               <!-- CTA Button -->
               <table role="presentation" style="width: 100%; border-collapse: collapse;">
                 <tr>
                   <td align="center">
-                    <a href="${verificationUrl}" style="display: inline-block; padding: 14px 32px; background-color: #2563eb; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 6px;">
-                      Verify Email Address
+                    <a href="${inviteUrl}" style="display: inline-block; padding: 14px 32px; background-color: #2563eb; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 6px;">
+                      Accept Invitation
                     </a>
                   </td>
                 </tr>
@@ -64,11 +86,11 @@ export function getVerificationEmailHtml({
               </p>
 
               <p style="margin: 0 0 20px; padding: 12px; background-color: #f4f4f5; border-radius: 4px; word-break: break-all;">
-                <a href="${verificationUrl}" style="color: #2563eb; font-size: 14px; text-decoration: none;">${verificationUrl}</a>
+                <a href="${inviteUrl}" style="color: #2563eb; font-size: 14px; text-decoration: none;">${inviteUrl}</a>
               </p>
 
               <p style="margin: 30px 0 0; color: #a1a1aa; font-size: 14px; line-height: 1.6;">
-                This link will expire in 24 hours. If you did not create an account, you can safely ignore this email.
+                If you did not expect this invitation, you can safely ignore this email.
               </p>
             </td>
           </tr>
@@ -91,25 +113,30 @@ export function getVerificationEmailHtml({
   `.trim();
 }
 
-export function getVerificationEmailText({
+export function getCompanyInviteEmailText({
+  companyName,
+  inviterEmail,
+  inviteToken,
   firstName,
-  verificationToken,
-  accountType = 'professional',
-}: VerificationEmailProps): string {
-  const verificationUrl = getVerificationUrl(verificationToken);
-  const accountLabel = accountType === 'company' ? 'a company' : 'a professional';
+}: CompanyInviteEmailProps): string {
+  const inviteUrl = getInviteUrl(inviteToken);
+  const greeting = firstName ? `Hi ${firstName},` : 'Hello,';
 
   return `
-Welcome to Talents Acting, ${firstName}!
+${greeting}
 
-Thank you for registering as ${accountLabel}. Please verify your email address to continue with your registration.
+You have been invited to join ${companyName} on Talents Acting by ${inviterEmail}.
 
-Verify your email by clicking this link:
-${verificationUrl}
+As a team member, you will have access to:
+- Browse and search the talent database
+- View detailed talent profiles
+- Contact talent directly
+- Collaborate with your team
 
-This link will expire in 24 hours.
+Accept the invitation by clicking this link:
+${inviteUrl}
 
-If you did not create an account, you can safely ignore this email.
+If you did not expect this invitation, you can safely ignore this email.
 
 ---
 Talents Acting by Acting Institute Morocco
