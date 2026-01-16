@@ -1,8 +1,8 @@
-import { prisma } from "@/lib/prisma";
-import { ValidationStatus, Prisma } from "@prisma/client";
-import type { TalentFilterInput } from "./validation";
-import { buildTalentFilterQuery } from "./filters";
-import { buildSearchWhere } from "@/lib/search/search-queries";
+import { prisma } from '@/lib/prisma';
+import { ValidationStatus, Prisma } from '@prisma/client';
+import type { TalentFilterInput } from './validation';
+import { buildTalentFilterQuery } from './filters';
+import { buildSearchWhere } from '@/lib/search/search-queries';
 
 // Public fields visible to all users
 const publicSelect = {
@@ -92,7 +92,7 @@ export async function getPublicTalents(filters: TalentFilterInput) {
     prisma.talentProfile.findMany({
       where,
       select: publicSelect,
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
       skip: (page - 1) * limit,
       take: limit,
     }),

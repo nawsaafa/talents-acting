@@ -16,6 +16,7 @@ Implement a secure authentication system supporting all user types (talents, pro
 ## Scope
 
 ### In Scope (MVP)
+
 - User registration flows:
   - Talent registration (detailed form)
   - Professional registration (name, profession, email, phone, reason)
@@ -33,6 +34,7 @@ Implement a secure authentication system supporting all user types (talents, pro
 - Basic password reset flow
 
 ### Out of Scope
+
 - Payment verification (Phase 02)
 - Social login (OAuth) - future enhancement
 - Two-factor authentication - future enhancement

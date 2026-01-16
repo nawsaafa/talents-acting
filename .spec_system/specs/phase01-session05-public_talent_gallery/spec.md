@@ -10,9 +10,11 @@
 ## Overview
 
 ### Objective
+
 Create a polished, performant talent showcase for public visitors that combines filtering, search, and visual presentation into a seamless discovery experience. This is the culmination of Phase 01, bringing together all previous session work (filtering, media, search, profiles) into the primary user-facing feature.
 
 ### Success Criteria
+
 - [ ] Grid/list view toggle works with smooth transition
 - [ ] Infinite scroll loads more talents automatically
 - [ ] Talent cards show hover effects and quick actions
@@ -23,6 +25,7 @@ Create a polished, performant talent showcase for public visitors that combines 
 - [ ] All files ASCII-encoded with LF line endings
 
 ### Estimated Duration
+
 2-3 hours
 
 ---
@@ -30,6 +33,7 @@ Create a polished, performant talent showcase for public visitors that combines 
 ## Prerequisites
 
 ### Completed Dependencies
+
 - [x] Phase 00: Foundation (database, auth, UI primitives)
 - [x] Session 01: Advanced Filtering (FilterPanel, filter components)
 - [x] Session 02: Media Upload System (photos, image optimization)
@@ -37,6 +41,7 @@ Create a polished, performant talent showcase for public visitors that combines 
 - [x] Session 04: Profile Enhancement (ProfilePreview, completeness)
 
 ### Required Knowledge
+
 - Intersection Observer API for infinite scroll
 - Next.js Image optimization patterns
 - CSS Grid and Flexbox for layouts
@@ -64,6 +69,7 @@ app/talents/page.tsx (Enhanced)
 ### Key Components
 
 #### 1. ViewToggle Component
+
 **File**: `components/gallery/ViewToggle.tsx`
 
 Toggle between grid and list views with visual indicator.
@@ -76,6 +82,7 @@ interface ViewToggleProps {
 ```
 
 Features:
+
 - Two buttons with Grid2X2 and List icons (lucide-react)
 - Active state with primary color background
 - Smooth transition between states
@@ -83,11 +90,13 @@ Features:
 - URL param sync (`?view=grid|list`)
 
 #### 2. TalentCardEnhanced Component
+
 **File**: `components/gallery/TalentCardEnhanced.tsx`
 
 Enhanced version of TalentCard with hover effects and quick actions.
 
 Features:
+
 - Extends existing TalentCard functionality
 - Hover overlay with quick actions (appears on hover)
 - Quick view button (Eye icon)
@@ -105,11 +114,13 @@ interface TalentCardEnhancedProps {
 ```
 
 #### 3. TalentListItem Component
+
 **File**: `components/gallery/TalentListItem.tsx`
 
 Horizontal list view for talent display.
 
 Features:
+
 - Photo on left (120px width, aspect 3:4)
 - Info on right: name, location, skills, attributes
 - Availability badge inline
@@ -125,6 +136,7 @@ interface TalentListItemProps {
 ```
 
 #### 4. InfiniteScrollLoader Component
+
 **File**: `components/gallery/InfiniteScrollLoader.tsx`
 
 Intersection Observer-based infinite scroll trigger.
@@ -138,6 +150,7 @@ interface InfiniteScrollLoaderProps {
 ```
 
 Features:
+
 - Invisible sentinel element at bottom of list
 - Uses IntersectionObserver with rootMargin for preloading
 - Loading spinner when fetching
@@ -145,6 +158,7 @@ Features:
 - Debounced to prevent rapid-fire requests
 
 #### 5. QuickViewModal Component
+
 **File**: `components/gallery/QuickViewModal.tsx`
 
 Modal preview of talent without full page navigation.
@@ -158,6 +172,7 @@ interface QuickViewModalProps {
 ```
 
 Features:
+
 - Uses existing Modal primitive (size: 'lg')
 - Photo carousel if multiple photos
 - Key info: name, age range, location, physique
@@ -167,6 +182,7 @@ Features:
 - Mobile: fullscreen modal
 
 #### 6. TalentGallery Container
+
 **File**: `components/gallery/TalentGallery.tsx`
 
 Main gallery component orchestrating view mode and infinite scroll.
@@ -181,6 +197,7 @@ interface TalentGalleryProps {
 ```
 
 Features:
+
 - Client component ("use client")
 - State: talents array, page, hasMore, isLoading, view mode
 - Handles infinite scroll data fetching
@@ -197,7 +214,7 @@ export async function loadMoreTalents(
   page: number,
   filters: TalentFilterParams,
   searchQuery?: string
-): Promise<{ talents: PublicTalentProfile[]; hasMore: boolean }>
+): Promise<{ talents: PublicTalentProfile[]; hasMore: boolean }>;
 ```
 
 ### Page Updates
@@ -205,6 +222,7 @@ export async function loadMoreTalents(
 **File**: `app/talents/page.tsx` (modify)
 
 Changes:
+
 - Remove existing pagination (Previous/Next buttons)
 - Add ViewToggle above grid
 - Replace TalentCard grid with TalentGallery
@@ -213,12 +231,12 @@ Changes:
 
 ### URL Parameters
 
-| Param | Values | Default | Description |
-|-------|--------|---------|-------------|
-| `view` | `grid`, `list` | `grid` | Gallery view mode |
-| `q` | string | - | Search query (existing) |
-| `page` | number | 1 | For initial load only |
-| All filters | - | - | Existing filter params |
+| Param       | Values         | Default | Description             |
+| ----------- | -------------- | ------- | ----------------------- |
+| `view`      | `grid`, `list` | `grid`  | Gallery view mode       |
+| `q`         | string         | -       | Search query (existing) |
+| `page`      | number         | 1       | For initial load only   |
+| All filters | -              | -       | Existing filter params  |
 
 ---
 
@@ -226,22 +244,22 @@ Changes:
 
 ### Files to Create
 
-| File | Purpose | Est. Lines |
-|------|---------|------------|
-| `components/gallery/ViewToggle.tsx` | View mode toggle | ~60 |
-| `components/gallery/TalentCardEnhanced.tsx` | Enhanced card with actions | ~120 |
-| `components/gallery/TalentListItem.tsx` | Horizontal list view item | ~100 |
-| `components/gallery/InfiniteScrollLoader.tsx` | Infinite scroll trigger | ~80 |
-| `components/gallery/QuickViewModal.tsx` | Talent preview modal | ~200 |
-| `components/gallery/TalentGallery.tsx` | Main gallery container | ~180 |
-| `components/gallery/index.ts` | Barrel exports | ~10 |
+| File                                          | Purpose                    | Est. Lines |
+| --------------------------------------------- | -------------------------- | ---------- |
+| `components/gallery/ViewToggle.tsx`           | View mode toggle           | ~60        |
+| `components/gallery/TalentCardEnhanced.tsx`   | Enhanced card with actions | ~120       |
+| `components/gallery/TalentListItem.tsx`       | Horizontal list view item  | ~100       |
+| `components/gallery/InfiniteScrollLoader.tsx` | Infinite scroll trigger    | ~80        |
+| `components/gallery/QuickViewModal.tsx`       | Talent preview modal       | ~200       |
+| `components/gallery/TalentGallery.tsx`        | Main gallery container     | ~180       |
+| `components/gallery/index.ts`                 | Barrel exports             | ~10        |
 
 ### Files to Modify
 
-| File | Changes |
-|------|---------|
-| `lib/talents/actions.ts` | Add `loadMoreTalents` server action |
-| `app/talents/page.tsx` | Replace pagination with TalentGallery |
+| File                     | Changes                               |
+| ------------------------ | ------------------------------------- |
+| `lib/talents/actions.ts` | Add `loadMoreTalents` server action   |
+| `app/talents/page.tsx`   | Replace pagination with TalentGallery |
 
 ---
 
@@ -341,18 +359,19 @@ Changes:
 
 ## Risks and Mitigations
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Large galleries cause slow scroll | High | Virtualization (future), limit initial load |
-| CLS from image loading | Medium | Fixed aspect ratios, skeleton loaders |
-| SEO impact from infinite scroll | Medium | Keep initial SSR data, meta tags |
-| Mobile performance | Medium | Smaller batches, lazy loading |
+| Risk                              | Impact | Mitigation                                  |
+| --------------------------------- | ------ | ------------------------------------------- |
+| Large galleries cause slow scroll | High   | Virtualization (future), limit initial load |
+| CLS from image loading            | Medium | Fixed aspect ratios, skeleton loaders       |
+| SEO impact from infinite scroll   | Medium | Keep initial SSR data, meta tags            |
+| Mobile performance                | Medium | Smaller batches, lazy loading               |
 
 ---
 
 ## Out of Scope
 
 Items explicitly NOT in this session:
+
 - Favorites/bookmarking functionality
 - Talent comparison view
 - Share functionality (social sharing)
@@ -365,12 +384,15 @@ Items explicitly NOT in this session:
 ## Dependencies
 
 ### External Packages
+
 None required - uses existing dependencies:
+
 - `lucide-react` for icons
 - `next/image` for optimized images
 - `clsx` + `tailwind-merge` for class merging
 
 ### Internal Dependencies
+
 - `components/ui/Modal` - for QuickViewModal
 - `components/ui/Button` - for actions
 - `components/ui/Loading` - for loading states
@@ -382,6 +404,7 @@ None required - uses existing dependencies:
 ## Session Completion
 
 This session completes Phase 01: Talent Management. Upon validation:
+
 1. All 5 sessions of Phase 01 will be complete
 2. The platform will have a fully functional public talent discovery experience
 3. Ready to begin Phase 02: Registration & Payments

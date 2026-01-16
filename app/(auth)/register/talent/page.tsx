@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Card, CardHeader, CardBody, Button, Input, Select } from "@/components/ui";
-import { registerTalent } from "@/lib/auth/actions";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Card, CardHeader, CardBody, Button, Input, Select } from '@/components/ui';
+import { registerTalent } from '@/lib/auth/actions';
 
 const genderOptions = [
-  { value: "MALE", label: "Male" },
-  { value: "FEMALE", label: "Female" },
-  { value: "NON_BINARY", label: "Non-Binary" },
-  { value: "OTHER", label: "Other" },
+  { value: 'MALE', label: 'Male' },
+  { value: 'FEMALE', label: 'Female' },
+  { value: 'NON_BINARY', label: 'Non-Binary' },
+  { value: 'OTHER', label: 'Other' },
 ];
 
 export default function TalentRegistrationPage() {
@@ -26,12 +26,12 @@ export default function TalentRegistrationPage() {
       const result = await registerTalent(formData);
 
       if (result.success) {
-        router.push("/login?registered=true");
+        router.push('/login?registered=true');
       } else {
-        setError(result.error || "Registration failed");
+        setError(result.error || 'Registration failed');
       }
     } catch {
-      setError("An unexpected error occurred");
+      setError('An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -52,34 +52,13 @@ export default function TalentRegistrationPage() {
           )}
 
           <div className="grid grid-cols-2 gap-4">
-            <Input
-              label="First Name"
-              name="firstName"
-              required
-              placeholder="John"
-            />
-            <Input
-              label="Last Name"
-              name="lastName"
-              required
-              placeholder="Doe"
-            />
+            <Input label="First Name" name="firstName" required placeholder="John" />
+            <Input label="Last Name" name="lastName" required placeholder="Doe" />
           </div>
 
-          <Input
-            label="Email"
-            name="email"
-            type="email"
-            required
-            placeholder="john@example.com"
-          />
+          <Input label="Email" name="email" type="email" required placeholder="john@example.com" />
 
-          <Select
-            label="Gender"
-            name="gender"
-            required
-            options={genderOptions}
-          />
+          <Select label="Gender" name="gender" required options={genderOptions} />
 
           <div className="grid grid-cols-2 gap-4">
             <Input
@@ -119,11 +98,7 @@ export default function TalentRegistrationPage() {
             placeholder="Confirm your password"
           />
 
-          <Button
-            type="submit"
-            className="w-full"
-            isLoading={isLoading}
-          >
+          <Button type="submit" className="w-full" isLoading={isLoading}>
             Create Talent Account
           </Button>
         </form>

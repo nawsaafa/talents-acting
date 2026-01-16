@@ -24,6 +24,7 @@ Enable talents to upload and manage photos and videos for their profiles, creati
 ## Key Deliverables
 
 ### Photo Management
+
 - Photo upload with drag-and-drop support
 - Gallery management (max 10 photos per talent)
 - Primary/profile photo selection
@@ -32,6 +33,7 @@ Enable talents to upload and manage photos and videos for their profiles, creati
 - Upload progress indicators
 
 ### Image Processing
+
 - Server-side image optimization
 - Automatic resizing (thumbnail, medium, large)
 - Format conversion (WebP for modern browsers)
@@ -39,6 +41,7 @@ Enable talents to upload and manage photos and videos for their profiles, creati
 - EXIF data stripping for privacy
 
 ### Video/Showreel Support
+
 - Video URL embedding (YouTube, Vimeo)
 - URL validation and sanitization
 - Video thumbnail extraction
@@ -46,6 +49,7 @@ Enable talents to upload and manage photos and videos for their profiles, creati
 - Embed preview on profile
 
 ### Storage & API
+
 - Upload API with chunked uploads for large files
 - Cloud storage integration
 - CDN delivery for optimized loading
@@ -72,12 +76,14 @@ app/dashboard/profile/media/
 ```
 
 ### Technologies
+
 - **Sharp**: Image processing (resize, optimize, format conversion)
 - **React Dropzone**: Drag-and-drop file upload
 - **Cloudinary or S3**: Cloud storage (decision needed)
 - **react-beautiful-dnd**: Sortable photo grid
 
 ### Design Patterns
+
 - Optimistic UI updates for upload progress
 - Background processing for image optimization
 - Signed URLs for secure access
@@ -88,6 +94,7 @@ app/dashboard/profile/media/
 ## Scope
 
 ### In Scope (MVP)
+
 - Photo upload (JPEG, PNG, WebP)
 - Gallery management (reorder, delete, set primary)
 - Image optimization and resizing
@@ -96,6 +103,7 @@ app/dashboard/profile/media/
 - Basic validation (size, format, count limits)
 
 ### Out of Scope (Deferred)
+
 - Video file upload (use external hosting for now)
 - AI-powered image tagging
 - Face detection/cropping
@@ -120,7 +128,9 @@ app/dashboard/profile/media/
 ## Technical Considerations
 
 ### Storage Options
+
 Need to decide between:
+
 1. **Cloudinary**: Built-in transformations, easy setup, per-bandwidth pricing
 2. **AWS S3 + CloudFront**: More control, potentially cheaper at scale
 3. **Local filesystem**: Development only, not for production
@@ -128,12 +138,15 @@ Need to decide between:
 Recommendation: Start with Cloudinary for MVP (easier), migrate to S3 if costs become prohibitive.
 
 ### Image Size Variants
+
 Generate these sizes on upload:
+
 - Thumbnail: 150x150 (cropped square)
 - Card: 400x600 (portrait crop)
 - Full: 1200x1800 (max resolution)
 
 ### Security
+
 - Validate file types server-side (not just extension)
 - Check file headers (magic bytes)
 - Limit upload size (5MB per photo)
@@ -141,6 +154,7 @@ Generate these sizes on upload:
 - EXIF stripping for privacy
 
 ### Relevant Considerations
+
 - [P00] **Video hosting**: Use embed URLs for now, avoid hosting video files directly
 - [P00] **Image/video upload security**: Validate on server, strip EXIF, sanitize filenames
 
@@ -149,10 +163,12 @@ Generate these sizes on upload:
 ## Dependencies
 
 ### Depends On
+
 - Phase 00: Database, Auth, UI primitives
 - Session 01: Talent listing (for displaying photos)
 
 ### Enables
+
 - Session 05: Public Talent Gallery (uses media)
 - Phase 02+: Rich profile display
 

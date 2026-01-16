@@ -1,26 +1,22 @@
-import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth/auth";
-import { isAdmin } from "@/lib/auth/utils";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { getDashboardStats } from "@/lib/admin/queries";
+import { redirect } from 'next/navigation';
+import { auth } from '@/lib/auth/auth';
+import { isAdmin } from '@/lib/auth/utils';
+import { AdminSidebar } from '@/components/admin/AdminSidebar';
+import { getDashboardStats } from '@/lib/admin/queries';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
-export default async function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
 
   // Redirect if not authenticated
   if (!session?.user) {
-    redirect("/auth/signin?callbackUrl=/admin");
+    redirect('/auth/signin?callbackUrl=/admin');
   }
 
   // Redirect if not admin
   if (!isAdmin(session.user.role)) {
-    redirect("/");
+    redirect('/');
   }
 
   // Get pending counts for sidebar badges

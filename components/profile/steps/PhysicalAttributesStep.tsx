@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   useWizardContext,
@@ -8,52 +8,52 @@ import {
   SelectInput,
   CheckboxInput,
   TextareaInput,
-} from "../WizardStep";
-import type { TalentProfile } from "@prisma/client";
+} from '../WizardStep';
+import type { TalentProfile } from '@prisma/client';
 
 // Options matching Prisma enums
 const PHYSIQUE_OPTIONS = [
-  { value: "SLIM", label: "Slim" },
-  { value: "AVERAGE", label: "Average" },
-  { value: "ATHLETIC", label: "Athletic" },
-  { value: "MUSCULAR", label: "Muscular" },
-  { value: "CURVY", label: "Curvy" },
-  { value: "PLUS_SIZE", label: "Plus Size" },
+  { value: 'SLIM', label: 'Slim' },
+  { value: 'AVERAGE', label: 'Average' },
+  { value: 'ATHLETIC', label: 'Athletic' },
+  { value: 'MUSCULAR', label: 'Muscular' },
+  { value: 'CURVY', label: 'Curvy' },
+  { value: 'PLUS_SIZE', label: 'Plus Size' },
 ];
 
 const HAIR_COLOR_OPTIONS = [
-  { value: "BLACK", label: "Black" },
-  { value: "BROWN", label: "Brown" },
-  { value: "BLONDE", label: "Blonde" },
-  { value: "RED", label: "Red" },
-  { value: "GRAY", label: "Gray" },
-  { value: "WHITE", label: "White" },
-  { value: "OTHER", label: "Other" },
+  { value: 'BLACK', label: 'Black' },
+  { value: 'BROWN', label: 'Brown' },
+  { value: 'BLONDE', label: 'Blonde' },
+  { value: 'RED', label: 'Red' },
+  { value: 'GRAY', label: 'Gray' },
+  { value: 'WHITE', label: 'White' },
+  { value: 'OTHER', label: 'Other' },
 ];
 
 const EYE_COLOR_OPTIONS = [
-  { value: "BROWN", label: "Brown" },
-  { value: "BLUE", label: "Blue" },
-  { value: "GREEN", label: "Green" },
-  { value: "HAZEL", label: "Hazel" },
-  { value: "GRAY", label: "Gray" },
-  { value: "OTHER", label: "Other" },
+  { value: 'BROWN', label: 'Brown' },
+  { value: 'BLUE', label: 'Blue' },
+  { value: 'GREEN', label: 'Green' },
+  { value: 'HAZEL', label: 'Hazel' },
+  { value: 'GRAY', label: 'Gray' },
+  { value: 'OTHER', label: 'Other' },
 ];
 
 const HAIR_LENGTH_OPTIONS = [
-  { value: "BALD", label: "Bald" },
-  { value: "SHORT", label: "Short" },
-  { value: "MEDIUM", label: "Medium" },
-  { value: "LONG", label: "Long" },
+  { value: 'BALD', label: 'Bald' },
+  { value: 'SHORT', label: 'Short' },
+  { value: 'MEDIUM', label: 'Medium' },
+  { value: 'LONG', label: 'Long' },
 ];
 
 const BEARD_TYPE_OPTIONS = [
-  { value: "NONE", label: "None" },
-  { value: "STUBBLE", label: "Stubble" },
-  { value: "SHORT", label: "Short" },
-  { value: "MEDIUM", label: "Medium" },
-  { value: "LONG", label: "Long" },
-  { value: "FULL", label: "Full" },
+  { value: 'NONE', label: 'None' },
+  { value: 'STUBBLE', label: 'Stubble' },
+  { value: 'SHORT', label: 'Short' },
+  { value: 'MEDIUM', label: 'Medium' },
+  { value: 'LONG', label: 'Long' },
+  { value: 'FULL', label: 'Full' },
 ];
 
 export function PhysicalAttributesStep() {
@@ -67,7 +67,7 @@ export function PhysicalAttributesStep() {
           <NumberInput
             name="height"
             value={formData.height}
-            onChange={(v) => updateField("height" as keyof TalentProfile, v)}
+            onChange={(v) => updateField('height' as keyof TalentProfile, v)}
             placeholder="e.g., 175"
             min={50}
             max={300}
@@ -79,7 +79,7 @@ export function PhysicalAttributesStep() {
           <SelectInput
             name="physique"
             value={formData.physique}
-            onChange={(v) => updateField("physique" as keyof TalentProfile, v)}
+            onChange={(v) => updateField('physique' as keyof TalentProfile, v)}
             options={PHYSIQUE_OPTIONS}
             placeholder="Select physique"
             disabled={isSubmitting}
@@ -88,15 +88,11 @@ export function PhysicalAttributesStep() {
       </div>
 
       {/* Ethnic Appearance */}
-      <FormField
-        label="Ethnic Appearance"
-        name="ethnicAppearance"
-        error={errors.ethnicAppearance}
-      >
+      <FormField label="Ethnic Appearance" name="ethnicAppearance" error={errors.ethnicAppearance}>
         <TextInput
           name="ethnicAppearance"
           value={formData.ethnicAppearance}
-          onChange={(v) => updateField("ethnicAppearance" as keyof TalentProfile, v)}
+          onChange={(v) => updateField('ethnicAppearance' as keyof TalentProfile, v)}
           placeholder="e.g., Middle Eastern, Mediterranean, East Asian"
           disabled={isSubmitting}
           maxLength={100}
@@ -112,7 +108,7 @@ export function PhysicalAttributesStep() {
           <SelectInput
             name="hairColor"
             value={formData.hairColor}
-            onChange={(v) => updateField("hairColor" as keyof TalentProfile, v)}
+            onChange={(v) => updateField('hairColor' as keyof TalentProfile, v)}
             options={HAIR_COLOR_OPTIONS}
             placeholder="Select"
             disabled={isSubmitting}
@@ -123,7 +119,7 @@ export function PhysicalAttributesStep() {
           <SelectInput
             name="hairLength"
             value={formData.hairLength}
-            onChange={(v) => updateField("hairLength" as keyof TalentProfile, v)}
+            onChange={(v) => updateField('hairLength' as keyof TalentProfile, v)}
             options={HAIR_LENGTH_OPTIONS}
             placeholder="Select"
             disabled={isSubmitting}
@@ -134,7 +130,7 @@ export function PhysicalAttributesStep() {
           <SelectInput
             name="eyeColor"
             value={formData.eyeColor}
-            onChange={(v) => updateField("eyeColor" as keyof TalentProfile, v)}
+            onChange={(v) => updateField('eyeColor' as keyof TalentProfile, v)}
             options={EYE_COLOR_OPTIONS}
             placeholder="Select"
             disabled={isSubmitting}
@@ -147,7 +143,7 @@ export function PhysicalAttributesStep() {
         <SelectInput
           name="beardType"
           value={formData.beardType}
-          onChange={(v) => updateField("beardType" as keyof TalentProfile, v)}
+          onChange={(v) => updateField('beardType' as keyof TalentProfile, v)}
           options={BEARD_TYPE_OPTIONS}
           placeholder="Select beard type"
           disabled={isSubmitting}
@@ -163,7 +159,7 @@ export function PhysicalAttributesStep() {
             <CheckboxInput
               name="hasTattoos"
               checked={formData.hasTattoos ?? false}
-              onChange={(v) => updateField("hasTattoos" as keyof TalentProfile, v)}
+              onChange={(v) => updateField('hasTattoos' as keyof TalentProfile, v)}
               label="I have visible tattoos"
               disabled={isSubmitting}
             />
@@ -177,7 +173,7 @@ export function PhysicalAttributesStep() {
                   <TextareaInput
                     name="tattooDescription"
                     value={formData.tattooDescription}
-                    onChange={(v) => updateField("tattooDescription" as keyof TalentProfile, v)}
+                    onChange={(v) => updateField('tattooDescription' as keyof TalentProfile, v)}
                     placeholder="Describe your tattoos (location, size, type)"
                     rows={2}
                     maxLength={500}
@@ -192,7 +188,7 @@ export function PhysicalAttributesStep() {
             <CheckboxInput
               name="hasScars"
               checked={formData.hasScars ?? false}
-              onChange={(v) => updateField("hasScars" as keyof TalentProfile, v)}
+              onChange={(v) => updateField('hasScars' as keyof TalentProfile, v)}
               label="I have visible scars"
               disabled={isSubmitting}
             />
@@ -206,7 +202,7 @@ export function PhysicalAttributesStep() {
                   <TextareaInput
                     name="scarDescription"
                     value={formData.scarDescription}
-                    onChange={(v) => updateField("scarDescription" as keyof TalentProfile, v)}
+                    onChange={(v) => updateField('scarDescription' as keyof TalentProfile, v)}
                     placeholder="Describe your scars (location, size)"
                     rows={2}
                     maxLength={500}

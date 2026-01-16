@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import Image from "next/image";
-import { Star, Trash2, Loader2 } from "lucide-react";
-import { deletePhoto, setPrimaryPhoto } from "@/lib/media/upload";
+import { useState, useTransition } from 'react';
+import Image from 'next/image';
+import { Star, Trash2, Loader2 } from 'lucide-react';
+import { deletePhoto, setPrimaryPhoto } from '@/lib/media/upload';
 
 interface PhotoCardProps {
   photoUrl: string;
@@ -12,12 +12,7 @@ interface PhotoCardProps {
   onPrimarySet?: () => void;
 }
 
-export function PhotoCard({
-  photoUrl,
-  isPrimary,
-  onDeleted,
-  onPrimarySet,
-}: PhotoCardProps) {
+export function PhotoCard({ photoUrl, isPrimary, onDeleted, onPrimarySet }: PhotoCardProps) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -30,7 +25,7 @@ export function PhotoCard({
         setShowConfirm(false);
         onDeleted?.();
       } else {
-        setError(result.error || "Failed to delete");
+        setError(result.error || 'Failed to delete');
       }
     });
   }
@@ -43,7 +38,7 @@ export function PhotoCard({
       if (result.success) {
         onPrimarySet?.();
       } else {
-        setError(result.error || "Failed to set as primary");
+        setError(result.error || 'Failed to set as primary');
       }
     });
   }
@@ -102,9 +97,7 @@ export function PhotoCard({
       {/* Delete confirmation modal */}
       {showConfirm && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 p-4">
-          <p className="mb-4 text-center text-sm text-white">
-            Delete this photo?
-          </p>
+          <p className="mb-4 text-center text-sm text-white">Delete this photo?</p>
           <div className="flex gap-2">
             <button
               onClick={() => setShowConfirm(false)}

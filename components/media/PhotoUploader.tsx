@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useRef, useTransition } from "react";
-import { Upload, Loader2, AlertCircle, ImagePlus } from "lucide-react";
-import { validateFile, MAX_FILE_SIZE, MAX_PHOTOS } from "@/lib/media/validation";
-import { uploadPhoto } from "@/lib/media/upload";
+import { useState, useRef, useTransition } from 'react';
+import { Upload, Loader2, AlertCircle, ImagePlus } from 'lucide-react';
+import { validateFile, MAX_FILE_SIZE, MAX_PHOTOS } from '@/lib/media/validation';
+import { uploadPhoto } from '@/lib/media/upload';
 
 interface PhotoUploaderProps {
   currentCount: number;
@@ -44,7 +44,7 @@ export function PhotoUploader({ currentCount, onUploaded }: PhotoUploaderProps) 
     // Validate file
     const validation = validateFile(file);
     if (!validation.success) {
-      setError(validation.error || "Invalid file");
+      setError(validation.error || 'Invalid file');
       return false;
     }
 
@@ -53,7 +53,7 @@ export function PhotoUploader({ currentCount, onUploaded }: PhotoUploaderProps) 
 
     // Create form data
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
 
     // Simulate progress (actual upload progress would need XHR)
     const progressInterval = setInterval(() => {
@@ -77,14 +77,14 @@ export function PhotoUploader({ currentCount, onUploaded }: PhotoUploaderProps) 
         }, 500);
         return true;
       } else {
-        setError(result.error || "Upload failed");
+        setError(result.error || 'Upload failed');
         setUploadProgress(null);
         setProcessingFile(null);
         return false;
       }
     } catch {
       clearInterval(progressInterval);
-      setError("Upload failed. Please try again.");
+      setError('Upload failed. Please try again.');
       setUploadProgress(null);
       setProcessingFile(null);
       return false;
@@ -98,9 +98,7 @@ export function PhotoUploader({ currentCount, onUploaded }: PhotoUploaderProps) 
     const filesToProcess = fileArray.slice(0, remainingSlots);
 
     if (fileArray.length > remainingSlots) {
-      setError(
-        `Only ${remainingSlots} more photo${remainingSlots === 1 ? "" : "s"} can be added`
-      );
+      setError(`Only ${remainingSlots} more photo${remainingSlots === 1 ? '' : 's'} can be added`);
     }
 
     // Process files sequentially
@@ -130,7 +128,7 @@ export function PhotoUploader({ currentCount, onUploaded }: PhotoUploaderProps) 
       handleFiles(files);
     }
     // Reset input so same file can be selected again
-    e.target.value = "";
+    e.target.value = '';
   }
 
   function handleClick() {
@@ -150,10 +148,10 @@ export function PhotoUploader({ currentCount, onUploaded }: PhotoUploaderProps) 
         onDrop={handleDrop}
         className={`relative flex min-h-[200px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors ${
           isAtLimit
-            ? "cursor-not-allowed border-gray-200 bg-gray-50"
+            ? 'cursor-not-allowed border-gray-200 bg-gray-50'
             : isDragging
-              ? "border-blue-500 bg-blue-50"
-              : "border-gray-300 bg-white hover:border-blue-400 hover:bg-gray-50"
+              ? 'border-blue-500 bg-blue-50'
+              : 'border-gray-300 bg-white hover:border-blue-400 hover:bg-gray-50'
         }`}
       >
         {/* Hidden file input */}
@@ -171,9 +169,7 @@ export function PhotoUploader({ currentCount, onUploaded }: PhotoUploaderProps) 
         {isPending && processingFile ? (
           <div className="flex flex-col items-center text-center">
             <Loader2 className="h-10 w-10 animate-spin text-blue-500" />
-            <p className="mt-3 text-sm font-medium text-gray-900">
-              Uploading {processingFile}...
-            </p>
+            <p className="mt-3 text-sm font-medium text-gray-900">Uploading {processingFile}...</p>
             {uploadProgress !== null && (
               <div className="mt-3 h-2 w-48 overflow-hidden rounded-full bg-gray-200">
                 <div
@@ -187,18 +183,14 @@ export function PhotoUploader({ currentCount, onUploaded }: PhotoUploaderProps) 
           <div className="flex flex-col items-center text-center text-gray-400">
             <AlertCircle className="h-10 w-10" />
             <p className="mt-3 text-sm font-medium">Maximum photos reached</p>
-            <p className="mt-1 text-xs">
-              Delete a photo to upload a new one
-            </p>
+            <p className="mt-1 text-xs">Delete a photo to upload a new one</p>
           </div>
         ) : (
           <div className="flex flex-col items-center text-center">
             {isDragging ? (
               <>
                 <ImagePlus className="h-10 w-10 text-blue-500" />
-                <p className="mt-3 text-sm font-medium text-blue-600">
-                  Drop photos here
-                </p>
+                <p className="mt-3 text-sm font-medium text-blue-600">Drop photos here</p>
               </>
             ) : (
               <>

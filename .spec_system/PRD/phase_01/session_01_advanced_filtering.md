@@ -27,6 +27,7 @@ Implement comprehensive multi-criteria filtering for the talent database, enabli
 ### 1. Filter Component Architecture
 
 Create a reusable, collapsible filter panel:
+
 - `FilterPanel` - Main container with collapsible sections
 - `FilterSection` - Individual category (Gender, Age, Skills, etc.)
 - `FilterCheckbox` - Multi-select filter option
@@ -38,11 +39,13 @@ Create a reusable, collapsible filter panel:
 Implement filters for all major attribute groups:
 
 **Basic Filters**:
+
 - Gender (single select)
 - Age range (dual slider: 0-100)
 - Name search (text input)
 
 **Physical Attributes**:
+
 - Height range (cm)
 - Physique (slim, average, athletic, etc.)
 - Ethnic appearance
@@ -51,6 +54,7 @@ Implement filters for all major attribute groups:
 - Hair length
 
 **Skills & Languages**:
+
 - Languages spoken (multi-select with search)
 - Accents (multi-select)
 - Dance styles (multi-select)
@@ -59,6 +63,7 @@ Implement filters for all major attribute groups:
 - Performance skills (multi-select)
 
 **Professional**:
+
 - Validation status (for admins only)
 - Has showreel (boolean)
 - Has book (boolean)
@@ -92,8 +97,8 @@ Build dynamic Prisma queries based on filter params:
 // lib/talents/filters.ts
 export function buildTalentFilterQuery(params: TalentFilterParams) {
   const where: Prisma.TalentProfileWhereInput = {
-    validationStatus: "APPROVED",
-    user: { isActive: true }
+    validationStatus: 'APPROVED',
+    user: { isActive: true },
   };
 
   if (params.gender) where.gender = params.gender;
@@ -139,6 +144,7 @@ export function useFilters() {
 ## Scope
 
 ### In Scope (MVP)
+
 - All basic and physical attribute filters
 - Skills and languages filters
 - URL-based filter state
@@ -146,6 +152,7 @@ export function useFilters() {
 - Mobile-responsive filter panel
 
 ### Out of Scope (Future)
+
 - Saved filter presets
 - Filter analytics/tracking
 - AI-powered filter suggestions
@@ -169,6 +176,7 @@ export function useFilters() {
 ## Files to Create/Modify
 
 ### New Files
+
 - `components/talents/FilterPanel.tsx`
 - `components/talents/FilterSection.tsx`
 - `components/talents/filters/GenderFilter.tsx`
@@ -180,6 +188,7 @@ export function useFilters() {
 - `hooks/useFilters.ts` - URL state hook
 
 ### Modify
+
 - `app/talents/page.tsx` - Integrate filter panel
 - `lib/talents/queries.ts` - Add filter support to queries
 

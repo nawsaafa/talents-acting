@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth/utils";
-import { ValidationStatus } from "@prisma/client";
+import { revalidatePath } from 'next/cache';
+import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/auth/utils';
+import { ValidationStatus } from '@prisma/client';
 import {
   approveProfileSchema,
   rejectProfileSchema,
@@ -11,7 +11,7 @@ import {
   type ApproveProfileInput,
   type RejectProfileInput,
   type ToggleUserStatusInput,
-} from "./validation";
+} from './validation';
 
 type ActionResult = {
   success: boolean;
@@ -19,9 +19,7 @@ type ActionResult = {
 };
 
 // Approve a profile (talent, professional, or company)
-export async function approveProfile(
-  input: ApproveProfileInput
-): Promise<ActionResult> {
+export async function approveProfile(input: ApproveProfileInput): Promise<ActionResult> {
   const admin = await requireAdmin();
 
   const parsed = approveProfileSchema.safeParse(input);
@@ -40,7 +38,7 @@ export async function approveProfile(
     };
 
     switch (profileType) {
-      case "talent":
+      case 'talent':
         await prisma.talentProfile.update({
           where: { id: profileId },
           data: {
@@ -49,13 +47,13 @@ export async function approveProfile(
           },
         });
         break;
-      case "professional":
+      case 'professional':
         await prisma.professionalProfile.update({
           where: { id: profileId },
           data: updateData,
         });
         break;
-      case "company":
+      case 'company':
         await prisma.companyProfile.update({
           where: { id: profileId },
           data: {
@@ -66,23 +64,21 @@ export async function approveProfile(
         break;
     }
 
-    revalidatePath("/admin");
-    revalidatePath("/admin/talents");
-    revalidatePath("/admin/professionals");
-    revalidatePath("/admin/companies");
-    revalidatePath("/talents");
+    revalidatePath('/admin');
+    revalidatePath('/admin/talents');
+    revalidatePath('/admin/professionals');
+    revalidatePath('/admin/companies');
+    revalidatePath('/talents');
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to approve profile:", error);
-    return { success: false, error: "Failed to approve profile. Please try again." };
+    console.error('Failed to approve profile:', error);
+    return { success: false, error: 'Failed to approve profile. Please try again.' };
   }
 }
 
 // Reject a profile with reason
-export async function rejectProfile(
-  input: RejectProfileInput
-): Promise<ActionResult> {
+export async function rejectProfile(input: RejectProfileInput): Promise<ActionResult> {
   const admin = await requireAdmin();
 
   const parsed = rejectProfileSchema.safeParse(input);
@@ -101,7 +97,7 @@ export async function rejectProfile(
     };
 
     switch (profileType) {
-      case "talent":
+      case 'talent':
         await prisma.talentProfile.update({
           where: { id: profileId },
           data: {
@@ -110,13 +106,13 @@ export async function rejectProfile(
           },
         });
         break;
-      case "professional":
+      case 'professional':
         await prisma.professionalProfile.update({
           where: { id: profileId },
           data: updateData,
         });
         break;
-      case "company":
+      case 'company':
         await prisma.companyProfile.update({
           where: { id: profileId },
           data: {
@@ -127,22 +123,20 @@ export async function rejectProfile(
         break;
     }
 
-    revalidatePath("/admin");
-    revalidatePath("/admin/talents");
-    revalidatePath("/admin/professionals");
-    revalidatePath("/admin/companies");
+    revalidatePath('/admin');
+    revalidatePath('/admin/talents');
+    revalidatePath('/admin/professionals');
+    revalidatePath('/admin/companies');
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to reject profile:", error);
-    return { success: false, error: "Failed to reject profile. Please try again." };
+    console.error('Failed to reject profile:', error);
+    return { success: false, error: 'Failed to reject profile. Please try again.' };
   }
 }
 
 // Toggle user active status
-export async function toggleUserStatus(
-  input: ToggleUserStatusInput
-): Promise<ActionResult> {
+export async function toggleUserStatus(input: ToggleUserStatusInput): Promise<ActionResult> {
   const admin = await requireAdmin();
 
   const parsed = toggleUserStatusSchema.safeParse(input);
@@ -154,7 +148,7 @@ export async function toggleUserStatus(
 
   // Prevent admin from deactivating themselves
   if (userId === admin.id && !isActive) {
-    return { success: false, error: "You cannot deactivate your own account" };
+    return { success: false, error: 'You cannot deactivate your own account' };
   }
 
   try {
@@ -163,19 +157,19 @@ export async function toggleUserStatus(
       data: { isActive },
     });
 
-    revalidatePath("/admin/users");
+    revalidatePath('/admin/users');
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to toggle user status:", error);
-    return { success: false, error: "Failed to update user status. Please try again." };
+    console.error('Failed to toggle user status:', error);
+    return { success: false, error: 'Failed to update user status. Please try again.' };
   }
 }
 
 // Suspend a profile (different from reject - can be reactivated)
 export async function suspendProfile(
   profileId: string,
-  profileType: "talent" | "professional" | "company"
+  profileType: 'talent' | 'professional' | 'company'
 ): Promise<ActionResult> {
   await requireAdmin();
 
@@ -185,7 +179,7 @@ export async function suspendProfile(
     };
 
     switch (profileType) {
-      case "talent":
+      case 'talent':
         await prisma.talentProfile.update({
           where: { id: profileId },
           data: {
@@ -194,13 +188,13 @@ export async function suspendProfile(
           },
         });
         break;
-      case "professional":
+      case 'professional':
         await prisma.professionalProfile.update({
           where: { id: profileId },
           data: updateData,
         });
         break;
-      case "company":
+      case 'company':
         await prisma.companyProfile.update({
           where: { id: profileId },
           data: updateData,
@@ -208,15 +202,15 @@ export async function suspendProfile(
         break;
     }
 
-    revalidatePath("/admin");
-    revalidatePath("/admin/talents");
-    revalidatePath("/admin/professionals");
-    revalidatePath("/admin/companies");
-    revalidatePath("/talents");
+    revalidatePath('/admin');
+    revalidatePath('/admin/talents');
+    revalidatePath('/admin/professionals');
+    revalidatePath('/admin/companies');
+    revalidatePath('/talents');
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to suspend profile:", error);
-    return { success: false, error: "Failed to suspend profile. Please try again." };
+    console.error('Failed to suspend profile:', error);
+    return { success: false, error: 'Failed to suspend profile. Please try again.' };
   }
 }

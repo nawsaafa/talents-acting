@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useCallback } from "react";
-import { Loading } from "@/components/ui";
+import { useEffect, useRef, useCallback } from 'react';
+import { Loading } from '@/components/ui';
 
 interface InfiniteScrollLoaderProps {
   onLoadMore: () => void;
@@ -14,7 +14,7 @@ export function InfiniteScrollLoader({
   onLoadMore,
   hasMore,
   isLoading,
-  rootMargin = "200px",
+  rootMargin = '200px',
 }: InfiniteScrollLoaderProps) {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const loadMoreRef = useRef(onLoadMore);
@@ -63,9 +63,7 @@ export function InfiniteScrollLoader({
           <span>Loading more...</span>
         </div>
       )}
-      {!hasMore && !isLoading && (
-        <p className="text-gray-500 text-sm">No more talents to show</p>
-      )}
+      {!hasMore && !isLoading && <p className="text-gray-500 text-sm">No more talents to show</p>}
     </div>
   );
 }

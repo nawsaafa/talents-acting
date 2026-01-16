@@ -1,64 +1,44 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 // Enum schemas matching Prisma enums
-export const GenderSchema = z.enum(["MALE", "FEMALE", "NON_BINARY", "OTHER"]);
+export const GenderSchema = z.enum(['MALE', 'FEMALE', 'NON_BINARY', 'OTHER']);
 export const PhysiqueSchema = z.enum([
-  "SLIM",
-  "AVERAGE",
-  "ATHLETIC",
-  "MUSCULAR",
-  "CURVY",
-  "PLUS_SIZE",
+  'SLIM',
+  'AVERAGE',
+  'ATHLETIC',
+  'MUSCULAR',
+  'CURVY',
+  'PLUS_SIZE',
 ]);
 export const HairColorSchema = z.enum([
-  "BLACK",
-  "BROWN",
-  "BLONDE",
-  "RED",
-  "GRAY",
-  "WHITE",
-  "OTHER",
+  'BLACK',
+  'BROWN',
+  'BLONDE',
+  'RED',
+  'GRAY',
+  'WHITE',
+  'OTHER',
 ]);
-export const EyeColorSchema = z.enum([
-  "BROWN",
-  "BLUE",
-  "GREEN",
-  "HAZEL",
-  "GRAY",
-  "OTHER",
-]);
-export const HairLengthSchema = z.enum(["BALD", "SHORT", "MEDIUM", "LONG"]);
-export const BeardTypeSchema = z.enum([
-  "NONE",
-  "STUBBLE",
-  "SHORT",
-  "MEDIUM",
-  "LONG",
-  "FULL",
-]);
+export const EyeColorSchema = z.enum(['BROWN', 'BLUE', 'GREEN', 'HAZEL', 'GRAY', 'OTHER']);
+export const HairLengthSchema = z.enum(['BALD', 'SHORT', 'MEDIUM', 'LONG']);
+export const BeardTypeSchema = z.enum(['NONE', 'STUBBLE', 'SHORT', 'MEDIUM', 'LONG', 'FULL']);
 
 // Profile creation schema - required fields for initial creation
 export const createProfileSchema = z.object({
   // Basic Info (required)
-  firstName: z
-    .string()
-    .min(1, "First name is required")
-    .max(50, "First name too long"),
-  lastName: z
-    .string()
-    .min(1, "Last name is required")
-    .max(50, "Last name too long"),
+  firstName: z.string().min(1, 'First name is required').max(50, 'First name too long'),
+  lastName: z.string().min(1, 'Last name is required').max(50, 'Last name too long'),
   gender: GenderSchema,
   ageRangeMin: z
     .number()
     .int()
-    .min(1, "Minimum age must be at least 1")
-    .max(100, "Minimum age must be at most 100"),
+    .min(1, 'Minimum age must be at least 1')
+    .max(100, 'Minimum age must be at most 100'),
   ageRangeMax: z
     .number()
     .int()
-    .min(1, "Maximum age must be at least 1")
-    .max(100, "Maximum age must be at most 100"),
+    .min(1, 'Maximum age must be at least 1')
+    .max(100, 'Maximum age must be at most 100'),
 
   // Optional fields for creation
   photo: z.string().url().optional().nullable(),
@@ -140,9 +120,9 @@ export const talentFilterSchema = z.object({
 // Photo upload validation
 export const photoUploadSchema = z.object({
   filename: z.string().min(1),
-  size: z.number().max(5 * 1024 * 1024, "File size must be under 5MB"),
-  type: z.enum(["image/jpeg", "image/png", "image/webp"], {
-    message: "Only JPEG, PNG, and WebP images are allowed",
+  size: z.number().max(5 * 1024 * 1024, 'File size must be under 5MB'),
+  type: z.enum(['image/jpeg', 'image/png', 'image/webp'], {
+    message: 'Only JPEG, PNG, and WebP images are allowed',
   }),
 });
 

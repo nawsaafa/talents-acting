@@ -17,35 +17,42 @@ Morocco is a popular destination for international productions, and this platfor
 ## User Types
 
 ### Visitors (Public)
+
 - Can view basic talent info: photo, first name, gender, age-playing range
 - Cannot access contact info, videos, or detailed profiles
 
 ### Talents (Actors/Performers)
+
 - Can register and create detailed profiles
 - Can upload photos, videos, showreels
 - Non-students pay membership fee for profile posting
 - Can modify their own profiles
 
 ### Professionals (Film Industry)
+
 - Pay for access to the database
 - Can view complete talent profiles including contact info
 - Require admin validation after registration
 
 ### Companies
+
 - Similar to professionals but for production companies
 - Pay for access to the database
 - Require admin validation after registration
 
 ### Administrator
+
 - Validates talent profiles before posting
 - Validates professional/company registrations
 - Can modify any profile
 
 ## Phases
 
-| Phase | Name | Sessions | Status |
-|-------|------|----------|--------|
-| 00 | Foundation | 6 | Not Started |
+| Phase | Name                    | Sessions | Status      |
+| ----- | ----------------------- | -------- | ----------- |
+| 00    | Foundation              | 6        | Complete    |
+| 01    | Talent Management       | 5        | Complete    |
+| 02    | Registration & Payments | 5        | In Progress |
 
 ## Phase 00: Foundation
 
@@ -60,14 +67,14 @@ Morocco is a popular destination for international productions, and this platfor
 
 ### Sessions
 
-| Session | Name | Est. Tasks |
-|---------|------|------------|
-| 01 | Project Setup & Tech Stack | ~15 |
-| 02 | Database Schema Design | ~18 |
-| 03 | Core UI Framework | ~15 |
-| 04 | Authentication System | ~20 |
-| 05 | Talent Profile Foundation | ~18 |
-| 06 | Admin Dashboard Foundation | ~15 |
+| Session | Name                       | Est. Tasks |
+| ------- | -------------------------- | ---------- |
+| 01      | Project Setup & Tech Stack | ~15        |
+| 02      | Database Schema Design     | ~18        |
+| 03      | Core UI Framework          | ~15        |
+| 04      | Authentication System      | ~20        |
+| 05      | Talent Profile Foundation  | ~18        |
+| 06      | Admin Dashboard Foundation | ~15        |
 
 Run `/nextsession` to begin implementation.
 
@@ -83,12 +90,14 @@ Run `/nextsession` to begin implementation.
 ### Talent Profiles
 
 **Public Information:**
+
 - Photo (front page)
 - First Name (front page)
 - Gender (front page)
 - Age-playing range (0-100)
 
 **Premium Information (Requires Registration):**
+
 - Presentation video
 - Showreel
 - Last Name
@@ -116,17 +125,20 @@ Run `/nextsession` to begin implementation.
 ### Registration Forms
 
 **Talents:**
+
 - Comprehensive profile form
 - Non-students notified of membership fee
 - Profile posted after validation and payment
 
 **Professionals:**
+
 - Name, First Name, Profession
 - Email, Phone Number
 - Reason for access
 - Fee-based access with post-payment information
 
 **Companies:**
+
 - Similar to professional form
 - Company details
 - Fee-based access
@@ -134,6 +146,7 @@ Run `/nextsession` to begin implementation.
 ### Filtering System
 
 Extensive filters including:
+
 - Gender, Age Range, Name
 - Physical attributes
 - Skills and languages

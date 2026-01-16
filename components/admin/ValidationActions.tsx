@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/Button";
-import { approveProfile, rejectProfile } from "@/lib/admin/actions";
-import type { ProfileType } from "@/lib/admin/validation";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/Button';
+import { approveProfile, rejectProfile } from '@/lib/admin/actions';
+import type { ProfileType } from '@/lib/admin/validation';
 
 interface ValidationActionsProps {
   profileId: string;
@@ -21,7 +21,7 @@ export function ValidationActions({
   const [isApproving, setIsApproving] = useState(false);
   const [isRejecting, setIsRejecting] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
-  const [rejectReason, setRejectReason] = useState("");
+  const [rejectReason, setRejectReason] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   async function handleApprove() {
@@ -33,7 +33,7 @@ export function ValidationActions({
     if (result.success) {
       router.refresh();
     } else {
-      setError(result.error || "Failed to approve");
+      setError(result.error || 'Failed to approve');
     }
 
     setIsApproving(false);
@@ -41,7 +41,7 @@ export function ValidationActions({
 
   async function handleReject() {
     if (rejectReason.length < 10) {
-      setError("Rejection reason must be at least 10 characters");
+      setError('Rejection reason must be at least 10 characters');
       return;
     }
 
@@ -56,10 +56,10 @@ export function ValidationActions({
 
     if (result.success) {
       setShowRejectModal(false);
-      setRejectReason("");
+      setRejectReason('');
       router.refresh();
     } else {
-      setError(result.error || "Failed to reject");
+      setError(result.error || 'Failed to reject');
     }
 
     setIsRejecting(false);
@@ -75,10 +75,15 @@ export function ValidationActions({
           isLoading={isApproving}
           disabled={isRejecting}
         >
-          {showLabels ? "Approve" : ""}
+          {showLabels ? 'Approve' : ''}
           {!showLabels && (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
             </svg>
           )}
         </Button>
@@ -88,18 +93,21 @@ export function ValidationActions({
           onClick={() => setShowRejectModal(true)}
           disabled={isApproving || isRejecting}
         >
-          {showLabels ? "Reject" : ""}
+          {showLabels ? 'Reject' : ''}
           {!showLabels && (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           )}
         </Button>
       </div>
 
-      {error && (
-        <p className="mt-2 text-sm text-[var(--color-error)]">{error}</p>
-      )}
+      {error && <p className="mt-2 text-sm text-[var(--color-error)]">{error}</p>}
 
       {/* Reject Modal */}
       {showRejectModal && (
@@ -109,8 +117,7 @@ export function ValidationActions({
               Reject Profile
             </h3>
             <p className="text-[var(--color-neutral-600)] mb-4">
-              Please provide a reason for rejecting this profile. This will be
-              visible to the user.
+              Please provide a reason for rejecting this profile. This will be visible to the user.
             </p>
             <textarea
               value={rejectReason}
@@ -122,28 +129,21 @@ export function ValidationActions({
             <p className="mt-1 text-sm text-[var(--color-neutral-500)]">
               {rejectReason.length}/500 characters
             </p>
-            {error && (
-              <p className="mt-2 text-sm text-[var(--color-error)]">{error}</p>
-            )}
+            {error && <p className="mt-2 text-sm text-[var(--color-error)]">{error}</p>}
             <div className="mt-4 flex justify-end gap-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => {
                   setShowRejectModal(false);
-                  setRejectReason("");
+                  setRejectReason('');
                   setError(null);
                 }}
                 disabled={isRejecting}
               >
                 Cancel
               </Button>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={handleReject}
-                isLoading={isRejecting}
-              >
+              <Button variant="danger" size="sm" onClick={handleReject} isLoading={isRejecting}>
                 Confirm Rejection
               </Button>
             </div>

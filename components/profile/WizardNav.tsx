@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Check } from "lucide-react";
-import { WIZARD_STEPS, type WizardStepId } from "@/lib/profile/wizard-validation";
-import { cn } from "@/lib/utils";
+import { Check } from 'lucide-react';
+import { WIZARD_STEPS, type WizardStepId } from '@/lib/profile/wizard-validation';
+import { cn } from '@/lib/utils';
 
 interface WizardNavProps {
   currentStep: number;
@@ -33,8 +33,8 @@ export function WizardNav({
               {index > 0 && (
                 <div
                   className={cn(
-                    "absolute top-5 -left-1/2 w-full h-0.5",
-                    isPast || isCompleted ? "bg-blue-600" : "bg-gray-200"
+                    'absolute top-5 -left-1/2 w-full h-0.5',
+                    isPast || isCompleted ? 'bg-blue-600' : 'bg-gray-200'
                   )}
                   aria-hidden="true"
                 />
@@ -45,35 +45,31 @@ export function WizardNav({
                 onClick={() => isClickable && onStepClick?.(index)}
                 disabled={!isClickable}
                 className={cn(
-                  "relative flex flex-col items-center group w-full",
-                  isClickable ? "cursor-pointer" : "cursor-not-allowed"
+                  'relative flex flex-col items-center group w-full',
+                  isClickable ? 'cursor-pointer' : 'cursor-not-allowed'
                 )}
-                aria-current={isActive ? "step" : undefined}
+                aria-current={isActive ? 'step' : undefined}
               >
                 {/* Step circle */}
                 <span
                   className={cn(
-                    "w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium border-2 transition-colors z-10 bg-white",
-                    isActive && "border-blue-600 text-blue-600",
-                    isCompleted && "border-blue-600 bg-blue-600 text-white",
-                    !isActive && !isCompleted && "border-gray-300 text-gray-500",
-                    isClickable && !isActive && "group-hover:border-blue-400"
+                    'w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium border-2 transition-colors z-10 bg-white',
+                    isActive && 'border-blue-600 text-blue-600',
+                    isCompleted && 'border-blue-600 bg-blue-600 text-white',
+                    !isActive && !isCompleted && 'border-gray-300 text-gray-500',
+                    isClickable && !isActive && 'group-hover:border-blue-400'
                   )}
                 >
-                  {isCompleted ? (
-                    <Check className="w-5 h-5" aria-hidden="true" />
-                  ) : (
-                    index + 1
-                  )}
+                  {isCompleted ? <Check className="w-5 h-5" aria-hidden="true" /> : index + 1}
                 </span>
 
                 {/* Step label */}
                 <span
                   className={cn(
-                    "mt-2 text-sm font-medium",
-                    isActive && "text-blue-600",
-                    isCompleted && "text-blue-600",
-                    !isActive && !isCompleted && "text-gray-500"
+                    'mt-2 text-sm font-medium',
+                    isActive && 'text-blue-600',
+                    isCompleted && 'text-blue-600',
+                    !isActive && !isCompleted && 'text-gray-500'
                   )}
                 >
                   {step.title}
@@ -95,9 +91,7 @@ export function WizardNav({
           <span className="text-sm font-medium text-gray-700">
             Step {currentStep + 1} of {WIZARD_STEPS.length}
           </span>
-          <span className="text-sm text-gray-500">
-            {WIZARD_STEPS[currentStep].title}
-          </span>
+          <span className="text-sm text-gray-500">{WIZARD_STEPS[currentStep].title}</span>
         </div>
 
         {/* Progress bar */}
@@ -129,11 +123,11 @@ export function WizardNav({
                 onClick={() => isClickable && onStepClick?.(index)}
                 disabled={!isClickable}
                 className={cn(
-                  "w-6 h-6 rounded-full flex items-center justify-center text-xs transition-colors",
-                  isActive && "bg-blue-600 text-white",
-                  isCompleted && !isActive && "bg-blue-100 text-blue-600",
-                  !isActive && !isCompleted && "bg-gray-100 text-gray-400",
-                  isClickable && "hover:bg-blue-200"
+                  'w-6 h-6 rounded-full flex items-center justify-center text-xs transition-colors',
+                  isActive && 'bg-blue-600 text-white',
+                  isCompleted && !isActive && 'bg-blue-100 text-blue-600',
+                  !isActive && !isCompleted && 'bg-gray-100 text-gray-400',
+                  isClickable && 'hover:bg-blue-200'
                 )}
                 aria-label={`Go to ${step.title}`}
               >

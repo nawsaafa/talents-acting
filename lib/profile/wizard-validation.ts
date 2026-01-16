@@ -5,7 +5,7 @@
  * Each step validates only its own fields.
  */
 
-import { z } from "zod";
+import { z } from 'zod';
 import {
   GenderSchema,
   PhysiqueSchema,
@@ -13,43 +13,42 @@ import {
   EyeColorSchema,
   HairLengthSchema,
   BeardTypeSchema,
-} from "@/lib/talents/validation";
+} from '@/lib/talents/validation';
 
 // Step 1: Basic Info
-export const basicInfoSchema = z.object({
-  firstName: z
-    .string()
-    .min(1, "First name is required")
-    .max(50, "First name too long"),
-  lastName: z
-    .string()
-    .min(1, "Last name is required")
-    .max(50, "Last name too long"),
-  gender: GenderSchema,
-  ageRangeMin: z
-    .number()
-    .int()
-    .min(1, "Minimum age must be at least 1")
-    .max(100, "Minimum age must be at most 100"),
-  ageRangeMax: z
-    .number()
-    .int()
-    .min(1, "Maximum age must be at least 1")
-    .max(100, "Maximum age must be at most 100"),
-  location: z.string().max(100).optional().nullable(),
-  contactEmail: z.string().email("Invalid email format").optional().nullable().or(z.literal("")),
-  contactPhone: z.string().max(20).optional().nullable(),
-}).refine(
-  (data) => data.ageRangeMin <= data.ageRangeMax,
-  {
-    message: "Minimum age cannot be greater than maximum age",
-    path: ["ageRangeMin"],
-  }
-);
+export const basicInfoSchema = z
+  .object({
+    firstName: z.string().min(1, 'First name is required').max(50, 'First name too long'),
+    lastName: z.string().min(1, 'Last name is required').max(50, 'Last name too long'),
+    gender: GenderSchema,
+    ageRangeMin: z
+      .number()
+      .int()
+      .min(1, 'Minimum age must be at least 1')
+      .max(100, 'Minimum age must be at most 100'),
+    ageRangeMax: z
+      .number()
+      .int()
+      .min(1, 'Maximum age must be at least 1')
+      .max(100, 'Maximum age must be at most 100'),
+    location: z.string().max(100).optional().nullable(),
+    contactEmail: z.string().email('Invalid email format').optional().nullable().or(z.literal('')),
+    contactPhone: z.string().max(20).optional().nullable(),
+  })
+  .refine((data) => data.ageRangeMin <= data.ageRangeMax, {
+    message: 'Minimum age cannot be greater than maximum age',
+    path: ['ageRangeMin'],
+  });
 
 // Step 2: Physical Attributes
 export const physicalAttributesSchema = z.object({
-  height: z.number().int().min(50, "Height must be at least 50cm").max(300, "Height must be at most 300cm").optional().nullable(),
+  height: z
+    .number()
+    .int()
+    .min(50, 'Height must be at least 50cm')
+    .max(300, 'Height must be at most 300cm')
+    .optional()
+    .nullable(),
   physique: PhysiqueSchema.optional().nullable(),
   ethnicAppearance: z.string().max(100).optional().nullable(),
   hairColor: HairColorSchema.optional().nullable(),
@@ -74,19 +73,19 @@ export const skillsSchema = z.object({
 
 // Step 4: Media
 export const mediaSchema = z.object({
-  photo: z.string().url("Invalid photo URL").optional().nullable().or(z.literal("")),
+  photo: z.string().url('Invalid photo URL').optional().nullable().or(z.literal('')),
   photos: z.array(z.string().url()).default([]),
   videoUrls: z.array(z.string().url()).default([]),
-  presentationVideo: z.string().url("Invalid video URL").optional().nullable().or(z.literal("")),
-  showreel: z.string().url("Invalid showreel URL").optional().nullable().or(z.literal("")),
+  presentationVideo: z.string().url('Invalid video URL').optional().nullable().or(z.literal('')),
+  showreel: z.string().url('Invalid showreel URL').optional().nullable().or(z.literal('')),
   hasShowreel: z.boolean().default(false),
 });
 
 // Step 5: Professional
 export const professionalSchema = z.object({
-  bio: z.string().max(2000, "Biography is too long (max 2000 characters)").optional().nullable(),
+  bio: z.string().max(2000, 'Biography is too long (max 2000 characters)').optional().nullable(),
   isAvailable: z.boolean().default(true),
-  dailyRate: z.number().positive("Rate must be positive").optional().nullable(),
+  dailyRate: z.number().positive('Rate must be positive').optional().nullable(),
   rateNegotiable: z.boolean().default(true),
   portfolio: z.array(z.string().url()).default([]),
 });
@@ -101,43 +100,71 @@ export const fullProfileSchema = basicInfoSchema
 // Step configurations
 export const WIZARD_STEPS = [
   {
-    id: "basic",
-    title: "Basic Info",
-    description: "Your name, age range, and contact details",
+    id: 'basic',
+    title: 'Basic Info',
+    description: 'Your name, age range, and contact details',
     schema: basicInfoSchema,
-    fields: ["firstName", "lastName", "gender", "ageRangeMin", "ageRangeMax", "location", "contactEmail", "contactPhone"],
+    fields: [
+      'firstName',
+      'lastName',
+      'gender',
+      'ageRangeMin',
+      'ageRangeMax',
+      'location',
+      'contactEmail',
+      'contactPhone',
+    ],
   },
   {
-    id: "physical",
-    title: "Physical Attributes",
-    description: "Height, physique, and appearance details",
+    id: 'physical',
+    title: 'Physical Attributes',
+    description: 'Height, physique, and appearance details',
     schema: physicalAttributesSchema,
-    fields: ["height", "physique", "ethnicAppearance", "hairColor", "eyeColor", "hairLength", "beardType", "hasTattoos", "hasScars", "tattooDescription", "scarDescription"],
+    fields: [
+      'height',
+      'physique',
+      'ethnicAppearance',
+      'hairColor',
+      'eyeColor',
+      'hairLength',
+      'beardType',
+      'hasTattoos',
+      'hasScars',
+      'tattooDescription',
+      'scarDescription',
+    ],
   },
   {
-    id: "skills",
-    title: "Skills",
-    description: "Languages, performance skills, and talents",
+    id: 'skills',
+    title: 'Skills',
+    description: 'Languages, performance skills, and talents',
     schema: skillsSchema,
-    fields: ["languages", "accents", "athleticSkills", "musicalInstruments", "performanceSkills", "danceStyles"],
+    fields: [
+      'languages',
+      'accents',
+      'athleticSkills',
+      'musicalInstruments',
+      'performanceSkills',
+      'danceStyles',
+    ],
   },
   {
-    id: "media",
-    title: "Media",
-    description: "Photos, videos, and showreel",
+    id: 'media',
+    title: 'Media',
+    description: 'Photos, videos, and showreel',
     schema: mediaSchema,
-    fields: ["photo", "photos", "videoUrls", "presentationVideo", "showreel", "hasShowreel"],
+    fields: ['photo', 'photos', 'videoUrls', 'presentationVideo', 'showreel', 'hasShowreel'],
   },
   {
-    id: "professional",
-    title: "Professional",
-    description: "Bio, availability, and rates",
+    id: 'professional',
+    title: 'Professional',
+    description: 'Bio, availability, and rates',
     schema: professionalSchema,
-    fields: ["bio", "isAvailable", "dailyRate", "rateNegotiable", "portfolio"],
+    fields: ['bio', 'isAvailable', 'dailyRate', 'rateNegotiable', 'portfolio'],
   },
 ] as const;
 
-export type WizardStepId = typeof WIZARD_STEPS[number]["id"];
+export type WizardStepId = (typeof WIZARD_STEPS)[number]['id'];
 
 // Type exports
 export type BasicInfoInput = z.infer<typeof basicInfoSchema>;
@@ -153,7 +180,7 @@ export type FullProfileInput = z.infer<typeof fullProfileSchema>;
 export function validateStep(stepId: WizardStepId, data: Record<string, unknown>) {
   const step = WIZARD_STEPS.find((s) => s.id === stepId);
   if (!step) {
-    return { success: false, error: { issues: [{ path: [], message: "Invalid step" }] } };
+    return { success: false, error: { issues: [{ path: [], message: 'Invalid step' }] } };
   }
 
   return step.schema.safeParse(data);

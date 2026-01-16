@@ -2,7 +2,7 @@
  * Recent searches management using localStorage
  */
 
-const STORAGE_KEY = "talents-recent-searches";
+const STORAGE_KEY = 'talents-recent-searches';
 const MAX_RECENT_SEARCHES = 10;
 
 export interface RecentSearch {
@@ -15,7 +15,7 @@ export interface RecentSearch {
  * Returns empty array if localStorage is unavailable.
  */
 export function getRecentSearches(): RecentSearch[] {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return [];
   }
 
@@ -33,9 +33,9 @@ export function getRecentSearches(): RecentSearch[] {
     // Validate and return
     return parsed.filter(
       (item): item is RecentSearch =>
-        typeof item === "object" &&
-        typeof item.query === "string" &&
-        typeof item.timestamp === "number"
+        typeof item === 'object' &&
+        typeof item.query === 'string' &&
+        typeof item.timestamp === 'number'
     );
   } catch {
     return [];
@@ -48,7 +48,7 @@ export function getRecentSearches(): RecentSearch[] {
  * - Limits to MAX_RECENT_SEARCHES
  */
 export function addRecentSearch(query: string): void {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return;
   }
 
@@ -61,15 +61,13 @@ export function addRecentSearch(query: string): void {
     const current = getRecentSearches();
 
     // Remove existing entry if present
-    const filtered = current.filter(
-      (item) => item.query.toLowerCase() !== trimmed.toLowerCase()
-    );
+    const filtered = current.filter((item) => item.query.toLowerCase() !== trimmed.toLowerCase());
 
     // Add new entry at the beginning
-    const updated: RecentSearch[] = [
-      { query: trimmed, timestamp: Date.now() },
-      ...filtered,
-    ].slice(0, MAX_RECENT_SEARCHES);
+    const updated: RecentSearch[] = [{ query: trimmed, timestamp: Date.now() }, ...filtered].slice(
+      0,
+      MAX_RECENT_SEARCHES
+    );
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
   } catch {
@@ -81,15 +79,13 @@ export function addRecentSearch(query: string): void {
  * Remove a specific search from recent searches.
  */
 export function removeRecentSearch(query: string): void {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return;
   }
 
   try {
     const current = getRecentSearches();
-    const filtered = current.filter(
-      (item) => item.query.toLowerCase() !== query.toLowerCase()
-    );
+    const filtered = current.filter((item) => item.query.toLowerCase() !== query.toLowerCase());
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
   } catch {
@@ -101,7 +97,7 @@ export function removeRecentSearch(query: string): void {
  * Clear all recent searches.
  */
 export function clearRecentSearches(): void {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return;
   }
 

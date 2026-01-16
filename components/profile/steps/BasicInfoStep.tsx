@@ -1,20 +1,14 @@
-"use client";
+'use client';
 
-import {
-  useWizardContext,
-  FormField,
-  TextInput,
-  NumberInput,
-  SelectInput,
-} from "../WizardStep";
-import type { TalentProfile } from "@prisma/client";
+import { useWizardContext, FormField, TextInput, NumberInput, SelectInput } from '../WizardStep';
+import type { TalentProfile } from '@prisma/client';
 
 // Gender options matching Prisma enum
 const GENDER_OPTIONS = [
-  { value: "MALE", label: "Male" },
-  { value: "FEMALE", label: "Female" },
-  { value: "NON_BINARY", label: "Non-Binary" },
-  { value: "OTHER", label: "Other" },
+  { value: 'MALE', label: 'Male' },
+  { value: 'FEMALE', label: 'Female' },
+  { value: 'NON_BINARY', label: 'Non-Binary' },
+  { value: 'OTHER', label: 'Other' },
 ];
 
 export function BasicInfoStep() {
@@ -24,32 +18,22 @@ export function BasicInfoStep() {
     <div className="space-y-6">
       {/* Name fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <FormField
-          label="First Name"
-          name="firstName"
-          error={errors.firstName}
-          required
-        >
+        <FormField label="First Name" name="firstName" error={errors.firstName} required>
           <TextInput
             name="firstName"
             value={formData.firstName}
-            onChange={(v) => updateField("firstName" as keyof TalentProfile, v)}
+            onChange={(v) => updateField('firstName' as keyof TalentProfile, v)}
             placeholder="Enter your first name"
             disabled={isSubmitting}
             maxLength={50}
           />
         </FormField>
 
-        <FormField
-          label="Last Name"
-          name="lastName"
-          error={errors.lastName}
-          required
-        >
+        <FormField label="Last Name" name="lastName" error={errors.lastName} required>
           <TextInput
             name="lastName"
             value={formData.lastName}
-            onChange={(v) => updateField("lastName" as keyof TalentProfile, v)}
+            onChange={(v) => updateField('lastName' as keyof TalentProfile, v)}
             placeholder="Enter your last name"
             disabled={isSubmitting}
             maxLength={50}
@@ -62,7 +46,7 @@ export function BasicInfoStep() {
         <SelectInput
           name="gender"
           value={formData.gender}
-          onChange={(v) => updateField("gender" as keyof TalentProfile, v)}
+          onChange={(v) => updateField('gender' as keyof TalentProfile, v)}
           options={GENDER_OPTIONS}
           placeholder="Select gender"
           disabled={isSubmitting}
@@ -82,7 +66,7 @@ export function BasicInfoStep() {
             <NumberInput
               name="ageRangeMin"
               value={formData.ageRangeMin}
-              onChange={(v) => updateField("ageRangeMin" as keyof TalentProfile, v)}
+              onChange={(v) => updateField('ageRangeMin' as keyof TalentProfile, v)}
               placeholder="Min age"
               min={1}
               max={100}
@@ -94,7 +78,7 @@ export function BasicInfoStep() {
             <NumberInput
               name="ageRangeMax"
               value={formData.ageRangeMax}
-              onChange={(v) => updateField("ageRangeMax" as keyof TalentProfile, v)}
+              onChange={(v) => updateField('ageRangeMax' as keyof TalentProfile, v)}
               placeholder="Max age"
               min={1}
               max={100}
@@ -109,7 +93,7 @@ export function BasicInfoStep() {
         <TextInput
           name="location"
           value={formData.location}
-          onChange={(v) => updateField("location" as keyof TalentProfile, v)}
+          onChange={(v) => updateField('location' as keyof TalentProfile, v)}
           placeholder="City or region"
           disabled={isSubmitting}
           maxLength={100}
@@ -118,38 +102,28 @@ export function BasicInfoStep() {
 
       {/* Contact Information */}
       <div className="border-t pt-6">
-        <h3 className="text-sm font-medium text-gray-700 mb-4">
-          Contact Information
-        </h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-4">Contact Information</h3>
         <p className="text-xs text-gray-500 mb-4">
           Contact details are only visible to verified professionals
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            label="Contact Email"
-            name="contactEmail"
-            error={errors.contactEmail}
-          >
+          <FormField label="Contact Email" name="contactEmail" error={errors.contactEmail}>
             <TextInput
               name="contactEmail"
               value={formData.contactEmail}
-              onChange={(v) => updateField("contactEmail" as keyof TalentProfile, v)}
+              onChange={(v) => updateField('contactEmail' as keyof TalentProfile, v)}
               type="email"
               placeholder="your@email.com"
               disabled={isSubmitting}
             />
           </FormField>
 
-          <FormField
-            label="Contact Phone"
-            name="contactPhone"
-            error={errors.contactPhone}
-          >
+          <FormField label="Contact Phone" name="contactPhone" error={errors.contactPhone}>
             <TextInput
               name="contactPhone"
               value={formData.contactPhone}
-              onChange={(v) => updateField("contactPhone" as keyof TalentProfile, v)}
+              onChange={(v) => updateField('contactPhone' as keyof TalentProfile, v)}
               type="tel"
               placeholder="+1 234 567 8900"
               disabled={isSubmitting}

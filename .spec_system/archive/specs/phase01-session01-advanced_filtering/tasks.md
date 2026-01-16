@@ -19,13 +19,13 @@
 
 ## Progress Summary
 
-| Category | Total | Done | Remaining |
-|----------|-------|------|-----------|
-| Setup | 2 | 2 | 0 |
-| Foundation | 5 | 5 | 0 |
-| Implementation | 9 | 9 | 0 |
-| Testing | 4 | 4 | 0 |
-| **Total** | **20** | **20** | **0** |
+| Category       | Total  | Done   | Remaining |
+| -------------- | ------ | ------ | --------- |
+| Setup          | 2      | 2      | 0         |
+| Foundation     | 5      | 5      | 0         |
+| Implementation | 9      | 9      | 0         |
+| Testing        | 4      | 4      | 0         |
+| **Total**      | **20** | **20** | **0**     |
 
 ---
 
@@ -180,12 +180,15 @@ Before marking session complete:
 ## Notes
 
 ### Parallelization
+
 Tasks T003+T004, T009+T010+T011 can be worked on simultaneously.
 
 ### Task Timing
+
 Target ~10-15 minutes per task (foundation/implementation), ~5 minutes for setup/testing.
 
 ### Dependencies
+
 - T005 depends on T004 (needs schema types)
 - T006 depends on T004 (needs schema types)
 - T007 depends on T006 (needs query builder)
@@ -194,13 +197,14 @@ Target ~10-15 minutes per task (foundation/implementation), ~5 minutes for setup
 - T016 depends on T013 (adds to FilterPanel)
 
 ### Key Files
-| File | Purpose |
-|------|---------|
-| `lib/talents/filter-options.ts` | Static filter option constants |
-| `lib/talents/filters.ts` | Query builder for Prisma WHERE |
-| `hooks/useFilters.ts` | URL state management |
-| `components/talents/FilterPanel.tsx` | Main filter UI |
-| `app/talents/page.tsx` | Page integration |
+
+| File                                 | Purpose                        |
+| ------------------------------------ | ------------------------------ |
+| `lib/talents/filter-options.ts`      | Static filter option constants |
+| `lib/talents/filters.ts`             | Query builder for Prisma WHERE |
+| `hooks/useFilters.ts`                | URL state management           |
+| `components/talents/FilterPanel.tsx` | Main filter UI                 |
+| `app/talents/page.tsx`               | Page integration               |
 
 ---
 

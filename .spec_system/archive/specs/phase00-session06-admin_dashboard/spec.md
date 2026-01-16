@@ -30,15 +30,18 @@ Upon completion, admins will have a dedicated dashboard with an overview of pend
 ## 3. Prerequisites
 
 ### Required Sessions
+
 - [x] `phase00-session04-authentication` - Admin role authentication and `requireAdmin()` utility
 - [x] `phase00-session05-talent_profile_foundation` - Talent profiles with `ValidationStatus` field
 
 ### Required Tools/Knowledge
+
 - Next.js App Router (Server Components, Server Actions)
 - Prisma ORM queries with filtering
 - Role-based access control patterns
 
 ### Environment Requirements
+
 - PostgreSQL database with seed data (includes admin user)
 - Admin user credentials: `admin@talentsacting.com` / `AdminPass123!`
 
@@ -47,6 +50,7 @@ Upon completion, admins will have a dedicated dashboard with an overview of pend
 ## 4. Scope
 
 ### In Scope (MVP)
+
 - Admin layout with sidebar navigation
 - Dashboard overview page with:
   - Pending talent validations count
@@ -66,28 +70,32 @@ Upon completion, admins will have a dedicated dashboard with an overview of pend
   - Toggle user active status
 
 ### Out of Scope (Deferred)
-- Bulk operations (mass approve/reject) - *Reason: Complexity, rare use case*
-- Analytics/reporting dashboard - *Reason: Phase 01 feature*
-- Content management - *Reason: Not in current requirements*
-- Email notifications on approval/rejection - *Reason: Phase 01 feature*
-- Audit logging - *Reason: Phase 01 feature*
+
+- Bulk operations (mass approve/reject) - _Reason: Complexity, rare use case_
+- Analytics/reporting dashboard - _Reason: Phase 01 feature_
+- Content management - _Reason: Not in current requirements_
+- Email notifications on approval/rejection - _Reason: Phase 01 feature_
+- Audit logging - _Reason: Phase 01 feature_
 
 ---
 
 ## 5. Technical Approach
 
 ### Architecture
+
 The admin dashboard uses a dedicated route group `/app/admin/` with its own layout. Server Components fetch data directly, while Server Actions handle mutations (approve, reject, toggle status). The layout includes a sidebar for navigation between dashboard sections.
 
 All admin routes are protected using the existing `requireAdmin()` utility at the page/action level. The middleware already handles role-based redirects.
 
 ### Design Patterns
+
 - **Feature-based organization**: `/lib/admin/` for queries and actions
 - **Server Components**: All pages are Server Components for direct data access
 - **Server Actions**: Mutations use `"use server"` actions with proper validation
 - **Shared layouts**: Admin layout wraps all admin pages
 
 ### Technology Stack
+
 - Next.js 16 App Router
 - Prisma 5 for database queries
 - Zod for action input validation
@@ -98,35 +106,38 @@ All admin routes are protected using the existing `requireAdmin()` utility at th
 ## 6. Deliverables
 
 ### Files to Create
-| File | Purpose | Est. Lines |
-|------|---------|------------|
-| `lib/admin/queries.ts` | Admin data fetching (counts, lists) | ~150 |
-| `lib/admin/actions.ts` | Server actions for validation/user management | ~180 |
-| `lib/admin/validation.ts` | Zod schemas for admin actions | ~40 |
-| `app/admin/layout.tsx` | Admin layout with sidebar | ~100 |
-| `app/admin/page.tsx` | Dashboard overview with metrics | ~120 |
-| `app/admin/talents/page.tsx` | Talent validation queue | ~150 |
-| `app/admin/talents/[id]/page.tsx` | Talent review detail page | ~200 |
-| `app/admin/professionals/page.tsx` | Professional validation queue | ~120 |
-| `app/admin/companies/page.tsx` | Company validation queue | ~120 |
-| `app/admin/users/page.tsx` | User listing and management | ~150 |
-| `components/admin/AdminSidebar.tsx` | Sidebar navigation component | ~80 |
-| `components/admin/StatCard.tsx` | Dashboard stat display card | ~40 |
-| `components/admin/ValidationActions.tsx` | Approve/reject button group | ~80 |
-| `components/admin/UserStatusToggle.tsx` | Active/inactive toggle | ~50 |
-| `components/admin/index.ts` | Barrel exports | ~5 |
+
+| File                                     | Purpose                                       | Est. Lines |
+| ---------------------------------------- | --------------------------------------------- | ---------- |
+| `lib/admin/queries.ts`                   | Admin data fetching (counts, lists)           | ~150       |
+| `lib/admin/actions.ts`                   | Server actions for validation/user management | ~180       |
+| `lib/admin/validation.ts`                | Zod schemas for admin actions                 | ~40        |
+| `app/admin/layout.tsx`                   | Admin layout with sidebar                     | ~100       |
+| `app/admin/page.tsx`                     | Dashboard overview with metrics               | ~120       |
+| `app/admin/talents/page.tsx`             | Talent validation queue                       | ~150       |
+| `app/admin/talents/[id]/page.tsx`        | Talent review detail page                     | ~200       |
+| `app/admin/professionals/page.tsx`       | Professional validation queue                 | ~120       |
+| `app/admin/companies/page.tsx`           | Company validation queue                      | ~120       |
+| `app/admin/users/page.tsx`               | User listing and management                   | ~150       |
+| `components/admin/AdminSidebar.tsx`      | Sidebar navigation component                  | ~80        |
+| `components/admin/StatCard.tsx`          | Dashboard stat display card                   | ~40        |
+| `components/admin/ValidationActions.tsx` | Approve/reject button group                   | ~80        |
+| `components/admin/UserStatusToggle.tsx`  | Active/inactive toggle                        | ~50        |
+| `components/admin/index.ts`              | Barrel exports                                | ~5         |
 
 ### Files to Modify
-| File | Changes | Est. Lines |
-|------|---------|------------|
-| `middleware.ts` | Add `/admin` to protected routes (if not already) | ~5 |
-| `components/layout/Navigation.tsx` | Add admin dashboard link for admin users | ~10 |
+
+| File                               | Changes                                           | Est. Lines |
+| ---------------------------------- | ------------------------------------------------- | ---------- |
+| `middleware.ts`                    | Add `/admin` to protected routes (if not already) | ~5         |
+| `components/layout/Navigation.tsx` | Add admin dashboard link for admin users          | ~10        |
 
 ---
 
 ## 7. Success Criteria
 
 ### Functional Requirements
+
 - [ ] Only admin users can access `/admin/*` routes
 - [ ] Non-admins redirected to home or login
 - [ ] Dashboard shows accurate pending counts for all types
@@ -143,6 +154,7 @@ All admin routes are protected using the existing `requireAdmin()` utility at th
 - [ ] Deactivated users cannot log in
 
 ### Testing Requirements
+
 - [ ] Manual testing of admin access control
 - [ ] Manual testing of validation workflow (approve flow)
 - [ ] Manual testing of validation workflow (reject flow)
@@ -150,6 +162,7 @@ All admin routes are protected using the existing `requireAdmin()` utility at th
 - [ ] Verify approved profiles appear in public listing
 
 ### Quality Gates
+
 - [ ] All files ASCII-encoded
 - [ ] Unix LF line endings
 - [ ] ESLint passes with no errors
@@ -161,6 +174,7 @@ All admin routes are protected using the existing `requireAdmin()` utility at th
 ## 8. Implementation Notes
 
 ### Key Considerations
+
 - Use existing UI primitives (Button, Card, Input) for consistency
 - Reuse `canAccessPremium` pattern for permission display
 - Admin sidebar should highlight current section
@@ -168,15 +182,18 @@ All admin routes are protected using the existing `requireAdmin()` utility at th
 - Rejection requires a reason (mandatory field)
 
 ### Potential Challenges
+
 - **Optimistic updates**: Server actions may need revalidatePath for immediate UI updates
 - **Large user lists**: Consider pagination for user management (defer to Phase 01 if complex)
 - **Session refresh**: Deactivating a user should invalidate their session (note: may require Phase 01)
 
 ### Relevant Considerations
+
 - [P00] **Admin validation workflow**: This session implements the core validation workflow mentioned in CONSIDERATIONS.md
 - [P00] **Tiered access control**: Admin dashboard is the highest tier, protected by role check
 
 ### ASCII Reminder
+
 All output files must use ASCII-only characters (0-127). No special characters, curly quotes, or non-ASCII symbols.
 
 ---
@@ -184,12 +201,15 @@ All output files must use ASCII-only characters (0-127). No special characters, 
 ## 9. Testing Strategy
 
 ### Unit Tests
+
 - None planned (manual testing for MVP)
 
 ### Integration Tests
+
 - None planned (manual testing for MVP)
 
 ### Manual Testing
+
 1. Login as admin (`admin@talentsacting.com` / `AdminPass123!`)
 2. Verify redirect to admin dashboard or access via navigation
 3. Check dashboard shows correct pending counts
@@ -202,6 +222,7 @@ All output files must use ASCII-only characters (0-127). No special characters, 
 10. Logout and login as non-admin, verify `/admin` access denied
 
 ### Edge Cases
+
 - No pending validations (show empty state)
 - Very long rejection reasons (truncate in display, full in detail)
 - Admin trying to deactivate themselves (prevent or warn)
@@ -211,9 +232,11 @@ All output files must use ASCII-only characters (0-127). No special characters, 
 ## 10. Dependencies
 
 ### External Libraries
+
 - None new (uses existing stack)
 
 ### Other Sessions
+
 - **Depends on**:
   - Session 04 (authentication with admin role)
   - Session 05 (talent profiles with validation status)

@@ -1,5 +1,5 @@
-import { auth } from "./auth";
-import type { Role } from "@prisma/client";
+import { auth } from './auth';
+import type { Role } from '@prisma/client';
 
 // Role hierarchy for permission checking
 const ROLE_HIERARCHY: Record<Role, number> = {
@@ -21,21 +21,21 @@ export function hasRole(userRole: Role, requiredRole: Role): boolean {
  * Check if user is an admin
  */
 export function isAdmin(role: Role): boolean {
-  return role === "ADMIN";
+  return role === 'ADMIN';
 }
 
 /**
  * Check if user can access premium content (professionals, companies, admins)
  */
 export function canAccessPremium(role: Role): boolean {
-  return ["PROFESSIONAL", "COMPANY", "ADMIN"].includes(role);
+  return ['PROFESSIONAL', 'COMPANY', 'ADMIN'].includes(role);
 }
 
 /**
  * Check if user is authenticated (not a visitor)
  */
 export function isAuthenticated(role: Role): boolean {
-  return role !== "VISITOR";
+  return role !== 'VISITOR';
 }
 
 /**
@@ -54,7 +54,7 @@ export async function getCurrentUser() {
 export async function requireAuth() {
   const user = await getCurrentUser();
   if (!user) {
-    throw new Error("Authentication required");
+    throw new Error('Authentication required');
   }
   return user;
 }
@@ -66,7 +66,7 @@ export async function requireAuth() {
 export async function requireRole(requiredRole: Role) {
   const user = await requireAuth();
   if (!hasRole(user.role, requiredRole)) {
-    throw new Error("Insufficient permissions");
+    throw new Error('Insufficient permissions');
   }
   return user;
 }
@@ -77,7 +77,7 @@ export async function requireRole(requiredRole: Role) {
 export async function requireAdmin() {
   const user = await requireAuth();
   if (!isAdmin(user.role)) {
-    throw new Error("Admin access required");
+    throw new Error('Admin access required');
   }
   return user;
 }

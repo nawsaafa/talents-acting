@@ -2,7 +2,7 @@
   "version": "2.0",
   "project_name": "Talents Acting",
   "description": "A talent management platform for actors, comedians, and performers - showcasing profiles, connecting with film professionals, and managing talent databases for the Acting Institute",
-  "current_phase": 1,
+  "current_phase": 2,
   "current_session": null,
   "phases": {
     "0": {
@@ -15,6 +15,12 @@
       "name": "Talent Management",
       "description": "Advanced filtering, media uploads, search, profile enhancement, and public gallery",
       "status": "complete",
+      "session_count": 5
+    },
+    "2": {
+      "name": "Registration & Payments",
+      "description": "Professional and company registration, payment integration, subscriptions, and access control",
+      "status": "in_progress",
       "session_count": 5
     }
   },
@@ -29,7 +35,8 @@
     "phase01-session02-media_upload_system",
     "phase01-session03-talent_search_discovery",
     "phase01-session04-profile_enhancement",
-    "phase01-session05-public_talent_gallery"
+    "phase01-session05-public_talent_gallery",
+    "phase02-session01-professional_registration"
   ],
   "next_session_history": [
     {
@@ -300,6 +307,31 @@
     {
       "date": "2026-01-16",
       "session": "phase01-session05-public_talent_gallery",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-16",
+      "session": "phase02-session01-professional_registration",
+      "status": "recommended"
+    },
+    {
+      "date": "2026-01-16",
+      "session": "phase02-session01-professional_registration",
+      "status": "spec_created"
+    },
+    {
+      "date": "2026-01-16",
+      "session": "phase02-session01-professional_registration",
+      "status": "tasks_created"
+    },
+    {
+      "date": "2026-01-16",
+      "session": "phase02-session01-professional_registration",
+      "status": "validated"
+    },
+    {
+      "date": "2026-01-16",
+      "session": "phase02-session01-professional_registration",
       "status": "completed"
     }
   ]

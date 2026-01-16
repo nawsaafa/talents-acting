@@ -1,15 +1,15 @@
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import { Container } from "@/components/layout";
-import { Button, Card, CardBody } from "@/components/ui";
-import { auth } from "@/lib/auth/auth";
-import { getTalentProfileByUserId } from "@/lib/talents/queries";
-import { MediaGallery } from "@/components/media";
-import { ArrowLeft, User } from "lucide-react";
+import { redirect } from 'next/navigation';
+import Link from 'next/link';
+import { Container } from '@/components/layout';
+import { Button, Card, CardBody } from '@/components/ui';
+import { auth } from '@/lib/auth/auth';
+import { getTalentProfileByUserId } from '@/lib/talents/queries';
+import { MediaGallery } from '@/components/media';
+import { ArrowLeft, User } from 'lucide-react';
 
 export const metadata = {
-  title: "Media Gallery | Dashboard - Acting Institute",
-  description: "Manage your photos and videos",
+  title: 'Media Gallery | Dashboard - Acting Institute',
+  description: 'Manage your photos and videos',
 };
 
 export default async function MediaPage() {
@@ -17,11 +17,11 @@ export default async function MediaPage() {
 
   // Redirect if not authenticated
   if (!session?.user) {
-    redirect("/login?callbackUrl=/dashboard/profile/media");
+    redirect('/login?callbackUrl=/dashboard/profile/media');
   }
 
   // Check if user is a talent
-  if (session.user.role !== "TALENT" && session.user.role !== "ADMIN") {
+  if (session.user.role !== 'TALENT' && session.user.role !== 'ADMIN') {
     return (
       <Container className="py-8">
         <Card>
@@ -47,7 +47,7 @@ export default async function MediaPage() {
 
   // No profile yet - redirect to create
   if (!profile) {
-    redirect("/dashboard/profile");
+    redirect('/dashboard/profile');
   }
 
   return (

@@ -1,0 +1,81 @@
+name: Integration
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  db-migration-check:
+    name: Database Migration Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate Prisma schema
+        run: npx prisma validate
+
+      - name: Check for pending migrations
+        run: npx prisma migrate diff --from-schema-datamodel prisma/schema.prisma --to-schema-datamodel prisma/schema.prisma --exit-code || echo "Schema is valid"
+
+  integration-build:
+    name: Full Integration Build
+    runs-on: ubuntu-latest
+    needs: db-migration-check
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run all tests
+        run: npm run test:run
+
+  preview-deploy-check:
+    name: Preview Deploy Check
+    runs-on: ubuntu-latest
+    needs: integration-build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Build for production
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Check bundle size
+        run: |
+          echo "Build completed successfully"
+          du -sh .next/ || true

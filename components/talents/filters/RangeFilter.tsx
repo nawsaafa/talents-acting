@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useCallback, useRef } from "react";
-import { X } from "lucide-react";
+import { useCallback, useRef } from 'react';
+import { X } from 'lucide-react';
 
 interface RangeFilterProps {
   label: string;
@@ -20,8 +20,8 @@ export function RangeFilter({
   label,
   minValue,
   maxValue,
-  minPlaceholder = "Min",
-  maxPlaceholder = "Max",
+  minPlaceholder = 'Min',
+  maxPlaceholder = 'Max',
   unit,
   min,
   max,
@@ -34,8 +34,8 @@ export function RangeFilter({
   const maxInputRef = useRef<HTMLInputElement>(null);
 
   // Convert props to display values
-  const displayMin = minValue !== undefined ? String(minValue) : "";
-  const displayMax = maxValue !== undefined ? String(maxValue) : "";
+  const displayMin = minValue !== undefined ? String(minValue) : '';
+  const displayMax = maxValue !== undefined ? String(maxValue) : '';
 
   const debouncedUpdate = useCallback(() => {
     if (timerRef.current) {
@@ -43,8 +43,8 @@ export function RangeFilter({
     }
 
     timerRef.current = setTimeout(() => {
-      const minVal = minInputRef.current?.value || "";
-      const maxVal = maxInputRef.current?.value || "";
+      const minVal = minInputRef.current?.value || '';
+      const maxVal = maxInputRef.current?.value || '';
       const parsedMin = minVal ? parseFloat(minVal) : undefined;
       const parsedMax = maxVal ? parseFloat(maxVal) : undefined;
       onChange(parsedMin, parsedMax);
@@ -60,26 +60,22 @@ export function RangeFilter({
       clearTimeout(timerRef.current);
     }
     if (minInputRef.current) {
-      minInputRef.current.value = "";
+      minInputRef.current.value = '';
     }
     if (maxInputRef.current) {
-      maxInputRef.current.value = "";
+      maxInputRef.current.value = '';
     }
     onChange(undefined, undefined);
   }, [onChange]);
 
-  const hasValue = displayMin !== "" || displayMax !== "";
+  const hasValue = displayMin !== '' || displayMax !== '';
 
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <label className="text-sm text-gray-700">{label}</label>
         {hasValue && (
-          <button
-            type="button"
-            onClick={handleClear}
-            className="text-gray-400 hover:text-gray-600"
-          >
+          <button type="button" onClick={handleClear} className="text-gray-400 hover:text-gray-600">
             <X className="w-3 h-3" />
           </button>
         )}

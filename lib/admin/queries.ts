@@ -1,33 +1,28 @@
-import { prisma } from "@/lib/prisma";
-import { ValidationStatus, Role, Prisma } from "@prisma/client";
-import type { UserFilterInput, ValidationFilterInput } from "./validation";
+import { prisma } from '@/lib/prisma';
+import { ValidationStatus, Role, Prisma } from '@prisma/client';
+import type { UserFilterInput, ValidationFilterInput } from './validation';
 
 // Dashboard statistics
 export async function getDashboardStats() {
-  const [
-    pendingTalents,
-    pendingProfessionals,
-    pendingCompanies,
-    activeTalents,
-    totalUsers,
-  ] = await Promise.all([
-    prisma.talentProfile.count({
-      where: { validationStatus: ValidationStatus.PENDING },
-    }),
-    prisma.professionalProfile.count({
-      where: { validationStatus: ValidationStatus.PENDING },
-    }),
-    prisma.companyProfile.count({
-      where: { validationStatus: ValidationStatus.PENDING },
-    }),
-    prisma.talentProfile.count({
-      where: {
-        validationStatus: ValidationStatus.APPROVED,
-        isPublic: true,
-      },
-    }),
-    prisma.user.count(),
-  ]);
+  const [pendingTalents, pendingProfessionals, pendingCompanies, activeTalents, totalUsers] =
+    await Promise.all([
+      prisma.talentProfile.count({
+        where: { validationStatus: ValidationStatus.PENDING },
+      }),
+      prisma.professionalProfile.count({
+        where: { validationStatus: ValidationStatus.PENDING },
+      }),
+      prisma.companyProfile.count({
+        where: { validationStatus: ValidationStatus.PENDING },
+      }),
+      prisma.talentProfile.count({
+        where: {
+          validationStatus: ValidationStatus.APPROVED,
+          isPublic: true,
+        },
+      }),
+      prisma.user.count(),
+    ]);
 
   return {
     pendingTalents,
@@ -71,7 +66,7 @@ export async function getTalentValidationQueue(filters: ValidationFilterInput) {
     prisma.talentProfile.findMany({
       where,
       select: talentQueueSelect,
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: 'asc' },
       skip: (page - 1) * limit,
       take: limit,
     }),
@@ -185,7 +180,7 @@ export async function getProfessionalValidationQueue(filters: ValidationFilterIn
     prisma.professionalProfile.findMany({
       where,
       select: professionalQueueSelect,
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: 'asc' },
       skip: (page - 1) * limit,
       take: limit,
     }),
@@ -198,6 +193,48 @@ export async function getProfessionalValidationQueue(filters: ValidationFilterIn
     page,
     totalPages: Math.ceil(total / limit),
   };
+}
+
+// Get full professional details for admin review
+const professionalFullSelect = {
+  id: true,
+  userId: true,
+  firstName: true,
+  lastName: true,
+  profession: true,
+  company: true,
+  phone: true,
+  website: true,
+  reasonForAccess: true,
+  emailVerified: true,
+  subscriptionStatus: true,
+  subscriptionEndsAt: true,
+  termsAcceptedAt: true,
+  validationStatus: true,
+  validatedAt: true,
+  validatedBy: true,
+  rejectionReason: true,
+  createdAt: true,
+  updatedAt: true,
+  user: {
+    select: {
+      id: true,
+      email: true,
+      isActive: true,
+      createdAt: true,
+    },
+  },
+} as const;
+
+export type ProfessionalFullDetails = Prisma.ProfessionalProfileGetPayload<{
+  select: typeof professionalFullSelect;
+}>;
+
+export async function getProfessionalForReview(id: string) {
+  return prisma.professionalProfile.findUnique({
+    where: { id },
+    select: professionalFullSelect,
+  });
 }
 
 // Company validation queue
@@ -231,7 +268,7 @@ export async function getCompanyValidationQueue(filters: ValidationFilterInput) 
     prisma.companyProfile.findMany({
       where,
       select: companyQueueSelect,
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: 'asc' },
       skip: (page - 1) * limit,
       take: limit,
     }),
@@ -286,31 +323,31 @@ export async function getUsers(filters: UserFilterInput) {
   const { role, status, search, page, limit } = filters;
 
   const where: Prisma.UserWhereInput = {
-    ...(role !== "ALL" && { role: role as Role }),
-    ...(status === "ACTIVE" && { isActive: true }),
-    ...(status === "INACTIVE" && { isActive: false }),
+    ...(role !== 'ALL' && { role: role as Role }),
+    ...(status === 'ACTIVE' && { isActive: true }),
+    ...(status === 'INACTIVE' && { isActive: false }),
     ...(search && {
       OR: [
-        { email: { contains: search, mode: "insensitive" as const } },
+        { email: { contains: search, mode: 'insensitive' as const } },
         {
           talentProfile: {
             OR: [
-              { firstName: { contains: search, mode: "insensitive" as const } },
-              { lastName: { contains: search, mode: "insensitive" as const } },
+              { firstName: { contains: search, mode: 'insensitive' as const } },
+              { lastName: { contains: search, mode: 'insensitive' as const } },
             ],
           },
         },
         {
           professionalProfile: {
             OR: [
-              { firstName: { contains: search, mode: "insensitive" as const } },
-              { lastName: { contains: search, mode: "insensitive" as const } },
+              { firstName: { contains: search, mode: 'insensitive' as const } },
+              { lastName: { contains: search, mode: 'insensitive' as const } },
             ],
           },
         },
         {
           companyProfile: {
-            companyName: { contains: search, mode: "insensitive" as const },
+            companyName: { contains: search, mode: 'insensitive' as const },
           },
         },
       ],
@@ -321,7 +358,7 @@ export async function getUsers(filters: UserFilterInput) {
     prisma.user.findMany({
       where,
       select: userListSelect,
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
       skip: (page - 1) * limit,
       take: limit,
     }),

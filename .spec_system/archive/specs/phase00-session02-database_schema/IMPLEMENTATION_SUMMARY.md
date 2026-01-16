@@ -15,16 +15,18 @@ Designed and implemented the complete database schema for the Talents Acting pla
 ## Deliverables
 
 ### Files Created
-| File | Purpose | Lines |
-|------|---------|-------|
-| `prisma/schema.prisma` | Complete database schema with models, enums, indexes | 250 |
-| `prisma/seed.ts` | Seed data script with sample users and profiles | 253 |
+
+| File                   | Purpose                                              | Lines |
+| ---------------------- | ---------------------------------------------------- | ----- |
+| `prisma/schema.prisma` | Complete database schema with models, enums, indexes | 250   |
+| `prisma/seed.ts`       | Seed data script with sample users and profiles      | 253   |
 
 ### Files Modified
-| File | Changes |
-|------|---------|
-| `package.json` | Added db:* scripts (generate, push, migrate, seed, studio) and prisma seed config |
-| `.env` | Fixed URL encoding for special characters in password |
+
+| File           | Changes                                                                            |
+| -------------- | ---------------------------------------------------------------------------------- |
+| `package.json` | Added db:\* scripts (generate, push, migrate, seed, studio) and prisma seed config |
+| `.env`         | Fixed URL encoding for special characters in password                              |
 
 ---
 
@@ -47,6 +49,7 @@ Designed and implemented the complete database schema for the Talents Acting pla
 ## Schema Summary
 
 ### Enums (8)
+
 1. Role (VISITOR, TALENT, PROFESSIONAL, COMPANY, ADMIN)
 2. ValidationStatus (PENDING, APPROVED, REJECTED, SUSPENDED)
 3. Gender (MALE, FEMALE, NON_BINARY, OTHER)
@@ -57,12 +60,14 @@ Designed and implemented the complete database schema for the Talents Acting pla
 8. BeardType (NONE, STUBBLE, SHORT, MEDIUM, LONG, FULL)
 
 ### Models (4)
+
 1. **User** - Base user with email, password, role, soft delete
 2. **TalentProfile** - 40+ fields for comprehensive talent attributes
 3. **ProfessionalProfile** - Film industry professional details
 4. **CompanyProfile** - Production company details
 
 ### Indexes (15)
+
 - User: email, role
 - TalentProfile: gender, ageRange, validationStatus, isPublic, isAvailable, location, physique, createdAt
 - ProfessionalProfile: validationStatus, profession
@@ -72,21 +77,22 @@ Designed and implemented the complete database schema for the Talents Acting pla
 
 ## Test Results
 
-| Metric | Value |
-|--------|-------|
-| Lint | PASS (0 errors) |
-| Build | PASS |
-| Prisma Generate | PASS |
-| Database Tables | 4 created |
-| Seed Users | 7 inserted |
+| Metric          | Value           |
+| --------------- | --------------- |
+| Lint            | PASS (0 errors) |
+| Build           | PASS            |
+| Prisma Generate | PASS            |
+| Database Tables | 4 created       |
+| Seed Users      | 7 inserted      |
 
 ### Database Verification
-| Table | Records |
-|-------|---------|
-| User | 7 |
-| TalentProfile | 3 (2 approved, 1 pending) |
-| ProfessionalProfile | 1 |
-| CompanyProfile | 1 |
+
+| Table               | Records                   |
+| ------------------- | ------------------------- |
+| User                | 7                         |
+| TalentProfile       | 3 (2 approved, 1 pending) |
+| ProfessionalProfile | 1                         |
+| CompanyProfile      | 1                         |
 
 ---
 

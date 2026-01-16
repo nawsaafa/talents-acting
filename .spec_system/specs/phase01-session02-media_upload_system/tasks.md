@@ -19,13 +19,13 @@
 
 ## Progress Summary
 
-| Category | Total | Done | Remaining |
-|----------|-------|------|-----------|
-| Setup | 3 | 3 | 0 |
-| Foundation | 5 | 5 | 0 |
-| Implementation | 9 | 9 | 0 |
-| Testing | 3 | 3 | 0 |
-| **Total** | **20** | **20** | **0** |
+| Category       | Total  | Done   | Remaining |
+| -------------- | ------ | ------ | --------- |
+| Setup          | 3      | 3      | 0         |
+| Foundation     | 5      | 5      | 0         |
+| Implementation | 9      | 9      | 0         |
+| Testing        | 3      | 3      | 0         |
+| **Total**      | **20** | **20** | **0**     |
 
 ---
 
@@ -94,14 +94,18 @@ Before marking session complete:
 ## Notes
 
 ### Parallelization
+
 Tasks marked `[P]` can be worked on simultaneously:
+
 - T005, T006: Validation and video utilities are independent
 - T009, T010, T011: Individual UI components with no dependencies
 
 ### Task Timing
+
 Target ~10-15 minutes per task.
 
 ### Dependencies
+
 - T004 (schema) must complete before T007 (upload action)
 - T005-T008 (foundation) must complete before T09-T17 (implementation)
 - T12 depends on T05 (validation schemas)
@@ -110,7 +114,9 @@ Target ~10-15 minutes per task.
 - T15 depends on T14 (MediaGallery)
 
 ### Manual Testing Checklist
+
 After implementation, verify:
+
 1. Upload single photo via drag-drop
 2. Upload multiple photos, verify queue processing
 3. Reject invalid file type (PDF)

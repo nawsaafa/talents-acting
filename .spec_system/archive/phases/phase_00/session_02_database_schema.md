@@ -16,6 +16,7 @@ Design and implement a comprehensive database schema that supports all talent pr
 ## Scope
 
 ### In Scope (MVP)
+
 - Users table (base for all user types)
 - User roles/types (visitor, talent, professional, company, admin)
 - Talents profile table with all fields from specs:
@@ -31,6 +32,7 @@ Design and implement a comprehensive database schema that supports all talent pr
 - Database migrations
 
 ### Out of Scope
+
 - Payment/subscription tables (Phase 02)
 - Messaging/contact history (later phase)
 - Analytics/tracking tables (later phase)

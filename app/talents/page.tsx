@@ -1,20 +1,20 @@
-import { Suspense } from "react";
-import { Container } from "@/components/layout";
-import { Loading } from "@/components/ui";
-import { FilterPanel } from "@/components/talents";
-import { SearchBar } from "@/components/search";
-import { TalentGallery } from "@/components/gallery";
-import { getPublicTalents } from "@/lib/talents/queries";
-import { parseFilterParams } from "@/lib/talents/filters";
-import { talentFilterSchema } from "@/lib/talents/validation";
+import { Suspense } from 'react';
+import { Container } from '@/components/layout';
+import { Loading } from '@/components/ui';
+import { FilterPanel } from '@/components/talents';
+import { SearchBar } from '@/components/search';
+import { TalentGallery } from '@/components/gallery';
+import { getPublicTalents } from '@/lib/talents/queries';
+import { parseFilterParams } from '@/lib/talents/filters';
+import { talentFilterSchema } from '@/lib/talents/validation';
 
 interface TalentsPageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
 export const metadata = {
-  title: "Talents | Acting Institute",
-  description: "Discover talented actors, comedians, and performers",
+  title: 'Talents | Acting Institute',
+  description: 'Discover talented actors, comedians, and performers',
 };
 
 async function TalentGalleryWrapper({

@@ -1,9 +1,9 @@
-import Image from "next/image";
-import Link from "next/link";
-import { MapPin, CheckCircle } from "lucide-react";
-import { Card } from "@/components/ui";
-import { SearchHighlight } from "@/components/search";
-import type { PublicTalentProfile } from "@/lib/talents/queries";
+import Image from 'next/image';
+import Link from 'next/link';
+import { MapPin, CheckCircle } from 'lucide-react';
+import { Card } from '@/components/ui';
+import { SearchHighlight } from '@/components/search';
+import type { PublicTalentProfile } from '@/lib/talents/queries';
 
 interface TalentCardProps {
   talent: PublicTalentProfile;
@@ -11,10 +11,10 @@ interface TalentCardProps {
 }
 
 const GENDER_LABELS: Record<string, string> = {
-  MALE: "Male",
-  FEMALE: "Female",
-  NON_BINARY: "Non-Binary",
-  OTHER: "Other",
+  MALE: 'Male',
+  FEMALE: 'Female',
+  NON_BINARY: 'Non-Binary',
+  OTHER: 'Other',
 };
 
 export function TalentCard({ talent, searchQuery }: TalentCardProps) {
@@ -37,9 +37,7 @@ export function TalentCard({ talent, searchQuery }: TalentCardProps) {
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
-              <span className="text-4xl text-gray-400">
-                {talent.firstName.charAt(0)}
-              </span>
+              <span className="text-4xl text-gray-400">{talent.firstName.charAt(0)}</span>
             </div>
           )}
 

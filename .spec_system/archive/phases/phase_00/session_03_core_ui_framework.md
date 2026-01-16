@@ -16,6 +16,7 @@ Create the responsive UI foundation including layout components, navigation, sty
 ## Scope
 
 ### In Scope (MVP)
+
 - Base layout component (header, main, footer)
 - Navigation/menu structure with "Our Talents" link
 - Responsive grid system
@@ -31,6 +32,7 @@ Create the responsive UI foundation including layout components, navigation, sty
 - Basic page templates (home, list, detail, form)
 
 ### Out of Scope
+
 - Talent-specific components (Session 05)
 - Admin-specific layouts (Session 06)
 - Advanced animations/transitions

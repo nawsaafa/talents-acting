@@ -63,9 +63,7 @@ export function Card({
 
 export function CardHeader({ children, className = '' }: CardHeaderProps) {
   return (
-    <div
-      className={`pb-4 border-b border-[var(--color-neutral-200)] ${className}`.trim()}
-    >
+    <div className={`pb-4 border-b border-[var(--color-neutral-200)] ${className}`.trim()}>
       {children}
     </div>
   );
@@ -77,9 +75,7 @@ export function CardBody({ children, className = '' }: CardBodyProps) {
 
 export function CardFooter({ children, className = '' }: CardFooterProps) {
   return (
-    <div
-      className={`pt-4 border-t border-[var(--color-neutral-200)] ${className}`.trim()}
-    >
+    <div className={`pt-4 border-t border-[var(--color-neutral-200)] ${className}`.trim()}>
       {children}
     </div>
   );

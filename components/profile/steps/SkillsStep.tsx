@@ -1,93 +1,93 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { X, Plus } from "lucide-react";
-import { useWizardContext, FormField } from "../WizardStep";
-import type { TalentProfile } from "@prisma/client";
+import { useState } from 'react';
+import { X, Plus } from 'lucide-react';
+import { useWizardContext, FormField } from '../WizardStep';
+import type { TalentProfile } from '@prisma/client';
 
 // Common skill suggestions
 const LANGUAGE_SUGGESTIONS = [
-  "Arabic",
-  "English",
-  "French",
-  "Spanish",
-  "German",
-  "Italian",
-  "Mandarin",
-  "Hindi",
-  "Japanese",
-  "Korean",
-  "Russian",
-  "Portuguese",
+  'Arabic',
+  'English',
+  'French',
+  'Spanish',
+  'German',
+  'Italian',
+  'Mandarin',
+  'Hindi',
+  'Japanese',
+  'Korean',
+  'Russian',
+  'Portuguese',
 ];
 
 const ACCENT_SUGGESTIONS = [
-  "American",
-  "British",
-  "Australian",
-  "Gulf Arabic",
-  "Levantine",
-  "Egyptian",
-  "French",
-  "German",
-  "Indian",
-  "Irish",
-  "Scottish",
-  "South African",
+  'American',
+  'British',
+  'Australian',
+  'Gulf Arabic',
+  'Levantine',
+  'Egyptian',
+  'French',
+  'German',
+  'Indian',
+  'Irish',
+  'Scottish',
+  'South African',
 ];
 
 const ATHLETIC_SUGGESTIONS = [
-  "Swimming",
-  "Martial Arts",
-  "Horse Riding",
-  "Football",
-  "Basketball",
-  "Tennis",
-  "Boxing",
-  "Gymnastics",
-  "Yoga",
-  "Fencing",
-  "Archery",
-  "Rock Climbing",
+  'Swimming',
+  'Martial Arts',
+  'Horse Riding',
+  'Football',
+  'Basketball',
+  'Tennis',
+  'Boxing',
+  'Gymnastics',
+  'Yoga',
+  'Fencing',
+  'Archery',
+  'Rock Climbing',
 ];
 
 const INSTRUMENT_SUGGESTIONS = [
-  "Piano",
-  "Guitar",
-  "Violin",
-  "Drums",
-  "Oud",
-  "Saxophone",
-  "Flute",
-  "Trumpet",
-  "Cello",
-  "Bass",
+  'Piano',
+  'Guitar',
+  'Violin',
+  'Drums',
+  'Oud',
+  'Saxophone',
+  'Flute',
+  'Trumpet',
+  'Cello',
+  'Bass',
 ];
 
 const PERFORMANCE_SUGGESTIONS = [
-  "Stand-up Comedy",
-  "Improvisation",
-  "Voice Acting",
-  "Stage Combat",
-  "Singing",
-  "Puppetry",
-  "Mime",
-  "Clowning",
-  "Magic",
-  "Storytelling",
+  'Stand-up Comedy',
+  'Improvisation',
+  'Voice Acting',
+  'Stage Combat',
+  'Singing',
+  'Puppetry',
+  'Mime',
+  'Clowning',
+  'Magic',
+  'Storytelling',
 ];
 
 const DANCE_SUGGESTIONS = [
-  "Contemporary",
-  "Hip Hop",
-  "Ballet",
-  "Jazz",
-  "Traditional Arabic",
-  "Salsa",
-  "Tango",
-  "Breakdancing",
-  "Ballroom",
-  "Belly Dance",
+  'Contemporary',
+  'Hip Hop',
+  'Ballet',
+  'Jazz',
+  'Traditional Arabic',
+  'Salsa',
+  'Tango',
+  'Breakdancing',
+  'Ballroom',
+  'Belly Dance',
 ];
 
 interface TagInputProps {
@@ -109,32 +109,30 @@ function TagInput({
   onAdd,
   onRemove,
   suggestions,
-  placeholder = "Type and press Enter",
+  placeholder = 'Type and press Enter',
   disabled = false,
   error,
 }: TagInputProps) {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const filteredSuggestions = suggestions.filter(
-    (s) =>
-      s.toLowerCase().includes(inputValue.toLowerCase()) &&
-      !values.includes(s)
+    (s) => s.toLowerCase().includes(inputValue.toLowerCase()) && !values.includes(s)
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
       if (inputValue.trim() && !values.includes(inputValue.trim())) {
         onAdd(inputValue.trim());
-        setInputValue("");
+        setInputValue('');
       }
     }
   };
 
   const handleAddSuggestion = (suggestion: string) => {
     onAdd(suggestion);
-    setInputValue("");
+    setInputValue('');
     setShowSuggestions(false);
   };
 
@@ -160,7 +158,7 @@ function TagInput({
               onClick={() => {
                 if (inputValue.trim() && !values.includes(inputValue.trim())) {
                   onAdd(inputValue.trim());
-                  setInputValue("");
+                  setInputValue('');
                 }
               }}
               disabled={disabled || !inputValue.trim()}
@@ -218,11 +216,11 @@ export function SkillsStep() {
   const { formData, updateArrayField, errors, isSubmitting } = useWizardContext();
 
   const handleAdd = (field: keyof TalentProfile, value: string) => {
-    updateArrayField(field, value, "add");
+    updateArrayField(field, value, 'add');
   };
 
   const handleRemove = (field: keyof TalentProfile, value: string) => {
-    updateArrayField(field, value, "remove");
+    updateArrayField(field, value, 'remove');
   };
 
   return (
@@ -232,8 +230,8 @@ export function SkillsStep() {
         label="Languages"
         name="languages"
         values={(formData.languages as string[]) ?? []}
-        onAdd={(v) => handleAdd("languages" as keyof TalentProfile, v)}
-        onRemove={(v) => handleRemove("languages" as keyof TalentProfile, v)}
+        onAdd={(v) => handleAdd('languages' as keyof TalentProfile, v)}
+        onRemove={(v) => handleRemove('languages' as keyof TalentProfile, v)}
         suggestions={LANGUAGE_SUGGESTIONS}
         placeholder="Add a language"
         disabled={isSubmitting}
@@ -245,8 +243,8 @@ export function SkillsStep() {
         label="Accents"
         name="accents"
         values={(formData.accents as string[]) ?? []}
-        onAdd={(v) => handleAdd("accents" as keyof TalentProfile, v)}
-        onRemove={(v) => handleRemove("accents" as keyof TalentProfile, v)}
+        onAdd={(v) => handleAdd('accents' as keyof TalentProfile, v)}
+        onRemove={(v) => handleRemove('accents' as keyof TalentProfile, v)}
         suggestions={ACCENT_SUGGESTIONS}
         placeholder="Add an accent"
         disabled={isSubmitting}
@@ -258,8 +256,8 @@ export function SkillsStep() {
         label="Athletic Skills"
         name="athleticSkills"
         values={(formData.athleticSkills as string[]) ?? []}
-        onAdd={(v) => handleAdd("athleticSkills" as keyof TalentProfile, v)}
-        onRemove={(v) => handleRemove("athleticSkills" as keyof TalentProfile, v)}
+        onAdd={(v) => handleAdd('athleticSkills' as keyof TalentProfile, v)}
+        onRemove={(v) => handleRemove('athleticSkills' as keyof TalentProfile, v)}
         suggestions={ATHLETIC_SUGGESTIONS}
         placeholder="Add an athletic skill"
         disabled={isSubmitting}
@@ -271,8 +269,8 @@ export function SkillsStep() {
         label="Musical Instruments"
         name="musicalInstruments"
         values={(formData.musicalInstruments as string[]) ?? []}
-        onAdd={(v) => handleAdd("musicalInstruments" as keyof TalentProfile, v)}
-        onRemove={(v) => handleRemove("musicalInstruments" as keyof TalentProfile, v)}
+        onAdd={(v) => handleAdd('musicalInstruments' as keyof TalentProfile, v)}
+        onRemove={(v) => handleRemove('musicalInstruments' as keyof TalentProfile, v)}
         suggestions={INSTRUMENT_SUGGESTIONS}
         placeholder="Add an instrument"
         disabled={isSubmitting}
@@ -284,8 +282,8 @@ export function SkillsStep() {
         label="Performance Skills"
         name="performanceSkills"
         values={(formData.performanceSkills as string[]) ?? []}
-        onAdd={(v) => handleAdd("performanceSkills" as keyof TalentProfile, v)}
-        onRemove={(v) => handleRemove("performanceSkills" as keyof TalentProfile, v)}
+        onAdd={(v) => handleAdd('performanceSkills' as keyof TalentProfile, v)}
+        onRemove={(v) => handleRemove('performanceSkills' as keyof TalentProfile, v)}
         suggestions={PERFORMANCE_SUGGESTIONS}
         placeholder="Add a performance skill"
         disabled={isSubmitting}
@@ -297,8 +295,8 @@ export function SkillsStep() {
         label="Dance Styles"
         name="danceStyles"
         values={(formData.danceStyles as string[]) ?? []}
-        onAdd={(v) => handleAdd("danceStyles" as keyof TalentProfile, v)}
-        onRemove={(v) => handleRemove("danceStyles" as keyof TalentProfile, v)}
+        onAdd={(v) => handleAdd('danceStyles' as keyof TalentProfile, v)}
+        onRemove={(v) => handleRemove('danceStyles' as keyof TalentProfile, v)}
         suggestions={DANCE_SUGGESTIONS}
         placeholder="Add a dance style"
         disabled={isSubmitting}

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import { Trash2, Loader2, ExternalLink, Play } from "lucide-react";
-import { parseVideoUrl, formatVideoUrlForDisplay } from "@/lib/media/video-utils";
-import { removeVideoUrl } from "@/lib/media/upload";
-import Image from "next/image";
+import { useState, useTransition } from 'react';
+import { Trash2, Loader2, ExternalLink, Play } from 'lucide-react';
+import { parseVideoUrl, formatVideoUrlForDisplay } from '@/lib/media/video-utils';
+import { removeVideoUrl } from '@/lib/media/upload';
+import Image from 'next/image';
 
 interface VideoEmbedProps {
   url: string;
@@ -28,16 +28,14 @@ export function VideoEmbed({ url, onRemoved, showRemove = true }: VideoEmbedProp
         setShowConfirm(false);
         onRemoved?.();
       } else {
-        setError(result.error || "Failed to remove video");
+        setError(result.error || 'Failed to remove video');
       }
     });
   }
 
   // Platform-specific styling
-  const platformColor =
-    videoInfo.platform === "youtube" ? "bg-red-600" : "bg-blue-500";
-  const platformLabel =
-    videoInfo.platform === "youtube" ? "YouTube" : "Vimeo";
+  const platformColor = videoInfo.platform === 'youtube' ? 'bg-red-600' : 'bg-blue-500';
+  const platformLabel = videoInfo.platform === 'youtube' ? 'YouTube' : 'Vimeo';
 
   return (
     <div className="group relative overflow-hidden rounded-lg bg-gray-100">
@@ -117,9 +115,7 @@ export function VideoEmbed({ url, onRemoved, showRemove = true }: VideoEmbedProp
       {/* Delete confirmation overlay */}
       {showConfirm && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 p-4">
-          <p className="mb-4 text-center text-sm text-white">
-            Remove this video?
-          </p>
+          <p className="mb-4 text-center text-sm text-white">Remove this video?</p>
           <div className="flex gap-2">
             <button
               onClick={() => setShowConfirm(false)}

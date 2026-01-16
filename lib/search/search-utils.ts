@@ -16,18 +16,18 @@ const TSQUERY_SPECIAL_CHARS = /[&|!():*<>'"\\]/g;
  * - Converts to tsquery format with prefix matching
  */
 export function sanitizeSearchQuery(query: string): string {
-  if (!query || typeof query !== "string") {
-    return "";
+  if (!query || typeof query !== 'string') {
+    return '';
   }
 
   // Trim and limit length
   let sanitized = query.trim().slice(0, MAX_QUERY_LENGTH);
 
   // Remove special tsquery characters
-  sanitized = sanitized.replace(TSQUERY_SPECIAL_CHARS, " ");
+  sanitized = sanitized.replace(TSQUERY_SPECIAL_CHARS, ' ');
 
   // Collapse multiple spaces
-  sanitized = sanitized.replace(/\s+/g, " ").trim();
+  sanitized = sanitized.replace(/\s+/g, ' ').trim();
 
   return sanitized;
 }
@@ -41,18 +41,18 @@ export function toTsQuery(query: string): string {
   const sanitized = sanitizeSearchQuery(query);
 
   if (!sanitized) {
-    return "";
+    return '';
   }
 
   // Split into words and create prefix-matching terms
-  const words = sanitized.split(" ").filter(Boolean);
+  const words = sanitized.split(' ').filter(Boolean);
 
   if (words.length === 0) {
-    return "";
+    return '';
   }
 
   // Join with AND operator, each word gets prefix matching
-  return words.map((word) => `${word}:*`).join(" & ");
+  return words.map((word) => `${word}:*`).join(' & ');
 }
 
 /**
@@ -68,7 +68,7 @@ export function extractSearchTerms(query: string): string[] {
 
   return sanitized
     .toLowerCase()
-    .split(" ")
+    .split(' ')
     .filter((term) => term.length >= 2); // Only terms with 2+ chars
 }
 
@@ -76,10 +76,7 @@ export function extractSearchTerms(query: string): string[] {
  * Find match positions in text for highlighting.
  * Returns array of [start, end] positions.
  */
-export function findMatchPositions(
-  text: string,
-  terms: string[]
-): Array<[number, number]> {
+export function findMatchPositions(text: string, terms: string[]): Array<[number, number]> {
   if (!text || terms.length === 0) {
     return [];
   }
@@ -106,9 +103,7 @@ export function findMatchPositions(
 /**
  * Merge overlapping position ranges.
  */
-function mergeOverlappingRanges(
-  ranges: Array<[number, number]>
-): Array<[number, number]> {
+function mergeOverlappingRanges(ranges: Array<[number, number]>): Array<[number, number]> {
   if (ranges.length === 0) {
     return [];
   }

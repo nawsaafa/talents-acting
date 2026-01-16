@@ -1,38 +1,27 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Image from "next/image";
-import {
-  Eye,
-  Lock,
-  MapPin,
-  Mail,
-  Phone,
-  Star,
-  Calendar,
-  Ruler,
-  DollarSign,
-} from "lucide-react";
-import type { TalentProfile } from "@prisma/client";
-import { cn } from "@/lib/utils";
+import { useState } from 'react';
+import Image from 'next/image';
+import { Eye, Lock, MapPin, Mail, Phone, Star, Calendar, Ruler, DollarSign } from 'lucide-react';
+import type { TalentProfile } from '@prisma/client';
+import { cn } from '@/lib/utils';
 
-type ViewMode = "public" | "premium";
+type ViewMode = 'public' | 'premium';
 
 interface ProfilePreviewProps {
   profile: Partial<TalentProfile>;
   className?: string;
 }
 
-
 export function ProfilePreview({ profile, className }: ProfilePreviewProps) {
-  const [viewMode, setViewMode] = useState<ViewMode>("public");
+  const [viewMode, setViewMode] = useState<ViewMode>('public');
 
-  const isPremium = viewMode === "premium";
+  const isPremium = viewMode === 'premium';
 
   // Format arrays for display
   const formatArray = (arr: string[] | null | undefined) => {
     if (!arr || arr.length === 0) return null;
-    return arr.join(", ");
+    return arr.join(', ');
   };
 
   // Format height
@@ -46,26 +35,26 @@ export function ProfilePreview({ profile, className }: ProfilePreviewProps) {
   // Format date of birth (premium only)
   const formatDOB = (date: Date | null | undefined) => {
     if (!date) return null;
-    return new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
   };
 
   // Format rate
   const formatRate = (rate: number | null | undefined, negotiable: boolean | null | undefined) => {
     if (!rate) return null;
-    const formatted = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+    const formatted = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       maximumFractionDigits: 0,
     }).format(Number(rate));
-    return `${formatted}/day${negotiable ? " (negotiable)" : ""}`;
+    return `${formatted}/day${negotiable ? ' (negotiable)' : ''}`;
   };
 
   return (
-    <div className={cn("rounded-lg border bg-white", className)}>
+    <div className={cn('rounded-lg border bg-white', className)}>
       {/* Toggle */}
       <div className="p-4 border-b bg-gray-50">
         <div className="flex items-center justify-between">
@@ -73,12 +62,10 @@ export function ProfilePreview({ profile, className }: ProfilePreviewProps) {
           <div className="flex rounded-lg border bg-white p-1">
             <button
               type="button"
-              onClick={() => setViewMode("public")}
+              onClick={() => setViewMode('public')}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded text-sm font-medium transition-colors",
-                viewMode === "public"
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-600 hover:bg-gray-100"
+                'flex items-center gap-1.5 px-3 py-1.5 rounded text-sm font-medium transition-colors',
+                viewMode === 'public' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'
               )}
             >
               <Eye className="w-4 h-4" />
@@ -86,12 +73,12 @@ export function ProfilePreview({ profile, className }: ProfilePreviewProps) {
             </button>
             <button
               type="button"
-              onClick={() => setViewMode("premium")}
+              onClick={() => setViewMode('premium')}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded text-sm font-medium transition-colors",
-                viewMode === "premium"
-                  ? "bg-purple-600 text-white"
-                  : "text-gray-600 hover:bg-gray-100"
+                'flex items-center gap-1.5 px-3 py-1.5 rounded text-sm font-medium transition-colors',
+                viewMode === 'premium'
+                  ? 'bg-purple-600 text-white'
+                  : 'text-gray-600 hover:bg-gray-100'
               )}
             >
               <Star className="w-4 h-4" />
@@ -100,9 +87,9 @@ export function ProfilePreview({ profile, className }: ProfilePreviewProps) {
           </div>
         </div>
         <p className="mt-2 text-xs text-gray-500">
-          {viewMode === "public"
-            ? "This is how visitors see your profile"
-            : "This is how verified professionals see your profile"}
+          {viewMode === 'public'
+            ? 'This is how visitors see your profile'
+            : 'This is how verified professionals see your profile'}
         </p>
       </div>
 
@@ -123,9 +110,7 @@ export function ProfilePreview({ profile, className }: ProfilePreviewProps) {
               </div>
             ) : (
               <div className="w-32 h-40 rounded-lg bg-gray-200 flex items-center justify-center">
-                <span className="text-gray-400 text-4xl">
-                  {profile.firstName?.[0] ?? "?"}
-                </span>
+                <span className="text-gray-400 text-4xl">{profile.firstName?.[0] ?? '?'}</span>
               </div>
             )}
           </div>
@@ -139,7 +124,8 @@ export function ProfilePreview({ profile, className }: ProfilePreviewProps) {
             <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-gray-600">
               {profile.gender && (
                 <span className="px-2 py-0.5 bg-gray-100 rounded">
-                  {profile.gender.charAt(0) + profile.gender.slice(1).toLowerCase().replace("_", " ")}
+                  {profile.gender.charAt(0) +
+                    profile.gender.slice(1).toLowerCase().replace('_', ' ')}
                 </span>
               )}
               {profile.ageRangeMin && profile.ageRangeMax && (
@@ -203,7 +189,8 @@ export function ProfilePreview({ profile, className }: ProfilePreviewProps) {
               <div>
                 <span className="text-xs text-gray-500">Physique</span>
                 <p className="text-sm font-medium">
-                  {profile.physique.charAt(0) + profile.physique.slice(1).toLowerCase().replace("_", " ")}
+                  {profile.physique.charAt(0) +
+                    profile.physique.slice(1).toLowerCase().replace('_', ' ')}
                 </p>
               </div>
             )}
@@ -297,7 +284,7 @@ export function ProfilePreview({ profile, className }: ProfilePreviewProps) {
               <div>
                 <span className="text-xs text-purple-700">Availability</span>
                 <p className="text-sm font-medium text-purple-900">
-                  {profile.isAvailable !== false ? "Available" : "Not Available"}
+                  {profile.isAvailable !== false ? 'Available' : 'Not Available'}
                 </p>
               </div>
             </div>

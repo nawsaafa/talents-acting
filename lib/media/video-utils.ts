@@ -1,5 +1,5 @@
 // Video platform types
-export type VideoPlatform = "youtube" | "vimeo" | "unknown";
+export type VideoPlatform = 'youtube' | 'vimeo' | 'unknown';
 
 // Video info extracted from URL
 export interface VideoInfo {
@@ -54,9 +54,9 @@ export function extractVimeoId(url: string): string | null {
  * Detect video platform from URL
  */
 export function detectPlatform(url: string): VideoPlatform {
-  if (extractYouTubeId(url)) return "youtube";
-  if (extractVimeoId(url)) return "vimeo";
-  return "unknown";
+  if (extractYouTubeId(url)) return 'youtube';
+  if (extractVimeoId(url)) return 'vimeo';
+  return 'unknown';
 }
 
 /**
@@ -103,20 +103,18 @@ export function getThumbnailUrl(url: string): string | null {
 export function parseVideoUrl(url: string): VideoInfo {
   const platform = detectPlatform(url);
 
-  if (platform === "youtube") {
+  if (platform === 'youtube') {
     const videoId = extractYouTubeId(url);
     return {
       platform,
       videoId,
       embedUrl: videoId ? `https://www.youtube.com/embed/${videoId}` : null,
-      thumbnailUrl: videoId
-        ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
-        : null,
+      thumbnailUrl: videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null,
       originalUrl: url,
     };
   }
 
-  if (platform === "vimeo") {
+  if (platform === 'vimeo') {
     const videoId = extractVimeoId(url);
     return {
       platform,
@@ -128,7 +126,7 @@ export function parseVideoUrl(url: string): VideoInfo {
   }
 
   return {
-    platform: "unknown",
+    platform: 'unknown',
     videoId: null,
     embedUrl: null,
     thumbnailUrl: null,
@@ -140,7 +138,7 @@ export function parseVideoUrl(url: string): VideoInfo {
  * Validate if URL is a supported video platform
  */
 export function isValidVideoUrl(url: string): boolean {
-  return detectPlatform(url) !== "unknown";
+  return detectPlatform(url) !== 'unknown';
 }
 
 /**
@@ -149,17 +147,17 @@ export function isValidVideoUrl(url: string): boolean {
 export function formatVideoUrlForDisplay(url: string): string {
   const info = parseVideoUrl(url);
 
-  if (info.platform === "youtube" && info.videoId) {
+  if (info.platform === 'youtube' && info.videoId) {
     return `youtube.com/watch?v=${info.videoId}`;
   }
 
-  if (info.platform === "vimeo" && info.videoId) {
+  if (info.platform === 'vimeo' && info.videoId) {
     return `vimeo.com/${info.videoId}`;
   }
 
   // Return original URL truncated if too long
   if (url.length > 50) {
-    return url.substring(0, 47) + "...";
+    return url.substring(0, 47) + '...';
   }
   return url;
 }

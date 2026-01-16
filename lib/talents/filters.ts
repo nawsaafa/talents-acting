@@ -1,13 +1,11 @@
-import { Prisma, ValidationStatus } from "@prisma/client";
-import type { TalentFilterInput } from "./validation";
+import { Prisma, ValidationStatus } from '@prisma/client';
+import type { TalentFilterInput } from './validation';
 
 /**
  * Build Prisma WHERE clause from filter parameters.
  * Always includes base conditions for approved and public profiles.
  */
-export function buildTalentFilterQuery(
-  params: TalentFilterInput
-): Prisma.TalentProfileWhereInput {
+export function buildTalentFilterQuery(params: TalentFilterInput): Prisma.TalentProfileWhereInput {
   const where: Prisma.TalentProfileWhereInput = {
     // Base conditions - always show only approved, public profiles
     validationStatus: ValidationStatus.APPROVED,
@@ -17,7 +15,7 @@ export function buildTalentFilterQuery(
 
   // Basic filters
   if (params.search) {
-    where.firstName = { contains: params.search, mode: "insensitive" };
+    where.firstName = { contains: params.search, mode: 'insensitive' };
   }
 
   if (params.gender) {
@@ -118,7 +116,7 @@ export function parseFilterParams(
   }
 
   if (searchParams.gender) {
-    params.gender = searchParams.gender as TalentFilterInput["gender"];
+    params.gender = searchParams.gender as TalentFilterInput['gender'];
   }
 
   if (searchParams.ageMin) {
@@ -145,51 +143,47 @@ export function parseFilterParams(
   // Enum array filters (comma-separated)
   if (searchParams.physique) {
     params.physique = searchParams.physique
-      .split(",")
-      .filter(Boolean) as TalentFilterInput["physique"];
+      .split(',')
+      .filter(Boolean) as TalentFilterInput['physique'];
   }
 
   if (searchParams.hairColor) {
     params.hairColor = searchParams.hairColor
-      .split(",")
-      .filter(Boolean) as TalentFilterInput["hairColor"];
+      .split(',')
+      .filter(Boolean) as TalentFilterInput['hairColor'];
   }
 
   if (searchParams.eyeColor) {
     params.eyeColor = searchParams.eyeColor
-      .split(",")
-      .filter(Boolean) as TalentFilterInput["eyeColor"];
+      .split(',')
+      .filter(Boolean) as TalentFilterInput['eyeColor'];
   }
 
   if (searchParams.hairLength) {
     params.hairLength = searchParams.hairLength
-      .split(",")
-      .filter(Boolean) as TalentFilterInput["hairLength"];
+      .split(',')
+      .filter(Boolean) as TalentFilterInput['hairLength'];
   }
 
   // Skills array filters
   if (searchParams.languages) {
-    params.languages = searchParams.languages.split(",").filter(Boolean);
+    params.languages = searchParams.languages.split(',').filter(Boolean);
   }
 
   if (searchParams.athleticSkills) {
-    params.athleticSkills = searchParams.athleticSkills
-      .split(",")
-      .filter(Boolean);
+    params.athleticSkills = searchParams.athleticSkills.split(',').filter(Boolean);
   }
 
   if (searchParams.danceStyles) {
-    params.danceStyles = searchParams.danceStyles.split(",").filter(Boolean);
+    params.danceStyles = searchParams.danceStyles.split(',').filter(Boolean);
   }
 
   if (searchParams.performanceSkills) {
-    params.performanceSkills = searchParams.performanceSkills
-      .split(",")
-      .filter(Boolean);
+    params.performanceSkills = searchParams.performanceSkills.split(',').filter(Boolean);
   }
 
   // Professional filters
-  if (searchParams.isAvailable === "true") {
+  if (searchParams.isAvailable === 'true') {
     params.isAvailable = true;
   }
 

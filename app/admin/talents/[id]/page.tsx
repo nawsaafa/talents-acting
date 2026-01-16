@@ -1,8 +1,9 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getTalentForReview } from "@/lib/admin/queries";
-import { Card } from "@/components/ui/Card";
-import { ValidationActions } from "@/components/admin/ValidationActions";
+import Link from 'next/link';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
+import { getTalentForReview } from '@/lib/admin/queries';
+import { Card } from '@/components/ui/Card';
+import { ValidationActions } from '@/components/admin/ValidationActions';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -10,24 +11,24 @@ interface PageProps {
 
 const VALIDATION_STATUS_STYLES = {
   PENDING: {
-    bg: "bg-[var(--color-warning-50)]",
-    text: "text-[var(--color-warning)]",
-    label: "Pending Review",
+    bg: 'bg-[var(--color-warning-50)]',
+    text: 'text-[var(--color-warning)]',
+    label: 'Pending Review',
   },
   APPROVED: {
-    bg: "bg-[var(--color-success-50)]",
-    text: "text-[var(--color-success)]",
-    label: "Approved",
+    bg: 'bg-[var(--color-success-50)]',
+    text: 'text-[var(--color-success)]',
+    label: 'Approved',
   },
   REJECTED: {
-    bg: "bg-[var(--color-error-50)]",
-    text: "text-[var(--color-error)]",
-    label: "Rejected",
+    bg: 'bg-[var(--color-error-50)]',
+    text: 'text-[var(--color-error)]',
+    label: 'Rejected',
   },
   SUSPENDED: {
-    bg: "bg-[var(--color-neutral-100)]",
-    text: "text-[var(--color-neutral-600)]",
-    label: "Suspended",
+    bg: 'bg-[var(--color-neutral-100)]',
+    text: 'text-[var(--color-neutral-600)]',
+    label: 'Suspended',
   },
 };
 
@@ -49,7 +50,12 @@ export default async function TalentDetailPage({ params }: PageProps) {
         className="inline-flex items-center text-sm text-[var(--color-neutral-600)] hover:text-[var(--color-neutral-900)]"
       >
         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          />
         </svg>
         Back to Queue
       </Link>
@@ -58,9 +64,11 @@ export default async function TalentDetailPage({ params }: PageProps) {
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-4">
           {talent.photo ? (
-            <img
+            <Image
               src={talent.photo}
               alt={talent.firstName}
+              width={80}
+              height={80}
               className="w-20 h-20 rounded-full object-cover"
             />
           ) : (
@@ -75,13 +83,15 @@ export default async function TalentDetailPage({ params }: PageProps) {
               {talent.firstName} {talent.lastName}
             </h1>
             <p className="text-[var(--color-neutral-600)]">{talent.user.email}</p>
-            <span className={`inline-block mt-2 px-3 py-1 text-sm font-medium rounded-full ${statusStyle.bg} ${statusStyle.text}`}>
+            <span
+              className={`inline-block mt-2 px-3 py-1 text-sm font-medium rounded-full ${statusStyle.bg} ${statusStyle.text}`}
+            >
               {statusStyle.label}
             </span>
           </div>
         </div>
 
-        {talent.validationStatus === "PENDING" && (
+        {talent.validationStatus === 'PENDING' && (
           <ValidationActions profileId={talent.id} profileType="talent" showLabels />
         )}
       </div>
@@ -107,7 +117,9 @@ export default async function TalentDetailPage({ params }: PageProps) {
             </div>
             <div className="flex justify-between">
               <dt className="text-[var(--color-neutral-500)]">Age Range</dt>
-              <dd className="font-medium">{talent.ageRangeMin} - {talent.ageRangeMax}</dd>
+              <dd className="font-medium">
+                {talent.ageRangeMin} - {talent.ageRangeMax}
+              </dd>
             </div>
             {talent.height && (
               <div className="flex justify-between">
@@ -168,11 +180,11 @@ export default async function TalentDetailPage({ params }: PageProps) {
             )}
             <div className="flex justify-between">
               <dt className="text-[var(--color-neutral-500)]">Tattoos</dt>
-              <dd className="font-medium">{talent.hasTattoos ? "Yes" : "No"}</dd>
+              <dd className="font-medium">{talent.hasTattoos ? 'Yes' : 'No'}</dd>
             </div>
             <div className="flex justify-between">
               <dt className="text-[var(--color-neutral-500)]">Scars</dt>
-              <dd className="font-medium">{talent.hasScars ? "Yes" : "No"}</dd>
+              <dd className="font-medium">{talent.hasScars ? 'Yes' : 'No'}</dd>
             </div>
           </dl>
         </Card>
@@ -210,7 +222,7 @@ export default async function TalentDetailPage({ params }: PageProps) {
           <dl className="space-y-3">
             <div className="flex justify-between">
               <dt className="text-[var(--color-neutral-500)]">Available</dt>
-              <dd className="font-medium">{talent.isAvailable ? "Yes" : "No"}</dd>
+              <dd className="font-medium">{talent.isAvailable ? 'Yes' : 'No'}</dd>
             </div>
             {talent.dailyRate && (
               <div className="flex justify-between">
@@ -220,7 +232,7 @@ export default async function TalentDetailPage({ params }: PageProps) {
             )}
             <div className="flex justify-between">
               <dt className="text-[var(--color-neutral-500)]">Rate Negotiable</dt>
-              <dd className="font-medium">{talent.rateNegotiable ? "Yes" : "No"}</dd>
+              <dd className="font-medium">{talent.rateNegotiable ? 'Yes' : 'No'}</dd>
             </div>
           </dl>
         </Card>
@@ -240,10 +252,15 @@ export default async function TalentDetailPage({ params }: PageProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {talent.languages.length > 0 && (
             <div>
-              <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">Languages</h3>
+              <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">
+                Languages
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {talent.languages.map((lang) => (
-                  <span key={lang} className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded">
+                  <span
+                    key={lang}
+                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
+                  >
                     {lang}
                   </span>
                 ))}
@@ -255,7 +272,10 @@ export default async function TalentDetailPage({ params }: PageProps) {
               <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">Accents</h3>
               <div className="flex flex-wrap gap-2">
                 {talent.accents.map((accent) => (
-                  <span key={accent} className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded">
+                  <span
+                    key={accent}
+                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
+                  >
                     {accent}
                   </span>
                 ))}
@@ -264,10 +284,15 @@ export default async function TalentDetailPage({ params }: PageProps) {
           )}
           {talent.performanceSkills.length > 0 && (
             <div>
-              <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">Performance</h3>
+              <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">
+                Performance
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {talent.performanceSkills.map((skill) => (
-                  <span key={skill} className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded">
+                  <span
+                    key={skill}
+                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
+                  >
                     {skill}
                   </span>
                 ))}
@@ -279,7 +304,10 @@ export default async function TalentDetailPage({ params }: PageProps) {
               <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">Athletic</h3>
               <div className="flex flex-wrap gap-2">
                 {talent.athleticSkills.map((skill) => (
-                  <span key={skill} className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded">
+                  <span
+                    key={skill}
+                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
+                  >
                     {skill}
                   </span>
                 ))}
@@ -291,7 +319,10 @@ export default async function TalentDetailPage({ params }: PageProps) {
               <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">Dance</h3>
               <div className="flex flex-wrap gap-2">
                 {talent.danceStyles.map((style) => (
-                  <span key={style} className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded">
+                  <span
+                    key={style}
+                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
+                  >
                     {style}
                   </span>
                 ))}
@@ -303,7 +334,10 @@ export default async function TalentDetailPage({ params }: PageProps) {
               <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">Music</h3>
               <div className="flex flex-wrap gap-2">
                 {talent.musicalInstruments.map((instrument) => (
-                  <span key={instrument} className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded">
+                  <span
+                    key={instrument}
+                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
+                  >
                     {instrument}
                   </span>
                 ))}
@@ -323,16 +357,16 @@ export default async function TalentDetailPage({ params }: PageProps) {
             <span className="font-medium">User ID:</span> {talent.userId}
           </div>
           <div>
-            <span className="font-medium">Created:</span>{" "}
+            <span className="font-medium">Created:</span>{' '}
             {new Date(talent.createdAt).toLocaleString()}
           </div>
           <div>
-            <span className="font-medium">Updated:</span>{" "}
+            <span className="font-medium">Updated:</span>{' '}
             {new Date(talent.updatedAt).toLocaleString()}
           </div>
           {talent.validatedAt && (
             <div>
-              <span className="font-medium">Validated:</span>{" "}
+              <span className="font-medium">Validated:</span>{' '}
               {new Date(talent.validatedAt).toLocaleString()}
             </div>
           )}

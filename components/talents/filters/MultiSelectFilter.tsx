@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useMemo } from "react";
-import { Search, X } from "lucide-react";
+import { useState, useMemo } from 'react';
+import { Search, X } from 'lucide-react';
 
 interface MultiSelectFilterProps {
   label: string;
@@ -16,9 +16,9 @@ export function MultiSelectFilter({
   options,
   value = [],
   onChange,
-  placeholder = "Search...",
+  placeholder = 'Search...',
 }: MultiSelectFilterProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Filter options based on search query
   const filteredOptions = useMemo(() => {

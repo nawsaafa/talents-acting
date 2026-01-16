@@ -1,26 +1,22 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, Save, Loader2 } from "lucide-react";
-import type { TalentProfile } from "@prisma/client";
-import { Button } from "@/components/ui";
-import { WizardNav } from "./WizardNav";
-import { WizardStep } from "./WizardStep";
-import { BasicInfoStep } from "./steps/BasicInfoStep";
-import { PhysicalAttributesStep } from "./steps/PhysicalAttributesStep";
-import { SkillsStep } from "./steps/SkillsStep";
-import { MediaStep } from "./steps/MediaStep";
-import { ProfessionalStep } from "./steps/ProfessionalStep";
-import {
-  WIZARD_STEPS,
-  validateStep,
-  type WizardStepId,
-} from "@/lib/profile/wizard-validation";
-import { updateTalentProfile } from "@/lib/talents/actions";
-import type { UpdateProfileInput } from "@/lib/talents/validation";
+import { useState, useEffect, useCallback, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { ChevronLeft, ChevronRight, Save, Loader2 } from 'lucide-react';
+import type { TalentProfile } from '@prisma/client';
+import { Button } from '@/components/ui';
+import { WizardNav } from './WizardNav';
+import { WizardStep } from './WizardStep';
+import { BasicInfoStep } from './steps/BasicInfoStep';
+import { PhysicalAttributesStep } from './steps/PhysicalAttributesStep';
+import { SkillsStep } from './steps/SkillsStep';
+import { MediaStep } from './steps/MediaStep';
+import { ProfessionalStep } from './steps/ProfessionalStep';
+import { WIZARD_STEPS, validateStep, type WizardStepId } from '@/lib/profile/wizard-validation';
+import { updateTalentProfile } from '@/lib/talents/actions';
+import type { UpdateProfileInput } from '@/lib/talents/validation';
 
-const STORAGE_KEY = "profile-wizard-state";
+const STORAGE_KEY = 'profile-wizard-state';
 
 interface ProfileWizardProps {
   initialData?: Partial<TalentProfile>;
@@ -39,7 +35,7 @@ export function ProfileWizard({ initialData, profileId }: ProfileWizardProps) {
 
   // Initialize state from localStorage or props
   const [state, setState] = useState<WizardState>(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         try {
@@ -74,7 +70,7 @@ export function ProfileWizard({ initialData, profileId }: ProfileWizardProps) {
 
   // Persist state to localStorage
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify({
@@ -88,31 +84,26 @@ export function ProfileWizard({ initialData, profileId }: ProfileWizardProps) {
   }, [profileId, currentStep, completedSteps, formData]);
 
   // Update field value
-  const updateField = useCallback(
-    (field: keyof TalentProfile, value: unknown) => {
-      setState((prev) => ({
-        ...prev,
-        formData: { ...prev.formData, [field]: value },
-      }));
-      // Clear error for this field
-      setErrors((prev) => {
-        const next = { ...prev };
-        delete next[field];
-        return next;
-      });
-    },
-    []
-  );
+  const updateField = useCallback((field: keyof TalentProfile, value: unknown) => {
+    setState((prev) => ({
+      ...prev,
+      formData: { ...prev.formData, [field]: value },
+    }));
+    // Clear error for this field
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  }, []);
 
   // Update array field (add/remove)
   const updateArrayField = useCallback(
-    (field: keyof TalentProfile, value: string, action: "add" | "remove") => {
+    (field: keyof TalentProfile, value: string, action: 'add' | 'remove') => {
       setState((prev) => {
         const currentArray = (prev.formData[field] as string[]) ?? [];
         const newArray =
-          action === "add"
-            ? [...currentArray, value]
-            : currentArray.filter((v) => v !== value);
+          action === 'add' ? [...currentArray, value] : currentArray.filter((v) => v !== value);
         return {
           ...prev,
           formData: { ...prev.formData, [field]: newArray },
@@ -127,12 +118,10 @@ export function ProfileWizard({ initialData, profileId }: ProfileWizardProps) {
     const stepId = currentStepConfig.id;
     const result = validateStep(stepId, formData as Record<string, unknown>);
 
-    if (!result.success && "error" in result) {
+    if (!result.success && 'error' in result) {
       const newErrors: Record<string, string> = {};
       for (const issue of result.error.issues) {
-        const path = "path" in issue && Array.isArray(issue.path)
-          ? issue.path.join(".")
-          : "_error";
+        const path = 'path' in issue && Array.isArray(issue.path) ? issue.path.join('.') : '_error';
         if (!newErrors[path]) {
           newErrors[path] = issue.message;
         }
@@ -203,19 +192,17 @@ export function ProfileWizard({ initialData, profileId }: ProfileWizardProps) {
         // Handle Decimal -> number conversion for dailyRate
         const inputData: UpdateProfileInput = {
           ...formData,
-          dailyRate: formData.dailyRate != null
-            ? Number(formData.dailyRate)
-            : formData.dailyRate,
+          dailyRate: formData.dailyRate != null ? Number(formData.dailyRate) : formData.dailyRate,
         };
         const result = await updateTalentProfile(inputData);
 
         if (!result.success) {
-          setSaveError(result.error || "Failed to save profile");
+          setSaveError(result.error || 'Failed to save profile');
           return;
         }
 
         // Clear saved state on successful save
-        if (typeof window !== "undefined") {
+        if (typeof window !== 'undefined') {
           localStorage.removeItem(STORAGE_KEY);
         }
 
@@ -223,13 +210,11 @@ export function ProfileWizard({ initialData, profileId }: ProfileWizardProps) {
 
         // Redirect to profile page after short delay
         setTimeout(() => {
-          router.push("/dashboard/profile");
+          router.push('/dashboard/profile');
           router.refresh();
         }, 1500);
       } catch (err) {
-        setSaveError(
-          err instanceof Error ? err.message : "An unexpected error occurred"
-        );
+        setSaveError(err instanceof Error ? err.message : 'An unexpected error occurred');
       }
     });
   };
@@ -238,15 +223,15 @@ export function ProfileWizard({ initialData, profileId }: ProfileWizardProps) {
   const renderStepContent = () => {
     const StepContent = (() => {
       switch (currentStepConfig.id) {
-        case "basic":
+        case 'basic':
           return BasicInfoStep;
-        case "physical":
+        case 'physical':
           return PhysicalAttributesStep;
-        case "skills":
+        case 'skills':
           return SkillsStep;
-        case "media":
+        case 'media':
           return MediaStep;
-        case "professional":
+        case 'professional':
           return ProfessionalStep;
         default:
           return null;
@@ -308,9 +293,7 @@ export function ProfileWizard({ initialData, profileId }: ProfileWizardProps) {
 
         {saveSuccess && (
           <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <p className="text-sm text-green-700">
-              Profile saved successfully! Redirecting...
-            </p>
+            <p className="text-sm text-green-700">Profile saved successfully! Redirecting...</p>
           </div>
         )}
 
@@ -328,12 +311,7 @@ export function ProfileWizard({ initialData, profileId }: ProfileWizardProps) {
 
           <div className="flex items-center gap-3">
             {/* Save button (available on all steps) */}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleSave}
-              disabled={isPending}
-            >
+            <Button type="button" variant="outline" onClick={handleSave} disabled={isPending}>
               {isPending ? (
                 <Loader2 className="w-4 h-4 mr-1 animate-spin" />
               ) : (

@@ -1,15 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { X, Plus, Video, Image as ImageIcon, ExternalLink } from "lucide-react";
-import { PhotoUpload } from "@/components/talents/PhotoUpload";
-import {
-  useWizardContext,
-  FormField,
-  TextInput,
-  CheckboxInput,
-} from "../WizardStep";
-import type { TalentProfile } from "@prisma/client";
+import { useState } from 'react';
+import { X, Plus, Video, Image as ImageIcon, ExternalLink } from 'lucide-react';
+import { PhotoUpload } from '@/components/talents/PhotoUpload';
+import { useWizardContext, FormField, TextInput, CheckboxInput } from '../WizardStep';
+import type { TalentProfile } from '@prisma/client';
 
 interface UrlListInputProps {
   label: string;
@@ -20,7 +15,7 @@ interface UrlListInputProps {
   placeholder?: string;
   disabled?: boolean;
   error?: string;
-  icon: "video" | "image";
+  icon: 'video' | 'image';
   maxItems?: number;
 }
 
@@ -30,13 +25,13 @@ function UrlListInput({
   values,
   onAdd,
   onRemove,
-  placeholder = "Enter URL",
+  placeholder = 'Enter URL',
   disabled = false,
   error,
   icon,
   maxItems = 10,
 }: UrlListInputProps) {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [inputError, setInputError] = useState<string | null>(null);
 
   const isValidUrl = (url: string) => {
@@ -52,12 +47,12 @@ function UrlListInput({
     if (!inputValue.trim()) return;
 
     if (!isValidUrl(inputValue.trim())) {
-      setInputError("Please enter a valid URL");
+      setInputError('Please enter a valid URL');
       return;
     }
 
     if (values.includes(inputValue.trim())) {
-      setInputError("This URL is already added");
+      setInputError('This URL is already added');
       return;
     }
 
@@ -68,17 +63,17 @@ function UrlListInput({
 
     setInputError(null);
     onAdd(inputValue.trim());
-    setInputValue("");
+    setInputValue('');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
       handleAdd();
     }
   };
 
-  const Icon = icon === "video" ? Video : ImageIcon;
+  const Icon = icon === 'video' ? Video : ImageIcon;
 
   return (
     <FormField label={label} name={name} error={error}>
@@ -110,9 +105,7 @@ function UrlListInput({
           </button>
         </div>
 
-        {inputError && (
-          <p className="text-sm text-red-600">{inputError}</p>
-        )}
+        {inputError && <p className="text-sm text-red-600">{inputError}</p>}
 
         {/* URL list */}
         {values.length > 0 && (
@@ -155,19 +148,18 @@ function UrlListInput({
 }
 
 export function MediaStep() {
-  const { formData, updateField, updateArrayField, errors, isSubmitting } =
-    useWizardContext();
+  const { formData, updateField, updateArrayField, errors, isSubmitting } = useWizardContext();
 
   const handlePhotoChange = (url: string | null) => {
-    updateField("photo" as keyof TalentProfile, url);
+    updateField('photo' as keyof TalentProfile, url);
   };
 
   const handleArrayAdd = (field: keyof TalentProfile, value: string) => {
-    updateArrayField(field, value, "add");
+    updateArrayField(field, value, 'add');
   };
 
   const handleArrayRemove = (field: keyof TalentProfile, value: string) => {
-    updateArrayField(field, value, "remove");
+    updateArrayField(field, value, 'remove');
   };
 
   return (
@@ -179,9 +171,7 @@ export function MediaStep() {
           onPhotoChange={handlePhotoChange}
           disabled={isSubmitting}
         />
-        {errors.photo && (
-          <p className="mt-1 text-sm text-red-600">{errors.photo}</p>
-        )}
+        {errors.photo && <p className="mt-1 text-sm text-red-600">{errors.photo}</p>}
       </div>
 
       {/* Additional Photos */}
@@ -189,8 +179,8 @@ export function MediaStep() {
         label="Additional Photos"
         name="photos"
         values={(formData.photos as string[]) ?? []}
-        onAdd={(v) => handleArrayAdd("photos" as keyof TalentProfile, v)}
-        onRemove={(v) => handleArrayRemove("photos" as keyof TalentProfile, v)}
+        onAdd={(v) => handleArrayAdd('photos' as keyof TalentProfile, v)}
+        onRemove={(v) => handleArrayRemove('photos' as keyof TalentProfile, v)}
         placeholder="https://example.com/photo.jpg"
         disabled={isSubmitting}
         error={errors.photos}
@@ -203,8 +193,8 @@ export function MediaStep() {
         label="Video Links"
         name="videoUrls"
         values={(formData.videoUrls as string[]) ?? []}
-        onAdd={(v) => handleArrayAdd("videoUrls" as keyof TalentProfile, v)}
-        onRemove={(v) => handleArrayRemove("videoUrls" as keyof TalentProfile, v)}
+        onAdd={(v) => handleArrayAdd('videoUrls' as keyof TalentProfile, v)}
+        onRemove={(v) => handleArrayRemove('videoUrls' as keyof TalentProfile, v)}
         placeholder="https://youtube.com/watch?v=... or https://vimeo.com/..."
         disabled={isSubmitting}
         error={errors.videoUrls}
@@ -214,29 +204,23 @@ export function MediaStep() {
 
       {/* Showreel */}
       <div className="border-t pt-6">
-        <h3 className="text-sm font-medium text-gray-700 mb-4">
-          Professional Showreel
-        </h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-4">Professional Showreel</h3>
 
         <div className="space-y-4">
           <CheckboxInput
             name="hasShowreel"
             checked={formData.hasShowreel ?? false}
-            onChange={(v) => updateField("hasShowreel" as keyof TalentProfile, v)}
+            onChange={(v) => updateField('hasShowreel' as keyof TalentProfile, v)}
             label="I have a professional showreel"
             disabled={isSubmitting}
           />
 
           {formData.hasShowreel && (
-            <FormField
-              label="Showreel URL"
-              name="showreel"
-              error={errors.showreel}
-            >
+            <FormField label="Showreel URL" name="showreel" error={errors.showreel}>
               <TextInput
                 name="showreel"
                 value={formData.showreel}
-                onChange={(v) => updateField("showreel" as keyof TalentProfile, v)}
+                onChange={(v) => updateField('showreel' as keyof TalentProfile, v)}
                 type="url"
                 placeholder="https://youtube.com/watch?v=... or https://vimeo.com/..."
                 disabled={isSubmitting}
@@ -255,7 +239,7 @@ export function MediaStep() {
         <TextInput
           name="presentationVideo"
           value={formData.presentationVideo}
-          onChange={(v) => updateField("presentationVideo" as keyof TalentProfile, v)}
+          onChange={(v) => updateField('presentationVideo' as keyof TalentProfile, v)}
           type="url"
           placeholder="A short video introducing yourself"
           disabled={isSubmitting}

@@ -18,13 +18,14 @@ A complete admin dashboard for managing talent validation workflows and user acc
 
 ### 1. Admin Library (`lib/admin/`)
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| `validation.ts` | 50 | Zod schemas for admin actions |
-| `queries.ts` | 345 | Dashboard stats, validation queues, user queries |
-| `actions.ts` | 222 | Server actions for approve/reject/toggle |
+| File            | Lines | Purpose                                          |
+| --------------- | ----- | ------------------------------------------------ |
+| `validation.ts` | 50    | Zod schemas for admin actions                    |
+| `queries.ts`    | 345   | Dashboard stats, validation queues, user queries |
+| `actions.ts`    | 222   | Server actions for approve/reject/toggle         |
 
 **Key Functions**:
+
 - `getDashboardStats()` - Pending counts + active talent count
 - `getTalentValidationQueue()` - Paginated talent queue with status filter
 - `getTalentForReview()` - Full talent details for admin review
@@ -37,46 +38,50 @@ A complete admin dashboard for managing talent validation workflows and user acc
 
 ### 2. Admin Components (`components/admin/`)
 
-| Component | Lines | Purpose |
-|-----------|-------|---------|
-| `StatCard.tsx` | 53 | Dashboard metric display card |
-| `AdminSidebar.tsx` | 141 | Sidebar navigation with pending badges |
-| `ValidationActions.tsx` | 155 | Approve/reject buttons with modal |
-| `UserStatusToggle.tsx` | 70 | Active/inactive toggle switch |
-| `index.ts` | 4 | Barrel exports |
+| Component               | Lines | Purpose                                |
+| ----------------------- | ----- | -------------------------------------- |
+| `StatCard.tsx`          | 53    | Dashboard metric display card          |
+| `AdminSidebar.tsx`      | 141   | Sidebar navigation with pending badges |
+| `ValidationActions.tsx` | 155   | Approve/reject buttons with modal      |
+| `UserStatusToggle.tsx`  | 70    | Active/inactive toggle switch          |
+| `index.ts`              | 4     | Barrel exports                         |
 
 ### 3. Admin Routes (`app/admin/`)
 
-| Route | Lines | Purpose |
-|-------|-------|---------|
-| `layout.tsx` | 42 | Admin layout with role protection |
-| `page.tsx` | 143 | Dashboard overview with metrics |
-| `talents/page.tsx` | 176 | Talent validation queue |
-| `talents/[id]/page.tsx` | 343 | Talent review detail page |
-| `professionals/page.tsx` | 169 | Professional validation queue |
-| `companies/page.tsx` | 171 | Company validation queue |
-| `users/page.tsx` | 276 | User management page |
+| Route                    | Lines | Purpose                           |
+| ------------------------ | ----- | --------------------------------- |
+| `layout.tsx`             | 42    | Admin layout with role protection |
+| `page.tsx`               | 143   | Dashboard overview with metrics   |
+| `talents/page.tsx`       | 176   | Talent validation queue           |
+| `talents/[id]/page.tsx`  | 343   | Talent review detail page         |
+| `professionals/page.tsx` | 169   | Professional validation queue     |
+| `companies/page.tsx`     | 171   | Company validation queue          |
+| `users/page.tsx`         | 276   | User management page              |
 
 ---
 
 ## Architecture Decisions
 
 ### 1. Client Components for Actions
+
 - ValidationActions and UserStatusToggle are client components
 - Use `useRouter().refresh()` for optimistic UI updates
 - Server Actions called from client with form-like pattern
 
 ### 2. URL-Based Status Filtering
+
 - Validation queues use URL params for status filter (`?status=PENDING`)
 - Enables sharing links to specific status views
 - State persists on page refresh
 
 ### 3. Admin Layout Isolation
+
 - Dedicated layout without public Header component
 - Custom AdminSidebar with pending count badges
 - Different navigation needs from public site
 
 ### 4. Decimal Type Handling
+
 - Prisma Decimal converted to Number() for React rendering
 - Fix applied in talent detail page for dailyRate display
 
@@ -85,6 +90,7 @@ A complete admin dashboard for managing talent validation workflows and user acc
 ## Patterns Established
 
 ### Action Result Pattern
+
 ```typescript
 export type ActionResult = {
   success: boolean;
@@ -93,22 +99,24 @@ export type ActionResult = {
 ```
 
 ### Admin Protection Pattern
+
 ```typescript
 export default async function AdminLayout({ children }) {
   const session = await auth();
-  if (!session?.user) redirect("/auth/signin?callbackUrl=/admin");
-  if (!isAdmin(session.user.role)) redirect("/");
+  if (!session?.user) redirect('/auth/signin?callbackUrl=/admin');
+  if (!isAdmin(session.user.role)) redirect('/');
   // ...
 }
 ```
 
 ### Validation Queue Pattern
+
 ```typescript
 async function getQueue(status?: ValidationStatus) {
   return prisma.model.findMany({
-    where: { validationStatus: status || "PENDING" },
+    where: { validationStatus: status || 'PENDING' },
     include: { user: { select: { email: true } } },
-    orderBy: { createdAt: "asc" }
+    orderBy: { createdAt: 'asc' },
   });
 }
 ```
@@ -117,28 +125,29 @@ async function getQueue(status?: ValidationStatus) {
 
 ## Files Modified
 
-| File | Change |
-|------|--------|
+| File                             | Change                                     |
+| -------------------------------- | ------------------------------------------ |
 | `components/auth/AuthStatus.tsx` | Added admin dashboard link for admin users |
 
 ---
 
 ## Quality Metrics
 
-| Metric | Value |
-|--------|-------|
-| Total Lines | 2,360 |
-| Files Created | 15 |
-| ESLint Errors | 0 |
+| Metric          | Value          |
+| --------------- | -------------- |
+| Total Lines     | 2,360          |
+| Files Created   | 15             |
+| ESLint Errors   | 0              |
 | ESLint Warnings | 2 (acceptable) |
-| Build Status | Pass |
-| Tasks Completed | 20/20 |
+| Build Status    | Pass           |
+| Tasks Completed | 20/20          |
 
 ---
 
 ## Testing Notes
 
 ### Manual Testing Performed
+
 - [x] Admin role protection verified (non-admins redirected)
 - [x] Dashboard metrics display correctly
 - [x] Validation queues show pending items

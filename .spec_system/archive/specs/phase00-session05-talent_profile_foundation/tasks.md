@@ -19,14 +19,14 @@
 
 ## Progress Summary
 
-| Category | Total | Done | Remaining |
-|----------|-------|------|-----------|
-| Setup | 3 | 3 | 0 |
-| Foundation | 4 | 4 | 0 |
-| Components | 5 | 5 | 0 |
-| Pages | 5 | 5 | 0 |
-| Testing | 3 | 3 | 0 |
-| **Total** | **20** | **20** | **0** |
+| Category   | Total  | Done   | Remaining |
+| ---------- | ------ | ------ | --------- |
+| Setup      | 3      | 3      | 0         |
+| Foundation | 4      | 4      | 0         |
+| Components | 5      | 5      | 0         |
+| Pages      | 5      | 5      | 0         |
+| Testing    | 3      | 3      | 0         |
+| **Total**  | **20** | **20** | **0**     |
 
 ---
 
@@ -106,12 +106,15 @@ Before marking session complete:
 ## Notes
 
 ### Parallelization
+
 Tasks T010-T012 (TalentCard, TalentFilters, PremiumSection) can be done simultaneously as they are independent components.
 
 ### Task Timing
+
 Target ~15-20 minutes per task. ProfileForm (T009) may take longer due to 40+ fields.
 
 ### Dependencies
+
 - T004-T007 must be done in order (validation -> queries -> actions -> upload API)
 - T008-T009 depend on T004 (validation) and T007 (upload API)
 - T010-T012 are independent components
@@ -119,6 +122,7 @@ Target ~15-20 minutes per task. ProfileForm (T009) may take longer due to 40+ fi
 - T017 can be done after T013 (listing page exists)
 
 ### Key Implementation Notes
+
 - Use `'use client'` only for form components (ProfileForm, PhotoUpload, TalentFilters)
 - Pages (listing, detail) should be Server Components
 - Photo storage: `public/uploads/talents/[userId]/` with UUID filenames
@@ -127,6 +131,7 @@ Target ~15-20 minutes per task. ProfileForm (T009) may take longer due to 40+ fi
 - Use `canAccessPremium()` from auth utils for role checks
 
 ### File Organization
+
 Create barrel export in `components/talents/index.ts` after all components are built.
 
 ---

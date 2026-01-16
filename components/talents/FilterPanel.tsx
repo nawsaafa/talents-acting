@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Filter, X } from "lucide-react";
-import { FilterSection } from "./FilterSection";
-import { RangeFilter, EnumSelectFilter, MultiSelectFilter } from "./filters";
-import { useFilters } from "@/hooks/useFilters";
+import { useState } from 'react';
+import { Filter, X } from 'lucide-react';
+import { FilterSection } from './FilterSection';
+import { RangeFilter, EnumSelectFilter, MultiSelectFilter } from './filters';
+import { useFilters } from '@/hooks/useFilters';
 import {
   GENDER_OPTIONS,
   PHYSIQUE_OPTIONS,
@@ -15,19 +15,13 @@ import {
   ATHLETIC_SKILLS,
   DANCE_STYLES,
   PERFORMANCE_SKILLS,
-} from "@/lib/talents/filter-options";
-import { Button } from "@/components/ui";
+} from '@/lib/talents/filter-options';
+import { Button } from '@/components/ui';
 
 export function FilterPanel() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const {
-    filters,
-    activeFilterCount,
-    setFilter,
-    setFilters,
-    clearFilters,
-    clearSection,
-  } = useFilters();
+  const { filters, activeFilterCount, setFilter, setFilters, clearFilters, clearSection } =
+    useFilters();
 
   // Count active filters per section
   const basicCount =
@@ -35,9 +29,7 @@ export function FilterPanel() {
     (filters.ageMin !== undefined || filters.ageMax !== undefined ? 1 : 0);
 
   const physicalCount =
-    (filters.minHeight !== undefined || filters.maxHeight !== undefined
-      ? 1
-      : 0) +
+    (filters.minHeight !== undefined || filters.maxHeight !== undefined ? 1 : 0) +
     (filters.physique?.length ? 1 : 0) +
     (filters.hairColor?.length ? 1 : 0) +
     (filters.eyeColor?.length ? 1 : 0) +
@@ -73,14 +65,14 @@ export function FilterPanel() {
       <FilterSection
         title="Basic"
         activeCount={basicCount}
-        onClear={() => clearSection(["gender", "ageMin", "ageMax"])}
+        onClear={() => clearSection(['gender', 'ageMin', 'ageMax'])}
       >
         <div className="space-y-4">
           <EnumSelectFilter
             label="Gender"
             options={GENDER_OPTIONS}
             value={filters.gender}
-            onChange={(value) => setFilter("gender", value as string)}
+            onChange={(value) => setFilter('gender', value as string)}
           />
           <RangeFilter
             label="Age Range"
@@ -90,9 +82,7 @@ export function FilterPanel() {
             maxPlaceholder="Max"
             min={1}
             max={100}
-            onChange={(min, max) =>
-              setFilters({ ageMin: min ?? null, ageMax: max ?? null })
-            }
+            onChange={(min, max) => setFilters({ ageMin: min ?? null, ageMax: max ?? null })}
           />
         </div>
       </FilterSection>
@@ -103,12 +93,12 @@ export function FilterPanel() {
         activeCount={physicalCount}
         onClear={() =>
           clearSection([
-            "minHeight",
-            "maxHeight",
-            "physique",
-            "hairColor",
-            "eyeColor",
-            "hairLength",
+            'minHeight',
+            'maxHeight',
+            'physique',
+            'hairColor',
+            'eyeColor',
+            'hairLength',
           ])
         }
       >
@@ -122,37 +112,35 @@ export function FilterPanel() {
             unit="cm"
             min={50}
             max={300}
-            onChange={(min, max) =>
-              setFilters({ minHeight: min ?? null, maxHeight: max ?? null })
-            }
+            onChange={(min, max) => setFilters({ minHeight: min ?? null, maxHeight: max ?? null })}
           />
           <EnumSelectFilter
             label="Physique"
             options={PHYSIQUE_OPTIONS}
             value={filters.physique}
             multi
-            onChange={(value) => setFilter("physique", value as string[])}
+            onChange={(value) => setFilter('physique', value as string[])}
           />
           <EnumSelectFilter
             label="Hair Color"
             options={HAIR_COLOR_OPTIONS}
             value={filters.hairColor}
             multi
-            onChange={(value) => setFilter("hairColor", value as string[])}
+            onChange={(value) => setFilter('hairColor', value as string[])}
           />
           <EnumSelectFilter
             label="Eye Color"
             options={EYE_COLOR_OPTIONS}
             value={filters.eyeColor}
             multi
-            onChange={(value) => setFilter("eyeColor", value as string[])}
+            onChange={(value) => setFilter('eyeColor', value as string[])}
           />
           <EnumSelectFilter
             label="Hair Length"
             options={HAIR_LENGTH_OPTIONS}
             value={filters.hairLength}
             multi
-            onChange={(value) => setFilter("hairLength", value as string[])}
+            onChange={(value) => setFilter('hairLength', value as string[])}
           />
         </div>
       </FilterSection>
@@ -162,12 +150,7 @@ export function FilterPanel() {
         title="Skills"
         activeCount={skillsCount}
         onClear={() =>
-          clearSection([
-            "languages",
-            "athleticSkills",
-            "danceStyles",
-            "performanceSkills",
-          ])
+          clearSection(['languages', 'athleticSkills', 'danceStyles', 'performanceSkills'])
         }
         defaultOpen={false}
       >
@@ -176,28 +159,28 @@ export function FilterPanel() {
             label="Languages"
             options={COMMON_LANGUAGES}
             value={filters.languages}
-            onChange={(value) => setFilter("languages", value ?? null)}
+            onChange={(value) => setFilter('languages', value ?? null)}
             placeholder="Search languages..."
           />
           <MultiSelectFilter
             label="Athletic Skills"
             options={ATHLETIC_SKILLS}
             value={filters.athleticSkills}
-            onChange={(value) => setFilter("athleticSkills", value ?? null)}
+            onChange={(value) => setFilter('athleticSkills', value ?? null)}
             placeholder="Search skills..."
           />
           <MultiSelectFilter
             label="Dance Styles"
             options={DANCE_STYLES}
             value={filters.danceStyles}
-            onChange={(value) => setFilter("danceStyles", value ?? null)}
+            onChange={(value) => setFilter('danceStyles', value ?? null)}
             placeholder="Search dance styles..."
           />
           <MultiSelectFilter
             label="Performance Skills"
             options={PERFORMANCE_SKILLS}
             value={filters.performanceSkills}
-            onChange={(value) => setFilter("performanceSkills", value ?? null)}
+            onChange={(value) => setFilter('performanceSkills', value ?? null)}
             placeholder="Search skills..."
           />
         </div>
@@ -207,7 +190,7 @@ export function FilterPanel() {
       <FilterSection
         title="Professional"
         activeCount={professionalCount}
-        onClear={() => clearSection(["isAvailable", "minRate", "maxRate"])}
+        onClear={() => clearSection(['isAvailable', 'minRate', 'maxRate'])}
         defaultOpen={false}
       >
         <div className="space-y-4">
@@ -215,9 +198,7 @@ export function FilterPanel() {
             <input
               type="checkbox"
               checked={filters.isAvailable === true}
-              onChange={(e) =>
-                setFilter("isAvailable", e.target.checked ? true : null)
-              }
+              onChange={(e) => setFilter('isAvailable', e.target.checked ? true : null)}
               className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
             <span className="text-sm text-gray-700">Available only</span>
@@ -230,9 +211,7 @@ export function FilterPanel() {
             maxPlaceholder="Max"
             min={0}
             step={100}
-            onChange={(min, max) =>
-              setFilters({ minRate: min ?? null, maxRate: max ?? null })
-            }
+            onChange={(min, max) => setFilters({ minRate: min ?? null, maxRate: max ?? null })}
           />
         </div>
       </FilterSection>
@@ -269,10 +248,7 @@ export function FilterPanel() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black/50"
-            onClick={() => setMobileOpen(false)}
-          />
+          <div className="fixed inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
 
           {/* Drawer */}
           <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-xl">
@@ -294,10 +270,7 @@ export function FilterPanel() {
 
               {/* Drawer footer */}
               <div className="p-4 border-t border-gray-200">
-                <Button
-                  onClick={() => setMobileOpen(false)}
-                  className="w-full"
-                >
+                <Button onClick={() => setMobileOpen(false)} className="w-full">
                   Apply Filters
                 </Button>
               </div>

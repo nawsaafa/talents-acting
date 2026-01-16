@@ -1,15 +1,15 @@
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import { Container } from "@/components/layout";
-import { PremiumSection } from "@/components/talents";
+import { notFound } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Container } from '@/components/layout';
+import { PremiumSection } from '@/components/talents';
 import {
   getPublicTalentById,
   getPremiumTalentById,
   type PremiumTalentProfile,
-} from "@/lib/talents/queries";
-import { auth } from "@/lib/auth/auth";
-import { canAccessPremium } from "@/lib/auth/utils";
+} from '@/lib/talents/queries';
+import { auth } from '@/lib/auth/auth';
+import { canAccessPremium } from '@/lib/auth/utils';
 import {
   ArrowLeft,
   MapPin,
@@ -20,26 +20,26 @@ import {
   Phone,
   Languages,
   Drama,
-} from "lucide-react";
+} from 'lucide-react';
 
 interface TalentDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
 const GENDER_LABELS: Record<string, string> = {
-  MALE: "Male",
-  FEMALE: "Female",
-  NON_BINARY: "Non-Binary",
-  OTHER: "Other",
+  MALE: 'Male',
+  FEMALE: 'Female',
+  NON_BINARY: 'Non-Binary',
+  OTHER: 'Other',
 };
 
 const PHYSIQUE_LABELS: Record<string, string> = {
-  SLIM: "Slim",
-  AVERAGE: "Average",
-  ATHLETIC: "Athletic",
-  MUSCULAR: "Muscular",
-  CURVY: "Curvy",
-  PLUS_SIZE: "Plus Size",
+  SLIM: 'Slim',
+  AVERAGE: 'Average',
+  ATHLETIC: 'Athletic',
+  MUSCULAR: 'Muscular',
+  CURVY: 'Curvy',
+  PLUS_SIZE: 'Plus Size',
 };
 
 export async function generateMetadata({ params }: TalentDetailPageProps) {
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: TalentDetailPageProps) {
   const talent = await getPublicTalentById(id);
 
   if (!talent) {
-    return { title: "Talent Not Found" };
+    return { title: 'Talent Not Found' };
   }
 
   return {
@@ -56,21 +56,15 @@ export async function generateMetadata({ params }: TalentDetailPageProps) {
   };
 }
 
-export default async function TalentDetailPage({
-  params,
-}: TalentDetailPageProps) {
+export default async function TalentDetailPage({ params }: TalentDetailPageProps) {
   const { id } = await params;
   const session = await auth();
 
   // Check if user can access premium data
-  const hasAccess = session?.user
-    ? canAccessPremium(session.user.role)
-    : false;
+  const hasAccess = session?.user ? canAccessPremium(session.user.role) : false;
 
   // Fetch appropriate data based on access level
-  const talent = hasAccess
-    ? await getPremiumTalentById(id)
-    : await getPublicTalentById(id);
+  const talent = hasAccess ? await getPremiumTalentById(id) : await getPublicTalentById(id);
 
   if (!talent) {
     notFound();
@@ -103,9 +97,7 @@ export default async function TalentDetailPage({
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
-                <span className="text-6xl text-gray-400">
-                  {talent.firstName.charAt(0)}
-                </span>
+                <span className="text-6xl text-gray-400">{talent.firstName.charAt(0)}</span>
               </div>
             )}
           </div>
@@ -157,9 +149,7 @@ export default async function TalentDetailPage({
 
           {/* Physical Attributes */}
           <section>
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Physical Attributes
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Physical Attributes</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {talent.hairColor && (
                 <div>
@@ -189,12 +179,9 @@ export default async function TalentDetailPage({
           </section>
 
           {/* Skills */}
-          {(talent.languages?.length > 0 ||
-            talent.performanceSkills?.length > 0) && (
+          {(talent.languages?.length > 0 || talent.performanceSkills?.length > 0) && (
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                Skills & Languages
-              </h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Skills & Languages</h2>
               <div className="space-y-4">
                 {talent.languages && talent.languages.length > 0 && (
                   <div>
@@ -214,89 +201,85 @@ export default async function TalentDetailPage({
                     </div>
                   </div>
                 )}
-                {talent.performanceSkills &&
-                  talent.performanceSkills.length > 0 && (
-                    <div>
-                      <div className="flex items-center gap-2 text-gray-700 mb-2">
-                        <Drama className="w-4 h-4" />
-                        <span className="font-medium">Performance Skills</span>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {talent.performanceSkills.map((skill) => (
-                          <span
-                            key={skill}
-                            className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
+                {talent.performanceSkills && talent.performanceSkills.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-2 text-gray-700 mb-2">
+                      <Drama className="w-4 h-4" />
+                      <span className="font-medium">Performance Skills</span>
                     </div>
-                  )}
+                    <div className="flex flex-wrap gap-2">
+                      {talent.performanceSkills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </section>
           )}
 
           {/* Premium Section - Bio and Contact */}
           <section>
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Contact & Details
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Contact & Details</h2>
             <PremiumSection isUnlocked={hasAccess}>
-              {hasAccess && (() => {
-                const premiumTalent = talent as PremiumTalentProfile;
-                return (
-                  <div className="space-y-4">
-                    {premiumTalent.bio && (
-                      <div>
-                        <h3 className="font-medium text-gray-900 mb-2">About</h3>
-                        <p className="text-gray-600 whitespace-pre-line">
-                          {premiumTalent.bio}
-                        </p>
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
-                      {premiumTalent.contactEmail && (
-                        <div className="flex items-center gap-2">
-                          <Mail className="w-4 h-4 text-gray-400" />
-                          <a
-                            href={`mailto:${premiumTalent.contactEmail}`}
-                            className="text-blue-600 hover:underline"
-                          >
-                            {premiumTalent.contactEmail}
-                          </a>
+              {hasAccess &&
+                (() => {
+                  const premiumTalent = talent as PremiumTalentProfile;
+                  return (
+                    <div className="space-y-4">
+                      {premiumTalent.bio && (
+                        <div>
+                          <h3 className="font-medium text-gray-900 mb-2">About</h3>
+                          <p className="text-gray-600 whitespace-pre-line">{premiumTalent.bio}</p>
                         </div>
                       )}
-                      {premiumTalent.contactPhone && (
-                        <div className="flex items-center gap-2">
-                          <Phone className="w-4 h-4 text-gray-400" />
-                          <a
-                            href={`tel:${premiumTalent.contactPhone}`}
-                            className="text-blue-600 hover:underline"
-                          >
-                            {premiumTalent.contactPhone}
-                          </a>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+                        {premiumTalent.contactEmail && (
+                          <div className="flex items-center gap-2">
+                            <Mail className="w-4 h-4 text-gray-400" />
+                            <a
+                              href={`mailto:${premiumTalent.contactEmail}`}
+                              className="text-blue-600 hover:underline"
+                            >
+                              {premiumTalent.contactEmail}
+                            </a>
+                          </div>
+                        )}
+                        {premiumTalent.contactPhone && (
+                          <div className="flex items-center gap-2">
+                            <Phone className="w-4 h-4 text-gray-400" />
+                            <a
+                              href={`tel:${premiumTalent.contactPhone}`}
+                              className="text-blue-600 hover:underline"
+                            >
+                              {premiumTalent.contactPhone}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+
+                      {premiumTalent.dailyRate && (
+                        <div className="pt-4 border-t">
+                          <span className="text-sm text-gray-500">Daily Rate</span>
+                          <p className="text-2xl font-bold text-gray-900">
+                            {Number(premiumTalent.dailyRate).toLocaleString()} MAD
+                            {premiumTalent.rateNegotiable && (
+                              <span className="text-sm font-normal text-gray-500 ml-2">
+                                (Negotiable)
+                              </span>
+                            )}
+                          </p>
                         </div>
                       )}
                     </div>
-
-                    {premiumTalent.dailyRate && (
-                      <div className="pt-4 border-t">
-                        <span className="text-sm text-gray-500">Daily Rate</span>
-                        <p className="text-2xl font-bold text-gray-900">
-                          {Number(premiumTalent.dailyRate).toLocaleString()} MAD
-                          {premiumTalent.rateNegotiable && (
-                            <span className="text-sm font-normal text-gray-500 ml-2">
-                              (Negotiable)
-                            </span>
-                          )}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
+                  );
+                })()}
             </PremiumSection>
           </section>
         </div>

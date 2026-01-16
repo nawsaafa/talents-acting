@@ -16,6 +16,7 @@ Create the admin dashboard foundation with user management, profile validation w
 ## Scope
 
 ### In Scope (MVP)
+
 - Admin dashboard layout (separate from public site)
 - Dashboard overview:
   - Pending talent validations count
@@ -35,6 +36,7 @@ Create the admin dashboard foundation with user management, profile validation w
 - Admin-only route protection
 
 ### Out of Scope
+
 - Bulk operations (mass approve/reject) - future
 - Analytics/reporting dashboard - future
 - Content management (site text) - future

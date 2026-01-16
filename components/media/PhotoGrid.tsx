@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import { GripVertical, Loader2 } from "lucide-react";
-import { PhotoCard } from "./PhotoCard";
-import { reorderPhotos } from "@/lib/media/upload";
+import { useState, useTransition } from 'react';
+import { GripVertical, Loader2 } from 'lucide-react';
+import { PhotoCard } from './PhotoCard';
+import { reorderPhotos } from '@/lib/media/upload';
 
 interface PhotoGridProps {
   photos: string[];
@@ -11,11 +11,7 @@ interface PhotoGridProps {
   onPhotosChanged?: () => void;
 }
 
-export function PhotoGrid({
-  photos,
-  primaryPhoto,
-  onPhotosChanged,
-}: PhotoGridProps) {
+export function PhotoGrid({ photos, primaryPhoto, onPhotosChanged }: PhotoGridProps) {
   const [isPending, startTransition] = useTransition();
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
@@ -23,7 +19,7 @@ export function PhotoGrid({
   const [error, setError] = useState<string | null>(null);
 
   // Update local photos when prop changes
-  if (photos.join(",") !== localPhotos.join(",")) {
+  if (photos.join(',') !== localPhotos.join(',')) {
     setLocalPhotos(photos);
   }
 
@@ -71,7 +67,7 @@ export function PhotoGrid({
       } else {
         // Revert on error
         setLocalPhotos(photos);
-        setError(result.error || "Failed to reorder");
+        setError(result.error || 'Failed to reorder');
       }
     });
   }
@@ -96,11 +92,7 @@ export function PhotoGrid({
       )}
 
       {/* Error message */}
-      {error && (
-        <div className="rounded-md bg-red-50 p-3 text-sm text-red-700">
-          {error}
-        </div>
-      )}
+      {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</div>}
 
       {/* Photo grid */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
@@ -115,10 +107,10 @@ export function PhotoGrid({
             onDrop={(e) => handleDrop(e, index)}
             className={`relative transition-all ${
               draggedIndex === index
-                ? "opacity-50 scale-95"
+                ? 'opacity-50 scale-95'
                 : dragOverIndex === index
-                  ? "ring-2 ring-blue-500 ring-offset-2"
-                  : ""
+                  ? 'ring-2 ring-blue-500 ring-offset-2'
+                  : ''
             }`}
           >
             {/* Drag handle */}
@@ -144,7 +136,8 @@ export function PhotoGrid({
 
       {/* Help text */}
       <p className="text-xs text-gray-500">
-        Drag photos to reorder. The first photo will be shown on your profile card if no primary is set.
+        Drag photos to reorder. The first photo will be shown on your profile card if no primary is
+        set.
       </p>
     </div>
   );

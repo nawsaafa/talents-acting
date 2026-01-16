@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useRef, useCallback } from "react";
-import Image from "next/image";
-import { Upload, X, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui";
+import { useState, useRef, useCallback } from 'react';
+import Image from 'next/image';
+import { Upload, X, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui';
 
 interface PhotoUploadProps {
   currentPhoto?: string | null;
@@ -11,14 +11,10 @@ interface PhotoUploadProps {
   disabled?: boolean;
 }
 
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
-export function PhotoUpload({
-  currentPhoto,
-  onPhotoChange,
-  disabled = false,
-}: PhotoUploadProps) {
+export function PhotoUpload({ currentPhoto, onPhotoChange, disabled = false }: PhotoUploadProps) {
   const [preview, setPreview] = useState<string | null>(currentPhoto || null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,13 +26,13 @@ export function PhotoUpload({
 
       // Validate file type
       if (!ALLOWED_TYPES.includes(file.type)) {
-        setError("Please select a JPEG, PNG, or WebP image");
+        setError('Please select a JPEG, PNG, or WebP image');
         return;
       }
 
       // Validate file size
       if (file.size > MAX_SIZE) {
-        setError("File size must be under 5MB");
+        setError('File size must be under 5MB');
         return;
       }
 
@@ -48,24 +44,24 @@ export function PhotoUpload({
       setIsUploading(true);
       try {
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append('file', file);
 
-        const response = await fetch("/api/upload", {
-          method: "POST",
+        const response = await fetch('/api/upload', {
+          method: 'POST',
           body: formData,
         });
 
         const result = await response.json();
 
         if (!response.ok) {
-          throw new Error(result.error || "Upload failed");
+          throw new Error(result.error || 'Upload failed');
         }
 
         // Update with server URL
         setPreview(result.url);
         onPhotoChange(result.url);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Upload failed");
+        setError(err instanceof Error ? err.message : 'Upload failed');
         // Revert to previous photo on error
         setPreview(currentPhoto || null);
       } finally {
@@ -99,7 +95,7 @@ export function PhotoUpload({
     setPreview(null);
     onPhotoChange(null);
     if (inputRef.current) {
-      inputRef.current.value = "";
+      inputRef.current.value = '';
     }
   };
 
@@ -109,15 +105,13 @@ export function PhotoUpload({
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
-        Profile Photo
-      </label>
+      <label className="block text-sm font-medium text-gray-700">Profile Photo</label>
 
       <div
         className={`relative border-2 border-dashed rounded-lg transition-colors ${
           disabled
-            ? "border-gray-200 bg-gray-50"
-            : "border-gray-300 hover:border-gray-400 cursor-pointer"
+            ? 'border-gray-200 bg-gray-50'
+            : 'border-gray-300 hover:border-gray-400 cursor-pointer'
         }`}
         onDrop={!disabled ? handleDrop : undefined}
         onDragOver={!disabled ? handleDragOver : undefined}
@@ -158,13 +152,9 @@ export function PhotoUpload({
               <Upload className="w-12 h-12 mx-auto text-gray-400" />
             )}
             <p className="mt-2 text-sm text-gray-600">
-              {isUploading
-                ? "Uploading..."
-                : "Click or drag to upload your headshot"}
+              {isUploading ? 'Uploading...' : 'Click or drag to upload your headshot'}
             </p>
-            <p className="mt-1 text-xs text-gray-500">
-              JPEG, PNG, or WebP (max 5MB)
-            </p>
+            <p className="mt-1 text-xs text-gray-500">JPEG, PNG, or WebP (max 5MB)</p>
           </div>
         )}
       </div>
@@ -181,12 +171,7 @@ export function PhotoUpload({
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       {preview && !isUploading && !disabled && (
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={handleClick}
-        >
+        <Button type="button" variant="outline" size="sm" onClick={handleClick}>
           Change Photo
         </Button>
       )}

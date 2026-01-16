@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import { useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Input, Select, Button } from "@/components/ui";
-import { Search, X } from "lucide-react";
+import { useCallback } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Input, Select, Button } from '@/components/ui';
+import { Search, X } from 'lucide-react';
 
 const GENDER_OPTIONS = [
-  { value: "", label: "All Genders" },
-  { value: "MALE", label: "Male" },
-  { value: "FEMALE", label: "Female" },
-  { value: "NON_BINARY", label: "Non-Binary" },
-  { value: "OTHER", label: "Other" },
+  { value: '', label: 'All Genders' },
+  { value: 'MALE', label: 'Male' },
+  { value: 'FEMALE', label: 'Female' },
+  { value: 'NON_BINARY', label: 'Non-Binary' },
+  { value: 'OTHER', label: 'Other' },
 ];
 
 export function TalentFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const currentSearch = searchParams.get("search") || "";
-  const currentGender = searchParams.get("gender") || "";
-  const currentAgeMin = searchParams.get("ageMin") || "";
-  const currentAgeMax = searchParams.get("ageMax") || "";
-  const currentAvailable = searchParams.get("available") || "";
+  const currentSearch = searchParams.get('search') || '';
+  const currentGender = searchParams.get('gender') || '';
+  const currentAgeMin = searchParams.get('ageMin') || '';
+  const currentAgeMax = searchParams.get('ageMax') || '';
+  const currentAvailable = searchParams.get('available') || '';
 
   const updateFilters = useCallback(
     (updates: Record<string, string>) => {
@@ -36,7 +36,7 @@ export function TalentFilters() {
       });
 
       // Reset to page 1 when filters change
-      params.delete("page");
+      params.delete('page');
 
       router.push(`/talents?${params.toString()}`);
     },
@@ -44,7 +44,7 @@ export function TalentFilters() {
   );
 
   const clearFilters = () => {
-    router.push("/talents");
+    router.push('/talents');
   };
 
   const hasActiveFilters =
@@ -109,8 +109,8 @@ export function TalentFilters() {
           value={currentAvailable}
           onChange={(e) => updateFilters({ available: e.target.value })}
           options={[
-            { value: "", label: "Any Availability" },
-            { value: "true", label: "Available Only" },
+            { value: '', label: 'Any Availability' },
+            { value: 'true', label: 'Available Only' },
           ]}
         />
       </div>
@@ -122,26 +122,23 @@ export function TalentFilters() {
           {currentSearch && (
             <FilterTag
               label={`Search: ${currentSearch}`}
-              onRemove={() => updateFilters({ search: "" })}
+              onRemove={() => updateFilters({ search: '' })}
             />
           )}
           {currentGender && (
             <FilterTag
               label={`Gender: ${currentGender}`}
-              onRemove={() => updateFilters({ gender: "" })}
+              onRemove={() => updateFilters({ gender: '' })}
             />
           )}
           {(currentAgeMin || currentAgeMax) && (
             <FilterTag
-              label={`Age: ${currentAgeMin || "any"}-${currentAgeMax || "any"}`}
-              onRemove={() => updateFilters({ ageMin: "", ageMax: "" })}
+              label={`Age: ${currentAgeMin || 'any'}-${currentAgeMax || 'any'}`}
+              onRemove={() => updateFilters({ ageMin: '', ageMax: '' })}
             />
           )}
           {currentAvailable && (
-            <FilterTag
-              label="Available Only"
-              onRemove={() => updateFilters({ available: "" })}
-            />
+            <FilterTag label="Available Only" onRemove={() => updateFilters({ available: '' })} />
           )}
           <Button variant="ghost" size="sm" onClick={clearFilters}>
             Clear All
@@ -152,20 +149,11 @@ export function TalentFilters() {
   );
 }
 
-function FilterTag({
-  label,
-  onRemove,
-}: {
-  label: string;
-  onRemove: () => void;
-}) {
+function FilterTag({ label, onRemove }: { label: string; onRemove: () => void }) {
   return (
     <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded">
       {label}
-      <button
-        onClick={onRemove}
-        className="hover:bg-blue-200 rounded-full p-0.5"
-      >
+      <button onClick={onRemove} className="hover:bg-blue-200 rounded-full p-0.5">
         <X className="w-3 h-3" />
       </button>
     </span>

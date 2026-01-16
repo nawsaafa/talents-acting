@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { createContext, useContext, type ReactNode } from "react";
-import type { TalentProfile } from "@prisma/client";
-import type { WizardStepId } from "@/lib/profile/wizard-validation";
+import { createContext, useContext, type ReactNode } from 'react';
+import type { TalentProfile } from '@prisma/client';
+import type { WizardStepId } from '@/lib/profile/wizard-validation';
 
 // Context for sharing wizard state with step components
 interface WizardContextValue {
   formData: Partial<TalentProfile>;
   updateField: (field: keyof TalentProfile, value: unknown) => void;
-  updateArrayField: (field: keyof TalentProfile, value: string, action: "add" | "remove") => void;
+  updateArrayField: (field: keyof TalentProfile, value: string, action: 'add' | 'remove') => void;
   errors: Record<string, string>;
   isSubmitting: boolean;
 }
@@ -18,7 +18,7 @@ const WizardContext = createContext<WizardContextValue | null>(null);
 export function useWizardContext() {
   const context = useContext(WizardContext);
   if (!context) {
-    throw new Error("useWizardContext must be used within a WizardStep");
+    throw new Error('useWizardContext must be used within a WizardStep');
   }
   return context;
 }
@@ -30,7 +30,7 @@ interface WizardStepProps {
   description?: string;
   formData: Partial<TalentProfile>;
   updateField: (field: keyof TalentProfile, value: unknown) => void;
-  updateArrayField: (field: keyof TalentProfile, value: string, action: "add" | "remove") => void;
+  updateArrayField: (field: keyof TalentProfile, value: string, action: 'add' | 'remove') => void;
   errors: Record<string, string>;
   isSubmitting: boolean;
 }
@@ -58,9 +58,7 @@ export function WizardStep({
       >
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
-          {description && (
-            <p className="mt-1 text-sm text-gray-500">{description}</p>
-          )}
+          {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
         </div>
 
         <div className="space-y-6">{children}</div>
@@ -82,10 +80,7 @@ interface FormFieldProps {
 export function FormField({ label, name, error, required, children }: FormFieldProps) {
   return (
     <div>
-      <label
-        htmlFor={name}
-        className="block text-sm font-medium text-gray-700 mb-1"
-      >
+      <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
         {label}
         {required && <span className="text-red-500 ml-0.5">*</span>}
       </label>
@@ -104,7 +99,7 @@ interface TextInputProps {
   value: string | null | undefined;
   onChange: (value: string) => void;
   placeholder?: string;
-  type?: "text" | "email" | "tel" | "url";
+  type?: 'text' | 'email' | 'tel' | 'url';
   disabled?: boolean;
   maxLength?: number;
 }
@@ -114,7 +109,7 @@ export function TextInput({
   value,
   onChange,
   placeholder,
-  type = "text",
+  type = 'text',
   disabled = false,
   maxLength,
 }: TextInputProps) {
@@ -123,7 +118,7 @@ export function TextInput({
       type={type}
       id={name}
       name={name}
-      value={value ?? ""}
+      value={value ?? ''}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       disabled={disabled}
@@ -157,10 +152,10 @@ export function NumberInput({
       type="number"
       id={name}
       name={name}
-      value={value ?? ""}
+      value={value ?? ''}
       onChange={(e) => {
         const val = e.target.value;
-        onChange(val === "" ? null : parseInt(val, 10));
+        onChange(val === '' ? null : parseInt(val, 10));
       }}
       placeholder={placeholder}
       min={min}
@@ -185,14 +180,14 @@ export function SelectInput({
   value,
   onChange,
   options,
-  placeholder = "Select...",
+  placeholder = 'Select...',
   disabled = false,
 }: SelectInputProps) {
   return (
     <select
       id={name}
       name={name}
-      value={value ?? ""}
+      value={value ?? ''}
       onChange={(e) => onChange(e.target.value || null)}
       disabled={disabled}
       className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
@@ -257,14 +252,14 @@ export function TextareaInput({
   maxLength,
   disabled = false,
 }: TextareaInputProps) {
-  const currentLength = (value ?? "").length;
+  const currentLength = (value ?? '').length;
 
   return (
     <div className="relative">
       <textarea
         id={name}
         name={name}
-        value={value ?? ""}
+        value={value ?? ''}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={rows}

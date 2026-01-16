@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ChevronDown, ChevronUp, AlertCircle, CheckCircle } from "lucide-react";
-import type { TalentProfile } from "@prisma/client";
+import { useState } from 'react';
+import { ChevronDown, ChevronUp, AlertCircle, CheckCircle } from 'lucide-react';
+import type { TalentProfile } from '@prisma/client';
 import {
   calculateCompleteness,
   getCompletenessStatus,
   getTopMissingFields,
   type FieldCategory,
-} from "@/lib/profile/completeness";
-import { cn } from "@/lib/utils";
+} from '@/lib/profile/completeness';
+import { cn } from '@/lib/utils';
 
 interface ProfileCompletenessProps {
   profile: Partial<TalentProfile> | null | undefined;
@@ -18,19 +18,19 @@ interface ProfileCompletenessProps {
 }
 
 const CATEGORY_LABELS: Record<FieldCategory, string> = {
-  basic: "Basic Info",
-  physical: "Physical Attributes",
-  skills: "Skills",
-  media: "Media",
-  professional: "Professional",
+  basic: 'Basic Info',
+  physical: 'Physical Attributes',
+  skills: 'Skills',
+  media: 'Media',
+  professional: 'Professional',
 };
 
 const CATEGORY_COLORS: Record<FieldCategory, string> = {
-  basic: "bg-blue-500",
-  physical: "bg-purple-500",
-  skills: "bg-green-500",
-  media: "bg-orange-500",
-  professional: "bg-teal-500",
+  basic: 'bg-blue-500',
+  physical: 'bg-purple-500',
+  skills: 'bg-green-500',
+  media: 'bg-orange-500',
+  professional: 'bg-teal-500',
 };
 
 export function ProfileCompleteness({
@@ -45,14 +45,14 @@ export function ProfileCompleteness({
   const topMissing = getTopMissingFields(result, 5);
 
   const statusColors = {
-    red: "text-red-600 bg-red-50 border-red-200",
-    yellow: "text-yellow-700 bg-yellow-50 border-yellow-200",
-    blue: "text-blue-600 bg-blue-50 border-blue-200",
-    green: "text-green-600 bg-green-50 border-green-200",
+    red: 'text-red-600 bg-red-50 border-red-200',
+    yellow: 'text-yellow-700 bg-yellow-50 border-yellow-200',
+    blue: 'text-blue-600 bg-blue-50 border-blue-200',
+    green: 'text-green-600 bg-green-50 border-green-200',
   };
 
   return (
-    <div className={cn("rounded-lg border", statusColors[status.color], className)}>
+    <div className={cn('rounded-lg border', statusColors[status.color], className)}>
       {/* Header */}
       <div className="p-4">
         <div className="flex items-center justify-between">
@@ -76,13 +76,9 @@ export function ProfileCompleteness({
               onClick={() => setIsExpanded(!isExpanded)}
               className="p-2 rounded-lg hover:bg-black/5 transition-colors"
               aria-expanded={isExpanded}
-              aria-label={isExpanded ? "Hide details" : "Show details"}
+              aria-label={isExpanded ? 'Hide details' : 'Show details'}
             >
-              {isExpanded ? (
-                <ChevronUp className="w-5 h-5" />
-              ) : (
-                <ChevronDown className="w-5 h-5" />
-              )}
+              {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
             </button>
           )}
         </div>
@@ -91,11 +87,11 @@ export function ProfileCompleteness({
         <div className="mt-3 w-full bg-white/50 rounded-full h-2 overflow-hidden">
           <div
             className={cn(
-              "h-full rounded-full transition-all duration-500",
-              result.percentage < 25 && "bg-red-500",
-              result.percentage >= 25 && result.percentage < 50 && "bg-yellow-500",
-              result.percentage >= 50 && result.percentage < 75 && "bg-blue-500",
-              result.percentage >= 75 && "bg-green-500"
+              'h-full rounded-full transition-all duration-500',
+              result.percentage < 25 && 'bg-red-500',
+              result.percentage >= 25 && result.percentage < 50 && 'bg-yellow-500',
+              result.percentage >= 50 && result.percentage < 75 && 'bg-blue-500',
+              result.percentage >= 75 && 'bg-green-500'
             )}
             style={{ width: `${result.percentage}%` }}
           />
@@ -115,7 +111,7 @@ export function ProfileCompleteness({
               >
                 <div className="w-full bg-white/30 rounded-full h-1.5 overflow-hidden">
                   <div
-                    className={cn("h-full rounded-full", CATEGORY_COLORS[category])}
+                    className={cn('h-full rounded-full', CATEGORY_COLORS[category])}
                     style={{ width: `${score.percentage}%` }}
                   />
                 </div>
@@ -135,17 +131,9 @@ export function ProfileCompleteness({
           <p className="text-sm font-medium mb-2">Top fields to complete:</p>
           <ul className="space-y-1">
             {topMissing.map((field) => (
-              <li
-                key={field.field}
-                className="flex items-center justify-between text-sm"
-              >
+              <li key={field.field} className="flex items-center justify-between text-sm">
                 <span className="flex items-center gap-2">
-                  <span
-                    className={cn(
-                      "w-2 h-2 rounded-full",
-                      CATEGORY_COLORS[field.category]
-                    )}
-                  />
+                  <span className={cn('w-2 h-2 rounded-full', CATEGORY_COLORS[field.category])} />
                   {field.label}
                 </span>
                 <span className="text-gray-500 text-xs">+{field.weight} pts</span>
@@ -178,7 +166,7 @@ export function ProfileCompletenessCompact({
   const status = getCompletenessStatus(result.percentage);
 
   return (
-    <div className={cn("flex items-center gap-3", className)}>
+    <div className={cn('flex items-center gap-3', className)}>
       <div className="relative w-12 h-12">
         {/* Circular progress */}
         <svg className="w-12 h-12 transform -rotate-90">
@@ -201,10 +189,10 @@ export function ProfileCompletenessCompact({
             strokeDasharray={`${(result.percentage / 100) * 125.6} 125.6`}
             strokeLinecap="round"
             className={cn(
-              result.percentage < 25 && "text-red-500",
-              result.percentage >= 25 && result.percentage < 50 && "text-yellow-500",
-              result.percentage >= 50 && result.percentage < 75 && "text-blue-500",
-              result.percentage >= 75 && "text-green-500"
+              result.percentage < 25 && 'text-red-500',
+              result.percentage >= 25 && result.percentage < 50 && 'text-yellow-500',
+              result.percentage >= 50 && result.percentage < 75 && 'text-blue-500',
+              result.percentage >= 75 && 'text-green-500'
             )}
           />
         </svg>
@@ -215,9 +203,7 @@ export function ProfileCompletenessCompact({
       </div>
       <div>
         <p className="text-sm font-medium">{status.label}</p>
-        <p className="text-xs text-gray-500">
-          {result.missingFields.length} fields remaining
-        </p>
+        <p className="text-xs text-gray-500">{result.missingFields.length} fields remaining</p>
       </div>
     </div>
   );

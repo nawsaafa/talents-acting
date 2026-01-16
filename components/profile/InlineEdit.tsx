@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect, useTransition, useCallback } from "react";
-import { Check, X, Pencil, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useState, useRef, useEffect, useTransition, useCallback } from 'react';
+import { Check, X, Pencil, Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface InlineEditProps {
   value: string | null | undefined;
@@ -20,24 +20,24 @@ interface InlineEditProps {
 export function InlineEdit({
   value,
   onSave,
-  placeholder = "Click to edit",
+  placeholder = 'Click to edit',
   className,
   inputClassName,
   multiline = false,
   maxLength,
   validate,
-  emptyText = "Not set",
+  emptyText = 'Not set',
   disabled = false,
 }: InlineEditProps) {
   const [isEditing, setIsEditing] = useState(false);
   // Only use local state while editing; when not editing, derive from prop
-  const [localEditValue, setLocalEditValue] = useState("");
+  const [localEditValue, setLocalEditValue] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
   // The edit value is local state when editing, otherwise derived from prop
-  const editValue = isEditing ? localEditValue : (value ?? "");
+  const editValue = isEditing ? localEditValue : (value ?? '');
 
   // Focus input when entering edit mode
   useEffect(() => {
@@ -49,7 +49,7 @@ export function InlineEdit({
 
   const handleEdit = useCallback(() => {
     if (disabled) return;
-    setLocalEditValue(value ?? "");
+    setLocalEditValue(value ?? '');
     setIsEditing(true);
     setError(null);
   }, [disabled, value]);
@@ -77,25 +77,28 @@ export function InlineEdit({
         if (result.success) {
           setIsEditing(false);
         } else {
-          setError(result.error || "Failed to save");
+          setError(result.error || 'Failed to save');
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to save");
+        setError(err instanceof Error ? err.message : 'Failed to save');
       }
     });
   }, [localEditValue, onSave, validate]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
-      handleCancel();
-    } else if (e.key === "Enter" && !multiline) {
-      e.preventDefault();
-      handleSave();
-    } else if (e.key === "Enter" && e.metaKey && multiline) {
-      e.preventDefault();
-      handleSave();
-    }
-  }, [handleCancel, handleSave, multiline]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleCancel();
+      } else if (e.key === 'Enter' && !multiline) {
+        e.preventDefault();
+        handleSave();
+      } else if (e.key === 'Enter' && e.metaKey && multiline) {
+        e.preventDefault();
+        handleSave();
+      }
+    },
+    [handleCancel, handleSave, multiline]
+  );
 
   // Display mode
   if (!isEditing) {
@@ -108,18 +111,13 @@ export function InlineEdit({
         onClick={handleEdit}
         disabled={disabled}
         className={cn(
-          "group inline-flex items-center gap-2 text-left rounded px-2 py-1 -mx-2 transition-colors",
-          !disabled && "hover:bg-gray-100",
-          disabled && "cursor-not-allowed opacity-60",
+          'group inline-flex items-center gap-2 text-left rounded px-2 py-1 -mx-2 transition-colors',
+          !disabled && 'hover:bg-gray-100',
+          disabled && 'cursor-not-allowed opacity-60',
           className
         )}
       >
-        <span
-          className={cn(
-            isEmpty && "text-gray-400 italic",
-            !isEmpty && "text-gray-900"
-          )}
-        >
+        <span className={cn(isEmpty && 'text-gray-400 italic', !isEmpty && 'text-gray-900')}>
           {displayValue}
         </span>
         {!disabled && (
@@ -133,10 +131,10 @@ export function InlineEdit({
   }
 
   // Edit mode
-  const InputComponent = multiline ? "textarea" : "input";
+  const InputComponent = multiline ? 'textarea' : 'input';
 
   return (
-    <div className={cn("space-y-1", className)}>
+    <div className={cn('space-y-1', className)}>
       <div className="flex items-start gap-2">
         <InputComponent
           ref={inputRef as React.RefObject<HTMLInputElement & HTMLTextAreaElement>}
@@ -148,10 +146,10 @@ export function InlineEdit({
           disabled={isPending}
           rows={multiline ? 3 : undefined}
           className={cn(
-            "flex-1 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-            error && "border-red-300 focus:ring-red-500",
-            isPending && "bg-gray-100",
-            multiline && "resize-none",
+            'flex-1 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+            error && 'border-red-300 focus:ring-red-500',
+            isPending && 'bg-gray-100',
+            multiline && 'resize-none',
             inputClassName
           )}
         />
@@ -199,9 +197,7 @@ export function InlineEdit({
 
       {/* Keyboard hint for multiline */}
       {multiline && (
-        <p className="text-xs text-gray-400">
-          Press Cmd+Enter to save, Escape to cancel
-        </p>
+        <p className="text-xs text-gray-400">Press Cmd+Enter to save, Escape to cancel</p>
       )}
     </div>
   );
@@ -222,22 +218,22 @@ interface InlineEditNumberProps {
 export function InlineEditNumber({
   value,
   onSave,
-  placeholder = "Enter a number",
+  placeholder = 'Enter a number',
   min,
   max,
-  suffix = "",
+  suffix = '',
   className,
   disabled = false,
 }: InlineEditNumberProps) {
   const [isEditing, setIsEditing] = useState(false);
   // Only use local state while editing
-  const [localEditValue, setLocalEditValue] = useState("");
+  const [localEditValue, setLocalEditValue] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement>(null);
 
   // The edit value is local state when editing, otherwise derived from prop
-  const editValue = isEditing ? localEditValue : (value?.toString() ?? "");
+  const editValue = isEditing ? localEditValue : (value?.toString() ?? '');
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -248,7 +244,7 @@ export function InlineEditNumber({
 
   const handleEdit = useCallback(() => {
     if (disabled) return;
-    setLocalEditValue(value?.toString() ?? "");
+    setLocalEditValue(value?.toString() ?? '');
     setIsEditing(true);
     setError(null);
   }, [disabled, value]);
@@ -259,11 +255,11 @@ export function InlineEditNumber({
   }, []);
 
   const handleSave = useCallback(async () => {
-    const numValue = localEditValue.trim() === "" ? null : parseFloat(localEditValue);
+    const numValue = localEditValue.trim() === '' ? null : parseFloat(localEditValue);
 
     if (numValue !== null) {
       if (isNaN(numValue)) {
-        setError("Please enter a valid number");
+        setError('Please enter a valid number');
         return;
       }
       if (min !== undefined && numValue < min) {
@@ -284,26 +280,28 @@ export function InlineEditNumber({
         if (result.success) {
           setIsEditing(false);
         } else {
-          setError(result.error || "Failed to save");
+          setError(result.error || 'Failed to save');
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to save");
+        setError(err instanceof Error ? err.message : 'Failed to save');
       }
     });
   }, [localEditValue, max, min, onSave]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
-      handleCancel();
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      handleSave();
-    }
-  }, [handleCancel, handleSave]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleCancel();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSave();
+      }
+    },
+    [handleCancel, handleSave]
+  );
 
   if (!isEditing) {
-    const displayValue =
-      value !== null && value !== undefined ? `${value}${suffix}` : "Not set";
+    const displayValue = value !== null && value !== undefined ? `${value}${suffix}` : 'Not set';
 
     return (
       <button
@@ -311,17 +309,15 @@ export function InlineEditNumber({
         onClick={handleEdit}
         disabled={disabled}
         className={cn(
-          "group inline-flex items-center gap-2 text-left rounded px-2 py-1 -mx-2 transition-colors",
-          !disabled && "hover:bg-gray-100",
-          disabled && "cursor-not-allowed opacity-60",
+          'group inline-flex items-center gap-2 text-left rounded px-2 py-1 -mx-2 transition-colors',
+          !disabled && 'hover:bg-gray-100',
+          disabled && 'cursor-not-allowed opacity-60',
           className
         )}
       >
         <span
           className={cn(
-            value === null || value === undefined
-              ? "text-gray-400 italic"
-              : "text-gray-900"
+            value === null || value === undefined ? 'text-gray-400 italic' : 'text-gray-900'
           )}
         >
           {displayValue}
@@ -337,7 +333,7 @@ export function InlineEditNumber({
   }
 
   return (
-    <div className={cn("space-y-1", className)}>
+    <div className={cn('space-y-1', className)}>
       <div className="flex items-center gap-2">
         <input
           ref={inputRef}
@@ -350,9 +346,9 @@ export function InlineEditNumber({
           max={max}
           disabled={isPending}
           className={cn(
-            "w-32 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-            error && "border-red-300 focus:ring-red-500",
-            isPending && "bg-gray-100"
+            'w-32 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+            error && 'border-red-300 focus:ring-red-500',
+            isPending && 'bg-gray-100'
           )}
         />
         {suffix && <span className="text-gray-500">{suffix}</span>}
@@ -364,11 +360,7 @@ export function InlineEditNumber({
           className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors disabled:opacity-50"
           title="Save"
         >
-          {isPending ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <Check className="w-4 h-4" />
-          )}
+          {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
         </button>
         <button
           type="button"

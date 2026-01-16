@@ -37,8 +37,8 @@ export function Footer() {
                 </span>
               </Link>
               <p className="mt-4 text-sm text-[var(--color-neutral-600)]">
-                Connecting talented actors, comedians, and performers with film
-                professionals and opportunities.
+                Connecting talented actors, comedians, and performers with film professionals and
+                opportunities.
               </p>
             </div>
 

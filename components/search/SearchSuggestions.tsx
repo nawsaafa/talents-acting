@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { MapPin, User } from "lucide-react";
-import type { SearchSuggestion } from "@/lib/search/search-queries";
-import { SearchHighlight } from "./SearchHighlight";
+import Image from 'next/image';
+import { MapPin, User } from 'lucide-react';
+import type { SearchSuggestion } from '@/lib/search/search-queries';
+import { SearchHighlight } from './SearchHighlight';
 
 interface SearchSuggestionsProps {
   suggestions: SearchSuggestion[];

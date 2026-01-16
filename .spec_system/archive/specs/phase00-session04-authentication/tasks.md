@@ -19,14 +19,14 @@
 
 ## Progress Summary
 
-| Category | Total | Done | Remaining |
-|----------|-------|------|-----------|
-| Setup | 3 | 3 | 0 |
-| Foundation | 5 | 5 | 0 |
-| Registration | 5 | 5 | 0 |
-| Integration | 4 | 4 | 0 |
-| Testing | 3 | 3 | 0 |
-| **Total** | **20** | **20** | **0** |
+| Category     | Total  | Done   | Remaining |
+| ------------ | ------ | ------ | --------- |
+| Setup        | 3      | 3      | 0         |
+| Foundation   | 5      | 5      | 0         |
+| Registration | 5      | 5      | 0         |
+| Integration  | 4      | 4      | 0         |
+| Testing      | 3      | 3      | 0         |
+| **Total**    | **20** | **20** | **0**     |
 
 ---
 
@@ -106,12 +106,15 @@ Before marking session complete:
 ## Notes
 
 ### Parallelization
+
 Tasks T011-T013 (registration forms) can be done together as they are independent pages using the same patterns.
 
 ### Task Timing
+
 Target ~15-20 minutes per task. Foundation tasks (T004-T008) are more complex and may take longer.
 
 ### Dependencies
+
 - T004-T006 must be done in order (config -> init -> route)
 - T008 (actions) depends on T004-T005 (auth config)
 - T009 must be done before T010-T014 (layout before pages)
@@ -119,6 +122,7 @@ Target ~15-20 minutes per task. Foundation tasks (T004-T008) are more complex an
 - T016-T017 (AuthStatus, Header) depend on T005 (auth exports)
 
 ### Key Implementation Notes
+
 - Use `'use client'` only for form components
 - Password hashing happens in server actions only
 - Session includes user role for RBAC
@@ -127,6 +131,7 @@ Target ~15-20 minutes per task. Foundation tasks (T004-T008) are more complex an
 - Auth config split: edge-compatible `auth.config.ts` (no bcrypt/prisma) and full `auth.ts` (with providers)
 
 ### NextAuth.js v5 Notes
+
 - Use `auth()` for server components
 - Use `useSession()` for client components
 - Callbacks: `jwt` and `session` for role injection

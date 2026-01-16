@@ -29,16 +29,19 @@ We use NextAuth.js v5 (Auth.js) for authentication, which provides a robust fram
 ## 3. Prerequisites
 
 ### Required Sessions
+
 - [x] `phase00-session02-database_schema` - User model, Role enum, ValidationStatus enum
 - [x] `phase00-session03-core_ui_framework` - Form components (Input, Select, Button, Card, Modal)
 
 ### Required Tools/Knowledge
+
 - NextAuth.js v5 (Auth.js) configuration and usage
 - bcrypt password hashing
 - Next.js middleware for route protection
 - React Context/Server Components auth patterns
 
 ### Environment Requirements
+
 - PostgreSQL database running (Supabase)
 - Environment variables configured (DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL)
 
@@ -47,6 +50,7 @@ We use NextAuth.js v5 (Auth.js) for authentication, which provides a robust fram
 ## 4. Scope
 
 ### In Scope (MVP)
+
 - User registration forms for talent, professional, and company roles
 - Login page with email/password authentication
 - Logout functionality
@@ -59,18 +63,20 @@ We use NextAuth.js v5 (Auth.js) for authentication, which provides a robust fram
 - Basic form validation
 
 ### Out of Scope (Deferred)
-- Password reset flow (email) - *Requires email service setup, defer to later session*
-- Social login (OAuth) - *Future enhancement*
-- Two-factor authentication - *Future enhancement*
-- Email verification - *Requires email service*
-- Payment verification for access - *Phase 02*
-- Talent profile creation during registration - *Session 05*
+
+- Password reset flow (email) - _Requires email service setup, defer to later session_
+- Social login (OAuth) - _Future enhancement_
+- Two-factor authentication - _Future enhancement_
+- Email verification - _Requires email service_
+- Payment verification for access - _Phase 02_
+- Talent profile creation during registration - _Session 05_
 
 ---
 
 ## 5. Technical Approach
 
 ### Architecture
+
 ```
 lib/
   auth/
@@ -97,12 +103,14 @@ middleware.ts        # Route protection middleware
 ```
 
 ### Design Patterns
+
 - **Server Actions**: Form submissions via server actions for security
 - **Auth.js Callbacks**: Custom session/JWT callbacks for role injection
 - **Protected Routes**: Middleware-based route protection with role checking
 - **Composition**: Reuse UI components from Session 03
 
 ### Technology Stack
+
 - **Auth Framework**: NextAuth.js v5 (Auth.js)
 - **Password Hashing**: bcrypt
 - **Database**: Prisma with PostgreSQL
@@ -114,34 +122,37 @@ middleware.ts        # Route protection middleware
 ## 6. Deliverables
 
 ### Files to Create
-| File | Purpose | Est. Lines |
-|------|---------|------------|
-| `lib/auth/auth.ts` | NextAuth.js initialization and export | ~30 |
-| `lib/auth/auth.config.ts` | Auth providers and callbacks | ~80 |
-| `lib/auth/actions.ts` | Server actions for register/login | ~120 |
-| `app/api/auth/[...nextauth]/route.ts` | NextAuth.js API route | ~10 |
-| `app/(auth)/login/page.tsx` | Login page | ~80 |
-| `app/(auth)/register/page.tsx` | Registration type selection | ~60 |
-| `app/(auth)/register/talent/page.tsx` | Talent registration form | ~150 |
-| `app/(auth)/register/professional/page.tsx` | Professional registration form | ~100 |
-| `app/(auth)/register/company/page.tsx` | Company registration form | ~100 |
-| `app/(auth)/layout.tsx` | Auth pages layout (centered) | ~25 |
-| `middleware.ts` | Route protection middleware | ~40 |
-| `lib/auth/utils.ts` | RBAC utilities and helpers | ~50 |
-| `components/auth/AuthStatus.tsx` | User status display component | ~40 |
+
+| File                                        | Purpose                               | Est. Lines |
+| ------------------------------------------- | ------------------------------------- | ---------- |
+| `lib/auth/auth.ts`                          | NextAuth.js initialization and export | ~30        |
+| `lib/auth/auth.config.ts`                   | Auth providers and callbacks          | ~80        |
+| `lib/auth/actions.ts`                       | Server actions for register/login     | ~120       |
+| `app/api/auth/[...nextauth]/route.ts`       | NextAuth.js API route                 | ~10        |
+| `app/(auth)/login/page.tsx`                 | Login page                            | ~80        |
+| `app/(auth)/register/page.tsx`              | Registration type selection           | ~60        |
+| `app/(auth)/register/talent/page.tsx`       | Talent registration form              | ~150       |
+| `app/(auth)/register/professional/page.tsx` | Professional registration form        | ~100       |
+| `app/(auth)/register/company/page.tsx`      | Company registration form             | ~100       |
+| `app/(auth)/layout.tsx`                     | Auth pages layout (centered)          | ~25        |
+| `middleware.ts`                             | Route protection middleware           | ~40        |
+| `lib/auth/utils.ts`                         | RBAC utilities and helpers            | ~50        |
+| `components/auth/AuthStatus.tsx`            | User status display component         | ~40        |
 
 ### Files to Modify
-| File | Changes | Est. Lines |
-|------|---------|------------|
-| `components/layout/Header.tsx` | Add auth status / login button | ~20 |
-| `package.json` | Add next-auth, bcrypt dependencies | ~5 |
-| `.env.local` | Add NEXTAUTH_SECRET, NEXTAUTH_URL | ~3 |
+
+| File                           | Changes                            | Est. Lines |
+| ------------------------------ | ---------------------------------- | ---------- |
+| `components/layout/Header.tsx` | Add auth status / login button     | ~20        |
+| `package.json`                 | Add next-auth, bcrypt dependencies | ~5         |
+| `.env.local`                   | Add NEXTAUTH_SECRET, NEXTAUTH_URL  | ~3         |
 
 ---
 
 ## 7. Success Criteria
 
 ### Functional Requirements
+
 - [ ] Users can register as talent with basic info (email, password, name)
 - [ ] Users can register as professional with reason for access
 - [ ] Users can register as company with company details
@@ -154,12 +165,14 @@ middleware.ts        # Route protection middleware
 - [ ] Header displays auth status (logged in user or login button)
 
 ### Testing Requirements
+
 - [ ] Manual testing of all registration flows
 - [ ] Manual testing of login/logout
 - [ ] Manual testing of protected route redirects
 - [ ] Verify password hashing in database
 
 ### Quality Gates
+
 - [ ] All files ASCII-encoded
 - [ ] Unix LF line endings
 - [ ] ESLint passes
@@ -171,6 +184,7 @@ middleware.ts        # Route protection middleware
 ## 8. Implementation Notes
 
 ### Key Considerations
+
 - Use `'use client'` only for interactive form components
 - Keep password hashing server-side only (never expose in client)
 - Session data should include user role for RBAC checks
@@ -178,17 +192,20 @@ middleware.ts        # Route protection middleware
 - Professionals/companies start with PENDING validation status
 
 ### Potential Challenges
+
 - **App Router + Auth.js**: Ensure proper setup for Next.js 14+ with auth
 - **Session Access**: Server components need different auth access pattern than client
 - **Form Validation**: Implement comprehensive validation before database writes
 - **Profile Creation**: Transaction needed to create User + Profile atomically
 
 ### Relevant Considerations
+
 - **[Security]** Secure login system critical for protecting premium talent data - use bcrypt with appropriate cost factor, secure session cookies
 - **[Architecture]** Tiered access control: public vs premium separation - Role enum defines access levels, middleware enforces
 - **[Architecture]** Admin validation workflow for all user registrations - ValidationStatus.PENDING is default for professionals/companies
 
 ### ASCII Reminder
+
 All output files must use ASCII-only characters (0-127).
 
 ---
@@ -196,14 +213,17 @@ All output files must use ASCII-only characters (0-127).
 ## 9. Testing Strategy
 
 ### Unit Tests
+
 - Not required for this session (auth flows better tested via integration)
 
 ### Integration Tests
+
 - Registration creates user with correct role
 - Login returns valid session
 - Protected routes redirect correctly
 
 ### Manual Testing
+
 1. Register as talent - verify user created with TALENT role
 2. Register as professional - verify PENDING status shown
 3. Register as company - verify company profile created
@@ -214,6 +234,7 @@ All output files must use ASCII-only characters (0-127).
 8. Logout - verify session cleared, redirect to home
 
 ### Edge Cases
+
 - Duplicate email registration (should fail with error)
 - Empty form submission (validation should catch)
 - Very long inputs (should be truncated or rejected)
@@ -224,13 +245,15 @@ All output files must use ASCII-only characters (0-127).
 ## 10. Dependencies
 
 ### External Libraries
-| Package | Version | Purpose |
-|---------|---------|---------|
-| next-auth | ^5.0.0 | Authentication framework |
-| bcrypt | ^5.1.1 | Password hashing |
-| @types/bcrypt | ^5.0.2 | TypeScript types for bcrypt |
+
+| Package       | Version | Purpose                     |
+| ------------- | ------- | --------------------------- |
+| next-auth     | ^5.0.0  | Authentication framework    |
+| bcrypt        | ^5.1.1  | Password hashing            |
+| @types/bcrypt | ^5.0.2  | TypeScript types for bcrypt |
 
 ### Other Sessions
+
 - **Depends on**: Session 02 (User model, enums), Session 03 (UI components)
 - **Depended by**: Session 05 (Talent Profiles - requires auth), Session 06 (Admin Dashboard - requires admin role)
 

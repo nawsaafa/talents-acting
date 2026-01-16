@@ -16,8 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Talents Acting',
-  description:
-    'Talent management platform for actors, comedians, and performers',
+  description: 'Talent management platform for actors, comedians, and performers',
 };
 
 export default function RootLayout({

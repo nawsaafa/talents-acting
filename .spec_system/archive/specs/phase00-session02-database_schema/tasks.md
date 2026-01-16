@@ -19,13 +19,13 @@
 
 ## Progress Summary
 
-| Category | Total | Done | Remaining |
-|----------|-------|------|-----------|
-| Setup | 2 | 2 | 0 |
-| Foundation | 5 | 5 | 0 |
-| Implementation | 9 | 9 | 0 |
-| Testing | 4 | 4 | 0 |
-| **Total** | **20** | **20** | **0** |
+| Category       | Total  | Done   | Remaining |
+| -------------- | ------ | ------ | --------- |
+| Setup          | 2      | 2      | 0         |
+| Foundation     | 5      | 5      | 0         |
+| Implementation | 9      | 9      | 0         |
+| Testing        | 4      | 4      | 0         |
+| **Total**      | **20** | **20** | **0**     |
 
 ---
 
@@ -94,19 +94,24 @@ Before marking session complete:
 ## Notes
 
 ### Parallelization
+
 Tasks T003-T006 (enums) can be done together.
 Tasks T014-T015 (Professional/Company profiles) can be done together.
 
 ### Task Timing
+
 Target ~20-25 minutes per task. Schema tasks may be faster; testing tasks may take longer.
 
 ### Dependencies
+
 - T007 (User model) depends on T003 (Role enum)
 - T008-T016 depend on T007 (User model must exist first)
 - T017-T020 depend on complete schema
 
 ### TalentProfile Field Organization
+
 The 40+ fields are split across tasks T008-T013:
+
 - T008: Basic info (5 fields)
 - T009: Physical attributes (6 fields)
 - T010: Unique traits (5 fields)

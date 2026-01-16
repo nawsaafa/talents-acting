@@ -1,8 +1,8 @@
-import Link from "next/link";
-import { getUsers } from "@/lib/admin/queries";
-import { auth } from "@/lib/auth/auth";
-import { Card } from "@/components/ui/Card";
-import { UserStatusToggle } from "@/components/admin/UserStatusToggle";
+import Link from 'next/link';
+import { getUsers } from '@/lib/admin/queries';
+import { auth } from '@/lib/auth/auth';
+import { Card } from '@/components/ui/Card';
+import { UserStatusToggle } from '@/components/admin/UserStatusToggle';
 
 interface PageProps {
   searchParams: Promise<{
@@ -14,11 +14,11 @@ interface PageProps {
 }
 
 const ROLE_STYLES = {
-  ADMIN: { bg: "bg-purple-100", text: "text-purple-700" },
-  TALENT: { bg: "bg-blue-100", text: "text-blue-700" },
-  PROFESSIONAL: { bg: "bg-green-100", text: "text-green-700" },
-  COMPANY: { bg: "bg-orange-100", text: "text-orange-700" },
-  VISITOR: { bg: "bg-gray-100", text: "text-gray-700" },
+  ADMIN: { bg: 'bg-purple-100', text: 'text-purple-700' },
+  TALENT: { bg: 'bg-blue-100', text: 'text-blue-700' },
+  PROFESSIONAL: { bg: 'bg-green-100', text: 'text-green-700' },
+  COMPANY: { bg: 'bg-orange-100', text: 'text-orange-700' },
+  VISITOR: { bg: 'bg-gray-100', text: 'text-gray-700' },
 };
 
 export default async function UsersPage({ searchParams }: PageProps) {
@@ -26,10 +26,11 @@ export default async function UsersPage({ searchParams }: PageProps) {
   const session = await auth();
   const currentUserId = session?.user?.id;
 
-  const role = (params.role as "ALL" | "TALENT" | "PROFESSIONAL" | "COMPANY" | "VISITOR" | "ADMIN") || "ALL";
-  const status = (params.status as "ALL" | "ACTIVE" | "INACTIVE") || "ALL";
-  const search = params.search || "";
-  const page = parseInt(params.page || "1", 10);
+  const role =
+    (params.role as 'ALL' | 'TALENT' | 'PROFESSIONAL' | 'COMPANY' | 'VISITOR' | 'ADMIN') || 'ALL';
+  const status = (params.status as 'ALL' | 'ACTIVE' | 'INACTIVE') || 'ALL';
+  const search = params.search || '';
+  const page = parseInt(params.page || '1', 10);
 
   const { users, total, totalPages } = await getUsers({
     role,
@@ -40,21 +41,21 @@ export default async function UsersPage({ searchParams }: PageProps) {
   });
 
   const roleTabs = [
-    { value: "ALL", label: "All" },
-    { value: "TALENT", label: "Talents" },
-    { value: "PROFESSIONAL", label: "Professionals" },
-    { value: "COMPANY", label: "Companies" },
-    { value: "VISITOR", label: "Visitors" },
-    { value: "ADMIN", label: "Admins" },
+    { value: 'ALL', label: 'All' },
+    { value: 'TALENT', label: 'Talents' },
+    { value: 'PROFESSIONAL', label: 'Professionals' },
+    { value: 'COMPANY', label: 'Companies' },
+    { value: 'VISITOR', label: 'Visitors' },
+    { value: 'ADMIN', label: 'Admins' },
   ];
 
   const statusTabs = [
-    { value: "ALL", label: "All" },
-    { value: "ACTIVE", label: "Active" },
-    { value: "INACTIVE", label: "Inactive" },
+    { value: 'ALL', label: 'All' },
+    { value: 'ACTIVE', label: 'Active' },
+    { value: 'INACTIVE', label: 'Inactive' },
   ];
 
-  function getUserDisplayName(user: typeof users[0]): string {
+  function getUserDisplayName(user: (typeof users)[0]): string {
     if (user.talentProfile) {
       return `${user.talentProfile.firstName} ${user.talentProfile.lastName}`;
     }
@@ -64,19 +65,15 @@ export default async function UsersPage({ searchParams }: PageProps) {
     if (user.companyProfile) {
       return user.companyProfile.companyName;
     }
-    return user.email.split("@")[0];
+    return user.email.split('@')[0];
   }
 
   return (
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-[var(--color-neutral-900)]">
-          User Management
-        </h1>
-        <p className="mt-1 text-[var(--color-neutral-600)]">
-          View and manage all registered users
-        </p>
+        <h1 className="text-2xl font-bold text-[var(--color-neutral-900)]">User Management</h1>
+        <p className="mt-1 text-[var(--color-neutral-600)]">View and manage all registered users</p>
       </div>
 
       {/* Filters */}
@@ -86,13 +83,13 @@ export default async function UsersPage({ searchParams }: PageProps) {
           {roleTabs.map((tab) => (
             <Link
               key={tab.value}
-              href={`/admin/users?role=${tab.value}&status=${status}${search ? `&search=${search}` : ""}`}
+              href={`/admin/users?role=${tab.value}&status=${status}${search ? `&search=${search}` : ''}`}
               className={`
                 px-3 py-1.5 text-sm font-medium rounded-full transition-colors
                 ${
                   role === tab.value
-                    ? "bg-[var(--color-primary)] text-white"
-                    : "bg-[var(--color-neutral-100)] text-[var(--color-neutral-600)] hover:bg-[var(--color-neutral-200)]"
+                    ? 'bg-[var(--color-primary)] text-white'
+                    : 'bg-[var(--color-neutral-100)] text-[var(--color-neutral-600)] hover:bg-[var(--color-neutral-200)]'
                 }
               `}
             >
@@ -106,13 +103,13 @@ export default async function UsersPage({ searchParams }: PageProps) {
           {statusTabs.map((tab) => (
             <Link
               key={tab.value}
-              href={`/admin/users?role=${role}&status=${tab.value}${search ? `&search=${search}` : ""}`}
+              href={`/admin/users?role=${role}&status=${tab.value}${search ? `&search=${search}` : ''}`}
               className={`
                 px-3 py-1.5 text-sm font-medium rounded-full transition-colors
                 ${
                   status === tab.value
-                    ? "bg-[var(--color-neutral-800)] text-white"
-                    : "bg-[var(--color-neutral-100)] text-[var(--color-neutral-600)] hover:bg-[var(--color-neutral-200)]"
+                    ? 'bg-[var(--color-neutral-800)] text-white'
+                    : 'bg-[var(--color-neutral-100)] text-[var(--color-neutral-600)] hover:bg-[var(--color-neutral-200)]'
                 }
               `}
             >
@@ -177,7 +174,7 @@ export default async function UsersPage({ searchParams }: PageProps) {
             <p className="mt-2 text-[var(--color-neutral-600)]">
               {search
                 ? `No users matching "${search}"`
-                : "There are no users matching your filters."}
+                : 'There are no users matching your filters.'}
             </p>
           </div>
         </Card>
@@ -217,9 +214,7 @@ export default async function UsersPage({ searchParams }: PageProps) {
                             </span>
                           )}
                         </p>
-                        <p className="text-sm text-[var(--color-neutral-500)]">
-                          {user.email}
-                        </p>
+                        <p className="text-sm text-[var(--color-neutral-500)]">{user.email}</p>
                       </div>
                     </td>
                     <td className="py-3 px-4">
@@ -252,7 +247,7 @@ export default async function UsersPage({ searchParams }: PageProps) {
         <div className="flex justify-center gap-2">
           {page > 1 && (
             <Link
-              href={`/admin/users?role=${role}&status=${status}${search ? `&search=${search}` : ""}&page=${page - 1}`}
+              href={`/admin/users?role=${role}&status=${status}${search ? `&search=${search}` : ''}&page=${page - 1}`}
               className="px-4 py-2 text-sm font-medium text-[var(--color-neutral-600)] bg-white border border-[var(--color-neutral-300)] rounded-[var(--radius-md)] hover:bg-[var(--color-neutral-50)]"
             >
               Previous
@@ -263,7 +258,7 @@ export default async function UsersPage({ searchParams }: PageProps) {
           </span>
           {page < totalPages && (
             <Link
-              href={`/admin/users?role=${role}&status=${status}${search ? `&search=${search}` : ""}&page=${page + 1}`}
+              href={`/admin/users?role=${role}&status=${status}${search ? `&search=${search}` : ''}&page=${page + 1}`}
               className="px-4 py-2 text-sm font-medium text-[var(--color-neutral-600)] bg-white border border-[var(--color-neutral-300)] rounded-[var(--radius-md)] hover:bg-[var(--color-neutral-50)]"
             >
               Next

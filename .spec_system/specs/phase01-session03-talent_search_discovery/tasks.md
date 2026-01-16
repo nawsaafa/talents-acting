@@ -19,13 +19,13 @@
 
 ## Progress Summary
 
-| Category | Total | Done | Remaining |
-|----------|-------|------|-----------|
-| Setup | 3 | 3 | 0 |
-| Foundation | 5 | 5 | 0 |
-| Implementation | 7 | 7 | 0 |
-| Testing | 3 | 3 | 0 |
-| **Total** | **18** | **18** | **0** |
+| Category       | Total  | Done   | Remaining |
+| -------------- | ------ | ------ | --------- |
+| Setup          | 3      | 3      | 0         |
+| Foundation     | 5      | 5      | 0         |
+| Implementation | 7      | 7      | 0         |
+| Testing        | 3      | 3      | 0         |
+| **Total**      | **18** | **18** | **0**     |
 
 ---
 
@@ -92,14 +92,18 @@ Before marking session complete:
 ## Notes
 
 ### Parallelization
+
 Tasks marked `[P]` can be worked on simultaneously:
+
 - T004, T005, T006: Independent utility files
 - T009, T010: Independent UI components
 
 ### Task Timing
+
 Target ~10-15 minutes per task.
 
 ### Dependencies
+
 - T003 (migration) should complete before T008 (search queries)
 - T004-T008 (foundation) should complete before T09-T15 (implementation)
 - T08 (search queries) required before T14 (query integration)
@@ -107,7 +111,9 @@ Target ~10-15 minutes per task.
 - T14 (query integration) required before T15 (page integration)
 
 ### Manual Testing Checklist
+
 After implementation, verify:
+
 1. Search by first name returns relevant results
 2. Search by skill (e.g., "acting") works
 3. Multi-word search queries work

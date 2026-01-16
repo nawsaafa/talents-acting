@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { getProfessionalValidationQueue } from "@/lib/admin/queries";
-import { Card } from "@/components/ui/Card";
-import { ValidationActions } from "@/components/admin/ValidationActions";
+import Link from 'next/link';
+import { getProfessionalValidationQueue } from '@/lib/admin/queries';
+import { Card } from '@/components/ui/Card';
+import { ValidationActions } from '@/components/admin/ValidationActions';
 
 interface PageProps {
   searchParams: Promise<{ status?: string; page?: string }>;
@@ -9,20 +9,24 @@ interface PageProps {
 
 export default async function ProfessionalQueuePage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const status = (params.status as "PENDING" | "APPROVED" | "REJECTED" | "SUSPENDED") || "PENDING";
-  const page = parseInt(params.page || "1", 10);
+  const status = (params.status as 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED') || 'PENDING';
+  const page = parseInt(params.page || '1', 10);
 
-  const { items: professionals, total, totalPages } = await getProfessionalValidationQueue({
+  const {
+    items: professionals,
+    total,
+    totalPages,
+  } = await getProfessionalValidationQueue({
     status,
     page,
     limit: 20,
   });
 
   const statusTabs = [
-    { value: "PENDING", label: "Pending", color: "var(--color-warning)" },
-    { value: "APPROVED", label: "Approved", color: "var(--color-success)" },
-    { value: "REJECTED", label: "Rejected", color: "var(--color-error)" },
-    { value: "SUSPENDED", label: "Suspended", color: "var(--color-neutral-500)" },
+    { value: 'PENDING', label: 'Pending', color: 'var(--color-warning)' },
+    { value: 'APPROVED', label: 'Approved', color: 'var(--color-success)' },
+    { value: 'REJECTED', label: 'Rejected', color: 'var(--color-error)' },
+    { value: 'SUSPENDED', label: 'Suspended', color: 'var(--color-neutral-500)' },
   ];
 
   return (
@@ -47,8 +51,8 @@ export default async function ProfessionalQueuePage({ searchParams }: PageProps)
               px-4 py-2 text-sm font-medium border-b-2 transition-colors
               ${
                 status === tab.value
-                  ? "border-[var(--color-primary)] text-[var(--color-primary)]"
-                  : "border-transparent text-[var(--color-neutral-500)] hover:text-[var(--color-neutral-700)]"
+                  ? 'border-[var(--color-primary)] text-[var(--color-primary)]'
+                  : 'border-transparent text-[var(--color-neutral-500)] hover:text-[var(--color-neutral-700)]'
               }
             `}
           >
@@ -113,25 +117,33 @@ export default async function ProfessionalQueuePage({ searchParams }: PageProps)
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-lg font-medium text-[var(--color-neutral-900)]">
+                  <Link
+                    href={`/admin/professionals/${professional.id}`}
+                    className="text-lg font-medium text-[var(--color-neutral-900)] hover:text-[var(--color-primary)]"
+                  >
                     {professional.firstName} {professional.lastName}
-                  </p>
+                  </Link>
                   <p className="text-sm text-[var(--color-neutral-600)]">
                     {professional.profession}
                     {professional.company && ` at ${professional.company}`}
                   </p>
                   <div className="flex items-center gap-4 mt-1 text-sm text-[var(--color-neutral-500)]">
                     <span>{professional.user.email}</span>
-                    <span>
-                      Submitted {new Date(professional.createdAt).toLocaleDateString()}
-                    </span>
+                    <span>Submitted {new Date(professional.createdAt).toLocaleDateString()}</span>
                   </div>
                 </div>
 
                 {/* Actions */}
                 <div className="flex-shrink-0">
-                  {status === "PENDING" && (
+                  {status === 'PENDING' ? (
                     <ValidationActions profileId={professional.id} profileType="professional" />
+                  ) : (
+                    <Link
+                      href={`/admin/professionals/${professional.id}`}
+                      className="text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-dark)]"
+                    >
+                      View Details
+                    </Link>
                   )}
                 </div>
               </div>

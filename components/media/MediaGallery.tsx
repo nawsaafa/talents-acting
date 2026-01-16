@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { Camera, Video } from "lucide-react";
-import { PhotoUploader } from "./PhotoUploader";
-import { PhotoGrid } from "./PhotoGrid";
-import { VideoEmbed } from "./VideoEmbed";
-import { VideoUrlInput } from "./VideoUrlInput";
+import { useRouter } from 'next/navigation';
+import { Camera, Video } from 'lucide-react';
+import { PhotoUploader } from './PhotoUploader';
+import { PhotoGrid } from './PhotoGrid';
+import { VideoEmbed } from './VideoEmbed';
+import { VideoUrlInput } from './VideoUrlInput';
 
 interface MediaGalleryProps {
   photos: string[];
@@ -13,11 +13,7 @@ interface MediaGalleryProps {
   primaryPhoto: string | null;
 }
 
-export function MediaGallery({
-  photos,
-  videoUrls,
-  primaryPhoto,
-}: MediaGalleryProps) {
+export function MediaGallery({ photos, videoUrls, primaryPhoto }: MediaGalleryProps) {
   const router = useRouter();
 
   function handleRefresh() {
@@ -36,17 +32,10 @@ export function MediaGallery({
 
         <div className="space-y-6">
           {/* Upload area */}
-          <PhotoUploader
-            currentCount={photos.length}
-            onUploaded={handleRefresh}
-          />
+          <PhotoUploader currentCount={photos.length} onUploaded={handleRefresh} />
 
           {/* Photo grid */}
-          <PhotoGrid
-            photos={photos}
-            primaryPhoto={primaryPhoto}
-            onPhotosChanged={handleRefresh}
-          />
+          <PhotoGrid photos={photos} primaryPhoto={primaryPhoto} onPhotosChanged={handleRefresh} />
         </div>
       </section>
 
@@ -63,21 +52,13 @@ export function MediaGallery({
 
         <div className="space-y-6">
           {/* Add video input */}
-          <VideoUrlInput
-            currentCount={videoUrls.length}
-            maxVideos={5}
-            onAdded={handleRefresh}
-          />
+          <VideoUrlInput currentCount={videoUrls.length} maxVideos={5} onAdded={handleRefresh} />
 
           {/* Video list */}
           {videoUrls.length > 0 ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {videoUrls.map((url) => (
-                <VideoEmbed
-                  key={url}
-                  url={url}
-                  onRemoved={handleRefresh}
-                />
+                <VideoEmbed key={url} url={url} onRemoved={handleRefresh} />
               ))}
             </div>
           ) : (
@@ -95,20 +76,20 @@ export function MediaGallery({
         <h3 className="mb-2 text-sm font-medium text-blue-900">Tips</h3>
         <ul className="space-y-1 text-sm text-blue-800">
           <li>
-            <strong>Photos:</strong> Upload up to 10 photos. The primary photo
-            will appear on your talent card.
+            <strong>Photos:</strong> Upload up to 10 photos. The primary photo will appear on your
+            talent card.
           </li>
           <li>
-            <strong>Drag to reorder:</strong> Use the grip handle to drag photos
-            into your preferred order.
+            <strong>Drag to reorder:</strong> Use the grip handle to drag photos into your preferred
+            order.
           </li>
           <li>
-            <strong>Videos:</strong> Add links to your showreel or demo videos
-            from YouTube or Vimeo.
+            <strong>Videos:</strong> Add links to your showreel or demo videos from YouTube or
+            Vimeo.
           </li>
           <li>
-            <strong>Best practices:</strong> Include a clear headshot, full body
-            shot, and examples of your work.
+            <strong>Best practices:</strong> Include a clear headshot, full body shot, and examples
+            of your work.
           </li>
         </ul>
       </section>

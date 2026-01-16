@@ -1,4 +1,14 @@
-import { PrismaClient, Role, ValidationStatus, Gender, Physique, HairColor, EyeColor, HairLength, BeardType } from '@prisma/client';
+import {
+  PrismaClient,
+  Role,
+  ValidationStatus,
+  Gender,
+  Physique,
+  HairColor,
+  EyeColor,
+  HairLength,
+  BeardType,
+} from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -57,7 +67,7 @@ async function main() {
           showreel: 'https://example.com/ahmed-showreel',
           presentationVideo: 'https://example.com/ahmed-intro',
           isAvailable: true,
-          dailyRate: 500.00,
+          dailyRate: 500.0,
           rateNegotiable: true,
           validationStatus: ValidationStatus.APPROVED,
           validatedAt: new Date(),
@@ -108,7 +118,7 @@ async function main() {
           hasShowreel: true,
           showreel: 'https://example.com/sara-showreel',
           isAvailable: true,
-          dailyRate: 400.00,
+          dailyRate: 400.0,
           rateNegotiable: true,
           validationStatus: ValidationStatus.APPROVED,
           validatedAt: new Date(),

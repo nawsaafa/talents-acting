@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, ReactNode } from "react";
-import { ChevronDown, X } from "lucide-react";
+import { useState, ReactNode } from 'react';
+import { ChevronDown, X } from 'lucide-react';
 
 interface FilterSectionProps {
   title: string;
@@ -38,7 +38,7 @@ export function FilterSection({
         </div>
         <ChevronDown
           className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
+            isOpen ? 'rotate-180' : ''
           }`}
         />
       </button>
@@ -46,7 +46,7 @@ export function FilterSection({
       {/* Content */}
       <div
         className={`overflow-hidden transition-all duration-200 ${
-          isOpen ? "mt-4 max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+          isOpen ? 'mt-4 max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         {children}

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { MapPin, CheckCircle, Eye } from "lucide-react";
-import { Card } from "@/components/ui";
-import { SearchHighlight } from "@/components/search";
-import type { PublicTalentProfile } from "@/lib/talents/queries";
+import Image from 'next/image';
+import Link from 'next/link';
+import { MapPin, CheckCircle, Eye } from 'lucide-react';
+import { Card } from '@/components/ui';
+import { SearchHighlight } from '@/components/search';
+import type { PublicTalentProfile } from '@/lib/talents/queries';
 
 interface TalentCardEnhancedProps {
   talent: PublicTalentProfile;
@@ -16,10 +16,10 @@ interface TalentCardEnhancedProps {
 }
 
 const GENDER_LABELS: Record<string, string> = {
-  MALE: "Male",
-  FEMALE: "Female",
-  NON_BINARY: "Non-Binary",
-  OTHER: "Other",
+  MALE: 'Male',
+  FEMALE: 'Female',
+  NON_BINARY: 'Non-Binary',
+  OTHER: 'Other',
 };
 
 export function TalentCardEnhanced({
@@ -39,10 +39,7 @@ export function TalentCardEnhanced({
   }
 
   return (
-    <div
-      className="animate-fade-in"
-      style={{ animationDelay: `${Math.min(index * 50, 300)}ms` }}
-    >
+    <div className="animate-fade-in" style={{ animationDelay: `${Math.min(index * 50, 300)}ms` }}>
       <Link href={`/talents/${talent.id}`}>
         <Card className="group overflow-hidden hover:shadow-lg transition-shadow duration-200 relative">
           {/* Photo */}
@@ -58,9 +55,7 @@ export function TalentCardEnhanced({
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
-                <span className="text-4xl text-gray-400">
-                  {talent.firstName.charAt(0)}
-                </span>
+                <span className="text-4xl text-gray-400">{talent.firstName.charAt(0)}</span>
               </div>
             )}
 

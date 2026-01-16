@@ -1,7 +1,8 @@
-import Link from "next/link";
-import { getTalentValidationQueue } from "@/lib/admin/queries";
-import { Card } from "@/components/ui/Card";
-import { ValidationActions } from "@/components/admin/ValidationActions";
+import Link from 'next/link';
+import Image from 'next/image';
+import { getTalentValidationQueue } from '@/lib/admin/queries';
+import { Card } from '@/components/ui/Card';
+import { ValidationActions } from '@/components/admin/ValidationActions';
 
 interface PageProps {
   searchParams: Promise<{ status?: string; page?: string }>;
@@ -9,20 +10,24 @@ interface PageProps {
 
 export default async function TalentQueuePage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const status = (params.status as "PENDING" | "APPROVED" | "REJECTED" | "SUSPENDED") || "PENDING";
-  const page = parseInt(params.page || "1", 10);
+  const status = (params.status as 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED') || 'PENDING';
+  const page = parseInt(params.page || '1', 10);
 
-  const { items: talents, total, totalPages } = await getTalentValidationQueue({
+  const {
+    items: talents,
+    total,
+    totalPages,
+  } = await getTalentValidationQueue({
     status,
     page,
     limit: 20,
   });
 
   const statusTabs = [
-    { value: "PENDING", label: "Pending", color: "var(--color-warning)" },
-    { value: "APPROVED", label: "Approved", color: "var(--color-success)" },
-    { value: "REJECTED", label: "Rejected", color: "var(--color-error)" },
-    { value: "SUSPENDED", label: "Suspended", color: "var(--color-neutral-500)" },
+    { value: 'PENDING', label: 'Pending', color: 'var(--color-warning)' },
+    { value: 'APPROVED', label: 'Approved', color: 'var(--color-success)' },
+    { value: 'REJECTED', label: 'Rejected', color: 'var(--color-error)' },
+    { value: 'SUSPENDED', label: 'Suspended', color: 'var(--color-neutral-500)' },
   ];
 
   return (
@@ -47,8 +52,8 @@ export default async function TalentQueuePage({ searchParams }: PageProps) {
               px-4 py-2 text-sm font-medium border-b-2 transition-colors
               ${
                 status === tab.value
-                  ? "border-[var(--color-primary)] text-[var(--color-primary)]"
-                  : "border-transparent text-[var(--color-neutral-500)] hover:text-[var(--color-neutral-700)]"
+                  ? 'border-[var(--color-primary)] text-[var(--color-primary)]'
+                  : 'border-transparent text-[var(--color-neutral-500)] hover:text-[var(--color-neutral-700)]'
               }
             `}
           >
@@ -95,9 +100,11 @@ export default async function TalentQueuePage({ searchParams }: PageProps) {
                 {/* Photo */}
                 <div className="flex-shrink-0">
                   {talent.photo ? (
-                    <img
+                    <Image
                       src={talent.photo}
                       alt={talent.firstName}
+                      width={64}
+                      height={64}
                       className="w-16 h-16 rounded-full object-cover"
                     />
                   ) : (
@@ -117,20 +124,16 @@ export default async function TalentQueuePage({ searchParams }: PageProps) {
                   >
                     {talent.firstName} {talent.lastName}
                   </Link>
-                  <p className="text-sm text-[var(--color-neutral-600)]">
-                    {talent.user.email}
-                  </p>
+                  <p className="text-sm text-[var(--color-neutral-600)]">{talent.user.email}</p>
                   <div className="flex items-center gap-4 mt-1 text-sm text-[var(--color-neutral-500)]">
                     {talent.location && <span>{talent.location}</span>}
-                    <span>
-                      Submitted {new Date(talent.createdAt).toLocaleDateString()}
-                    </span>
+                    <span>Submitted {new Date(talent.createdAt).toLocaleDateString()}</span>
                   </div>
                 </div>
 
                 {/* Actions */}
                 <div className="flex-shrink-0">
-                  {status === "PENDING" ? (
+                  {status === 'PENDING' ? (
                     <ValidationActions profileId={talent.id} profileType="talent" />
                   ) : (
                     <Link

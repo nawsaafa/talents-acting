@@ -17,11 +17,7 @@ const colorStyles = {
   current: 'border-current border-t-transparent',
 };
 
-export function Loading({
-  size = 'md',
-  color = 'primary',
-  className = '',
-}: LoadingProps) {
+export function Loading({ size = 'md', color = 'primary', className = '' }: LoadingProps) {
   return (
     <div
       className={`

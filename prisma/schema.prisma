@@ -49,6 +49,16 @@ enum Physique {
   PLUS_SIZE
 }
 
+// Subscription status for paying users
+enum SubscriptionStatus {
+  NONE
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  EXPIRED
+}
+
 // Additional enums for talent attributes
 enum HairColor {
   BLACK
@@ -197,6 +207,12 @@ model ProfessionalProfile {
   profession   String // e.g., "Casting Director", "Film Director", "Producer"
   company      String? // Associated company name
   accessReason String? @db.Text // Why they need access to talent database
+  phone        String?
+
+  // Email verification
+  emailVerified       Boolean   @default(false)
+  verificationToken   String?   @unique
+  verificationExpires DateTime?
 
   // Validation
   validationStatus ValidationStatus @default(PENDING)
@@ -204,10 +220,17 @@ model ProfessionalProfile {
   validatedBy      String?
   rejectionReason  String?
 
+  // Subscription
+  subscriptionStatus   SubscriptionStatus @default(NONE)
+  subscriptionEndsAt   DateTime?
+
   // Contact (verified professionals only)
   contactEmail String?
   contactPhone String?
   website      String?
+
+  // Terms acceptance
+  termsAcceptedAt DateTime?
 
   // Timestamps
   createdAt DateTime @default(now())
@@ -215,6 +238,8 @@ model ProfessionalProfile {
 
   @@index([validationStatus])
   @@index([profession])
+  @@index([subscriptionStatus])
+  @@index([verificationToken])
 }
 
 // T015: Company profile for production companies and agencies

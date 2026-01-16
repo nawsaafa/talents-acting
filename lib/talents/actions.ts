@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth/auth";
-import { Role, ValidationStatus } from "@prisma/client";
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+import { prisma } from '@/lib/prisma';
+import { auth } from '@/lib/auth/auth';
+import { Role, ValidationStatus } from '@prisma/client';
 import {
   createProfileSchema,
   updateProfileSchema,
@@ -12,8 +12,8 @@ import {
   type CreateProfileInput,
   type UpdateProfileInput,
   type TalentFilterInput,
-} from "./validation";
-import { getTalentProfileByUserId, getPublicTalents, type PublicTalentProfile } from "./queries";
+} from './validation';
+import { getTalentProfileByUserId, getPublicTalents, type PublicTalentProfile } from './queries';
 
 type ActionResult = {
   success: boolean;
@@ -22,24 +22,22 @@ type ActionResult = {
 };
 
 // Create a new talent profile
-export async function createTalentProfile(
-  input: CreateProfileInput
-): Promise<ActionResult> {
+export async function createTalentProfile(input: CreateProfileInput): Promise<ActionResult> {
   const session = await auth();
 
   if (!session?.user?.id) {
-    return { success: false, error: "You must be logged in to create a profile" };
+    return { success: false, error: 'You must be logged in to create a profile' };
   }
 
   // Only talents can create talent profiles
   if (session.user.role !== Role.TALENT) {
-    return { success: false, error: "Only talent users can create talent profiles" };
+    return { success: false, error: 'Only talent users can create talent profiles' };
   }
 
   // Check if user already has a profile
   const existingProfile = await getTalentProfileByUserId(session.user.id);
   if (existingProfile) {
-    return { success: false, error: "You already have a talent profile" };
+    return { success: false, error: 'You already have a talent profile' };
   }
 
   // Validate input
@@ -52,7 +50,7 @@ export async function createTalentProfile(
 
   // Validate age range logic
   if (data.ageRangeMin > data.ageRangeMax) {
-    return { success: false, error: "Minimum age cannot be greater than maximum age" };
+    return { success: false, error: 'Minimum age cannot be greater than maximum age' };
   }
 
   try {
@@ -94,30 +92,28 @@ export async function createTalentProfile(
       },
     });
 
-    revalidatePath("/talents");
-    revalidatePath("/dashboard/profile");
+    revalidatePath('/talents');
+    revalidatePath('/dashboard/profile');
 
     return { success: true, data: { id: profile.id } };
   } catch (error) {
-    console.error("Failed to create talent profile:", error);
-    return { success: false, error: "Failed to create profile. Please try again." };
+    console.error('Failed to create talent profile:', error);
+    return { success: false, error: 'Failed to create profile. Please try again.' };
   }
 }
 
 // Update an existing talent profile
-export async function updateTalentProfile(
-  input: UpdateProfileInput
-): Promise<ActionResult> {
+export async function updateTalentProfile(input: UpdateProfileInput): Promise<ActionResult> {
   const session = await auth();
 
   if (!session?.user?.id) {
-    return { success: false, error: "You must be logged in to update your profile" };
+    return { success: false, error: 'You must be logged in to update your profile' };
   }
 
   // Get current profile
   const existingProfile = await getTalentProfileByUserId(session.user.id);
   if (!existingProfile) {
-    return { success: false, error: "Profile not found" };
+    return { success: false, error: 'Profile not found' };
   }
 
   // Validate input
@@ -134,7 +130,7 @@ export async function updateTalentProfile(
     data.ageRangeMax !== undefined &&
     data.ageRangeMin > data.ageRangeMax
   ) {
-    return { success: false, error: "Minimum age cannot be greater than maximum age" };
+    return { success: false, error: 'Minimum age cannot be greater than maximum age' };
   }
 
   try {
@@ -189,14 +185,14 @@ export async function updateTalentProfile(
       },
     });
 
-    revalidatePath("/talents");
-    revalidatePath("/dashboard/profile");
+    revalidatePath('/talents');
+    revalidatePath('/dashboard/profile');
     revalidatePath(`/talents/${existingProfile.id}`);
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to update talent profile:", error);
-    return { success: false, error: "Failed to update profile. Please try again." };
+    console.error('Failed to update talent profile:', error);
+    return { success: false, error: 'Failed to update profile. Please try again.' };
   }
 }
 
@@ -205,7 +201,7 @@ export async function updateProfilePhoto(photoUrl: string): Promise<ActionResult
   const session = await auth();
 
   if (!session?.user?.id) {
-    return { success: false, error: "You must be logged in" };
+    return { success: false, error: 'You must be logged in' };
   }
 
   try {
@@ -214,13 +210,13 @@ export async function updateProfilePhoto(photoUrl: string): Promise<ActionResult
       data: { photo: photoUrl },
     });
 
-    revalidatePath("/talents");
-    revalidatePath("/dashboard/profile");
+    revalidatePath('/talents');
+    revalidatePath('/dashboard/profile');
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to update profile photo:", error);
-    return { success: false, error: "Failed to update photo" };
+    console.error('Failed to update profile photo:', error);
+    return { success: false, error: 'Failed to update photo' };
   }
 }
 
@@ -229,7 +225,7 @@ export async function deleteTalentProfile(): Promise<ActionResult> {
   const session = await auth();
 
   if (!session?.user?.id) {
-    return { success: false, error: "You must be logged in" };
+    return { success: false, error: 'You must be logged in' };
   }
 
   try {
@@ -238,19 +234,19 @@ export async function deleteTalentProfile(): Promise<ActionResult> {
       data: { isPublic: false },
     });
 
-    revalidatePath("/talents");
-    revalidatePath("/dashboard/profile");
+    revalidatePath('/talents');
+    revalidatePath('/dashboard/profile');
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to delete talent profile:", error);
-    return { success: false, error: "Failed to delete profile" };
+    console.error('Failed to delete talent profile:', error);
+    return { success: false, error: 'Failed to delete profile' };
   }
 }
 
 // Redirect helper for after profile creation
 export async function redirectToProfile() {
-  redirect("/dashboard/profile");
+  redirect('/dashboard/profile');
 }
 
 // Load more talents for infinite scroll (public, no auth required)
@@ -275,20 +271,17 @@ export async function loadMoreTalents(
 }
 
 // Inline update for single field (used by InlineEdit component)
-export async function updateProfileField(
-  field: string,
-  value: unknown
-): Promise<ActionResult> {
+export async function updateProfileField(field: string, value: unknown): Promise<ActionResult> {
   const session = await auth();
 
   if (!session?.user?.id) {
-    return { success: false, error: "You must be logged in" };
+    return { success: false, error: 'You must be logged in' };
   }
 
   // Get current profile
   const existingProfile = await getTalentProfileByUserId(session.user.id);
   if (!existingProfile) {
-    return { success: false, error: "Profile not found" };
+    return { success: false, error: 'Profile not found' };
   }
 
   // Validate the single field update
@@ -304,13 +297,13 @@ export async function updateProfileField(
       data: { [field]: value },
     });
 
-    revalidatePath("/talents");
-    revalidatePath("/dashboard/profile");
+    revalidatePath('/talents');
+    revalidatePath('/dashboard/profile');
     revalidatePath(`/talents/${existingProfile.id}`);
 
     return { success: true };
   } catch (error) {
     console.error(`Failed to update profile field ${field}:`, error);
-    return { success: false, error: "Failed to update. Please try again." };
+    return { success: false, error: 'Failed to update. Please try again.' };
   }
 }

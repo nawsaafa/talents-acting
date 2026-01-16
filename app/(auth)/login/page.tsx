@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { Card, CardHeader, CardBody, Button, Input, Loading } from "@/components/ui";
-import { login } from "@/lib/auth/actions";
+import { useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { Card, CardHeader, CardBody, Button, Input, Loading } from '@/components/ui';
+import { login } from '@/lib/auth/actions';
 
 function LoginForm() {
   const router = useRouter();
@@ -12,8 +12,8 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const registered = searchParams.get("registered") === "true";
-  const pending = searchParams.get("pending") === "true";
+  const registered = searchParams.get('registered') === 'true';
+  const pending = searchParams.get('pending') === 'true';
 
   async function handleSubmit(formData: FormData) {
     setError(null);
@@ -23,13 +23,13 @@ function LoginForm() {
       const result = await login(formData);
 
       if (result.success) {
-        router.push("/");
+        router.push('/');
         router.refresh();
       } else {
-        setError(result.error || "Login failed");
+        setError(result.error || 'Login failed');
       }
     } catch {
-      setError("An unexpected error occurred");
+      setError('An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -46,8 +46,8 @@ function LoginForm() {
           {registered && (
             <div className="p-3 bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg">
               {pending
-                ? "Account created! Your account is pending admin approval. You can sign in but premium features will be limited until approved."
-                : "Account created successfully! You can now sign in."}
+                ? 'Account created! Your account is pending admin approval. You can sign in but premium features will be limited until approved.'
+                : 'Account created successfully! You can now sign in.'}
             </div>
           )}
 
@@ -75,18 +75,14 @@ function LoginForm() {
             autoComplete="current-password"
           />
 
-          <Button
-            type="submit"
-            className="w-full"
-            isLoading={isLoading}
-          >
+          <Button type="submit" className="w-full" isLoading={isLoading}>
             Sign In
           </Button>
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-600">
           <p>
-            Do not have an account?{" "}
+            Do not have an account?{' '}
             <Link href="/register" className="text-primary-600 hover:text-primary-500 font-medium">
               Create one
             </Link>

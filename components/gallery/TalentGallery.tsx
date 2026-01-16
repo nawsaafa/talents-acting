@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useState, useCallback, useEffect, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
-import { Search, Users } from "lucide-react";
-import { TalentCardEnhanced } from "./TalentCardEnhanced";
-import { TalentListItem } from "./TalentListItem";
-import { InfiniteScrollLoader } from "./InfiniteScrollLoader";
-import { QuickViewModal } from "./QuickViewModal";
-import { ViewToggle, type ViewMode } from "./ViewToggle";
-import { loadMoreTalents } from "@/lib/talents/actions";
-import { parseFilterParams } from "@/lib/talents/filters";
-import type { PublicTalentProfile } from "@/lib/talents/queries";
-import type { TalentFilterInput } from "@/lib/talents/validation";
+import { useState, useCallback, useEffect, useTransition } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Search, Users } from 'lucide-react';
+import { TalentCardEnhanced } from './TalentCardEnhanced';
+import { TalentListItem } from './TalentListItem';
+import { InfiniteScrollLoader } from './InfiniteScrollLoader';
+import { QuickViewModal } from './QuickViewModal';
+import { ViewToggle, type ViewMode } from './ViewToggle';
+import { loadMoreTalents } from '@/lib/talents/actions';
+import { parseFilterParams } from '@/lib/talents/filters';
+import type { PublicTalentProfile } from '@/lib/talents/queries';
+import type { TalentFilterInput } from '@/lib/talents/validation';
 
 interface TalentGalleryProps {
   initialTalents: PublicTalentProfile[];
@@ -38,8 +38,8 @@ export function TalentGallery({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // View mode from URL or default to grid
-  const viewParam = searchParams.get("view") as ViewMode | null;
-  const [view, setView] = useState<ViewMode>(viewParam || "grid");
+  const viewParam = searchParams.get('view') as ViewMode | null;
+  const [view, setView] = useState<ViewMode>(viewParam || 'grid');
 
   // Get current filters from URL
   const getFilters = useCallback((): TalentFilterInput => {
@@ -59,7 +59,7 @@ export function TalentGallery({
 
   // Sync view with URL
   useEffect(() => {
-    const urlView = searchParams.get("view") as ViewMode | null;
+    const urlView = searchParams.get('view') as ViewMode | null;
     if (urlView && urlView !== view) {
       setView(urlView);
     }
@@ -80,7 +80,7 @@ export function TalentGallery({
         setPage(nextPage);
         setHasMore(result.hasMore);
       } catch (error) {
-        console.error("Failed to load more talents:", error);
+        console.error('Failed to load more talents:', error);
       } finally {
         setIsLoading(false);
       }
@@ -108,19 +108,13 @@ export function TalentGallery({
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               No results for &quot;{searchQuery}&quot;
             </h3>
-            <p className="text-gray-600">
-              Try a different search term or adjust your filters.
-            </p>
+            <p className="text-gray-600">Try a different search term or adjust your filters.</p>
           </>
         ) : (
           <>
             <Users className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              No talents found
-            </h3>
-            <p className="text-gray-600">
-              Try adjusting your filters or check back later.
-            </p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No talents found</h3>
+            <p className="text-gray-600">Try adjusting your filters or check back later.</p>
           </>
         )}
       </div>
@@ -138,7 +132,7 @@ export function TalentGallery({
       </div>
 
       {/* Grid View */}
-      {view === "grid" && (
+      {view === 'grid' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {talents.map((talent, index) => (
             <TalentCardEnhanced
@@ -154,7 +148,7 @@ export function TalentGallery({
       )}
 
       {/* List View */}
-      {view === "list" && (
+      {view === 'list' && (
         <div className="space-y-4">
           {talents.map((talent) => (
             <TalentListItem
@@ -175,11 +169,7 @@ export function TalentGallery({
       />
 
       {/* Quick View Modal */}
-      <QuickViewModal
-        talent={selectedTalent}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
+      <QuickViewModal talent={selectedTalent} isOpen={isModalOpen} onClose={handleCloseModal} />
     </>
   );
 }

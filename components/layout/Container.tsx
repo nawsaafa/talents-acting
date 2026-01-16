@@ -6,12 +6,6 @@ interface ContainerProps {
   as?: 'div' | 'section' | 'main' | 'article';
 }
 
-export function Container({
-  children,
-  className = '',
-  as: Component = 'div',
-}: ContainerProps) {
-  return (
-    <Component className={`container ${className}`.trim()}>{children}</Component>
-  );
+export function Container({ children, className = '', as: Component = 'div' }: ContainerProps) {
+  return <Component className={`container ${className}`.trim()}>{children}</Component>;
 }

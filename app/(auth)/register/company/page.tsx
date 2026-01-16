@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Card, CardHeader, CardBody, Button, Input, Select } from "@/components/ui";
-import { registerCompany } from "@/lib/auth/actions";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Card, CardHeader, CardBody, Button, Input, Select } from '@/components/ui';
+import { registerCompany } from '@/lib/auth/actions';
 
 const industryOptions = [
-  { value: "Film Production", label: "Film Production" },
-  { value: "TV Broadcasting", label: "TV Broadcasting" },
-  { value: "Talent Agency", label: "Talent Agency" },
-  { value: "Advertising Agency", label: "Advertising Agency" },
-  { value: "Theater Production", label: "Theater Production" },
-  { value: "Event Production", label: "Event Production" },
-  { value: "Other", label: "Other" },
+  { value: 'Film Production', label: 'Film Production' },
+  { value: 'TV Broadcasting', label: 'TV Broadcasting' },
+  { value: 'Talent Agency', label: 'Talent Agency' },
+  { value: 'Advertising Agency', label: 'Advertising Agency' },
+  { value: 'Theater Production', label: 'Theater Production' },
+  { value: 'Event Production', label: 'Event Production' },
+  { value: 'Other', label: 'Other' },
 ];
 
 export default function CompanyRegistrationPage() {
@@ -29,12 +29,12 @@ export default function CompanyRegistrationPage() {
       const result = await registerCompany(formData);
 
       if (result.success) {
-        router.push("/login?registered=true&pending=true");
+        router.push('/login?registered=true&pending=true');
       } else {
-        setError(result.error || "Registration failed");
+        setError(result.error || 'Registration failed');
       }
     } catch {
-      setError("An unexpected error occurred");
+      setError('An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -58,18 +58,9 @@ export default function CompanyRegistrationPage() {
             Company accounts require admin approval before accessing premium content.
           </div>
 
-          <Input
-            label="Company Name"
-            name="companyName"
-            required
-            placeholder="Acme Productions"
-          />
+          <Input label="Company Name" name="companyName" required placeholder="Acme Productions" />
 
-          <Select
-            label="Industry"
-            name="industry"
-            options={industryOptions}
-          />
+          <Select label="Industry" name="industry" options={industryOptions} />
 
           <Input
             label="Login Email"
@@ -104,16 +95,8 @@ export default function CompanyRegistrationPage() {
           />
 
           <div className="grid grid-cols-2 gap-4">
-            <Input
-              label="City (Optional)"
-              name="city"
-              placeholder="Los Angeles"
-            />
-            <Input
-              label="Country (Optional)"
-              name="country"
-              placeholder="United States"
-            />
+            <Input label="City (Optional)" name="city" placeholder="Los Angeles" />
+            <Input label="Country (Optional)" name="country" placeholder="United States" />
           </div>
 
           <Input
@@ -133,11 +116,7 @@ export default function CompanyRegistrationPage() {
             placeholder="Confirm your password"
           />
 
-          <Button
-            type="submit"
-            className="w-full"
-            isLoading={isLoading}
-          >
+          <Button type="submit" className="w-full" isLoading={isLoading}>
             Create Company Account
           </Button>
         </form>

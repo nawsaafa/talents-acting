@@ -46,9 +46,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             className="block text-sm font-medium text-[var(--color-neutral-700)] mb-1.5"
           >
             {label}
-            {props.required && (
-              <span className="text-[var(--color-error)] ml-1">*</span>
-            )}
+            {props.required && <span className="text-[var(--color-error)] ml-1">*</span>}
           </label>
         )}
         <div className="relative">
@@ -56,9 +54,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             id={selectId}
             aria-invalid={hasError}
-            aria-describedby={
-              hasError ? errorId : helperText ? helperId : undefined
-            }
+            aria-describedby={hasError ? errorId : helperText ? helperId : undefined}
             className={`
               w-full px-3 py-2 pr-10
               border rounded-[var(--radius-md)]
@@ -81,11 +77,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               {placeholder}
             </option>
             {options.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
-                disabled={option.disabled}
-              >
+              <option key={option.value} value={option.value} disabled={option.disabled}>
                 {option.label}
               </option>
             ))}
@@ -101,10 +93,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           </p>
         )}
         {!hasError && helperText && (
-          <p
-            id={helperId}
-            className="mt-1.5 text-sm text-[var(--color-neutral-500)]"
-          >
+          <p id={helperId} className="mt-1.5 text-sm text-[var(--color-neutral-500)]">
             {helperText}
           </p>
         )}

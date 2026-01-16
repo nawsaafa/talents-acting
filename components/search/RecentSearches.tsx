@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useSyncExternalStore, useCallback } from "react";
-import { Clock, X } from "lucide-react";
+import { useSyncExternalStore, useCallback } from 'react';
+import { Clock, X } from 'lucide-react';
 import {
   getRecentSearchQueries,
   removeRecentSearch,
   clearRecentSearches,
-} from "@/lib/search/recent-searches";
+} from '@/lib/search/recent-searches';
 
 interface RecentSearchesProps {
   onSelect: (query: string) => void;
@@ -16,8 +16,8 @@ interface RecentSearchesProps {
 // Subscribe to localStorage changes for recent searches
 function subscribeToRecentSearches(callback: () => void) {
   // Listen for storage events (cross-tab sync)
-  window.addEventListener("storage", callback);
-  return () => window.removeEventListener("storage", callback);
+  window.addEventListener('storage', callback);
+  return () => window.removeEventListener('storage', callback);
 }
 
 function getServerSnapshot(): string[] {
@@ -38,7 +38,7 @@ export function RecentSearches({ onSelect, onClear }: RecentSearchesProps) {
 
   const forceUpdate = useCallback(() => {
     // Trigger a re-render by dispatching a storage event
-    window.dispatchEvent(new Event("storage"));
+    window.dispatchEvent(new Event('storage'));
   }, []);
 
   const handleRemove = (query: string, e: React.MouseEvent) => {

@@ -21,33 +21,40 @@ Talent management platform for actors, comedians, and performers. Showcasing pro
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone <repository-url>
    cd Acting-app
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Set up environment variables:
+
    ```bash
    cp .env.example .env.local
    ```
+
    Edit `.env.local` and add your PostgreSQL connection string.
 
 4. Generate Prisma client:
+
    ```bash
    npx prisma generate
    ```
 
 5. Run database migrations (when schema is defined):
+
    ```bash
    npx prisma migrate dev
    ```
 
 6. Start the development server:
+
    ```bash
    npm run dev
    ```
@@ -56,15 +63,15 @@ Talent management platform for actors, comedians, and performers. Showcasing pro
 
 ## Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Fix ESLint issues |
-| `npm run format` | Format code with Prettier |
-| `npm run format:check` | Check code formatting |
+| Command                | Description               |
+| ---------------------- | ------------------------- |
+| `npm run dev`          | Start development server  |
+| `npm run build`        | Build for production      |
+| `npm run start`        | Start production server   |
+| `npm run lint`         | Run ESLint                |
+| `npm run lint:fix`     | Fix ESLint issues         |
+| `npm run format`       | Format code with Prettier |
+| `npm run format:check` | Check code formatting     |
 
 ## Project Structure
 
@@ -89,16 +96,17 @@ Acting-app/
 ## API Endpoints
 
 ### Health Check
+
 - **GET** `/api/health`
 - Returns application and database health status
 
 ## Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `DATABASE_URL` | PostgreSQL connection string | Yes |
-| `NODE_ENV` | Environment (development/production) | No |
-| `NEXT_PUBLIC_APP_URL` | Application URL | No |
+| Variable              | Description                          | Required |
+| --------------------- | ------------------------------------ | -------- |
+| `DATABASE_URL`        | PostgreSQL connection string         | Yes      |
+| `NODE_ENV`            | Environment (development/production) | No       |
+| `NEXT_PUBLIC_APP_URL` | Application URL                      | No       |
 
 ## Contributing
 

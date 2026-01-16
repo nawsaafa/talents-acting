@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { Button } from "@/components/ui";
-import { logout } from "@/lib/auth/actions";
-import { User, Shield } from "lucide-react";
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { Button } from '@/components/ui';
+import { logout } from '@/lib/auth/actions';
+import { User, Shield } from 'lucide-react';
 
 export function AuthStatus() {
   const { data: session, status } = useSession();
 
-  if (status === "loading") {
+  if (status === 'loading') {
     return (
       <div className="flex items-center gap-2">
         <div className="h-8 w-20 bg-gray-200 animate-pulse rounded" />
@@ -18,8 +18,8 @@ export function AuthStatus() {
   }
 
   if (session?.user) {
-    const isTalent = session.user.role === "TALENT";
-    const isAdmin = session.user.role === "ADMIN";
+    const isTalent = session.user.role === 'TALENT';
+    const isAdmin = session.user.role === 'ADMIN';
 
     return (
       <div className="flex items-center gap-3">
@@ -39,9 +39,7 @@ export function AuthStatus() {
             </Button>
           </Link>
         )}
-        <span className="text-sm text-gray-600 hidden sm:inline">
-          {session.user.email}
-        </span>
+        <span className="text-sm text-gray-600 hidden sm:inline">{session.user.email}</span>
         <form action={logout}>
           <Button type="submit" variant="outline" size="sm">
             Sign Out
@@ -59,9 +57,7 @@ export function AuthStatus() {
         </Button>
       </Link>
       <Link href="/register">
-        <Button size="sm">
-          Register
-        </Button>
+        <Button size="sm">Register</Button>
       </Link>
     </div>
   );

@@ -16,6 +16,7 @@ Build the talent profile system with CRUD operations, photo upload, and proper s
 ## Scope
 
 ### In Scope (MVP)
+
 - Talent profile creation form (multi-step or single page)
 - Photo upload and storage
 - Profile data validation
@@ -32,6 +33,7 @@ Build the talent profile system with CRUD operations, photo upload, and proper s
   - Premium fields require authorized role
 
 ### Out of Scope
+
 - Video upload (showreel, presentation) - later phase
 - Advanced filtering (40+ categories) - Phase 01
 - Talent search/discovery features - Phase 01

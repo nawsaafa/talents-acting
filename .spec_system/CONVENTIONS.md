@@ -32,7 +32,7 @@
 
 ## Comments
 
-- Explain *why*, not *what*
+- Explain _why_, not _what_
 - Delete commented-out code--that's what git is for
 - TODOs include context: `// TODO(name): reason, ticket if applicable`
 - Update or remove comments when code changes
@@ -61,7 +61,7 @@
 ## Pull Requests
 
 - Small PRs get better reviews
-- Description explains the *what* and *why*--reviewers can see the *how*
+- Description explains the _what_ and _why_--reviewers can see the _how_
 - Link relevant tickets/context
 - Review your own PR before requesting others
 
@@ -80,14 +80,39 @@
 
 ## Local Dev Tools
 
-| Category | Tool | Config |
-|----------|------|--------|
-| Formatter | not configured | - |
-| Linter | not configured | - |
-| Type Safety | not configured | - |
-| Testing | not configured | - |
-| Observability | not configured | - |
-| Git Hooks | not configured | - |
+| Category      | Tool                             | Config            |
+| ------------- | -------------------------------- | ----------------- |
+| Formatter     | Prettier 3.7.4                   | .prettierrc       |
+| Linter        | ESLint 9 + next/ts               | eslint.config.mjs |
+| Type Safety   | TypeScript 5 (strict)            | tsconfig.json     |
+| Testing       | Vitest 4 + React Testing Library | vitest.config.ts  |
+| Observability | pino + pino-pretty               | lib/logger.ts     |
+| Git Hooks     | husky + lint-staged              | .husky/pre-commit |
+
+## CI/CD Workflows
+
+| Bundle       | Status     | Workflow                                       |
+| ------------ | ---------- | ---------------------------------------------- |
+| Code Quality | configured | .github/workflows/quality.yml                  |
+| Build & Test | configured | .github/workflows/test.yml                     |
+| Security     | configured | .github/workflows/security.yml                 |
+| Integration  | configured | .github/workflows/integration.yml              |
+| Operations   | configured | .github/workflows/release.yml + dependabot.yml |
+
+## Infrastructure
+
+| Bundle   | Status         | Details                         |
+| -------- | -------------- | ------------------------------- |
+| Health   | configured     | /api/health (DB check included) |
+| Security | not configured | -                               |
+| Backup   | not configured | -                               |
+| Deploy   | not configured | -                               |
+
+**Stack** (to be configured on deployment):
+
+- Platform: TBD (Vercel, Coolify, or similar)
+- Database: PostgreSQL (via Prisma)
+- Cache: TBD
 
 ## When In Doubt
 

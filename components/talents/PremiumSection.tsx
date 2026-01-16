@@ -1,6 +1,6 @@
-import { Lock, UserPlus } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui";
+import { Lock, UserPlus } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui';
 
 interface PremiumSectionProps {
   isUnlocked: boolean;
@@ -31,8 +31,8 @@ export function PremiumSection({ isUnlocked, children }: PremiumSectionProps) {
           </div>
           <h4 className="font-medium text-gray-900 mb-2">Premium Content</h4>
           <p className="text-sm text-gray-600 mb-4 max-w-xs">
-            Contact information and full details are available to verified
-            professionals and companies.
+            Contact information and full details are available to verified professionals and
+            companies.
           </p>
           <Link href="/register">
             <Button size="sm">

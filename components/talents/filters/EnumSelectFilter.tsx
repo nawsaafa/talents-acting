@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import type { FilterOption } from "@/lib/talents/filter-options";
+import type { FilterOption } from '@/lib/talents/filter-options';
 
 interface EnumSelectFilterProps {
   label: string;
@@ -17,11 +17,7 @@ export function EnumSelectFilter({
   multi = false,
   onChange,
 }: EnumSelectFilterProps) {
-  const selectedValues = Array.isArray(value)
-    ? value
-    : value
-    ? [value]
-    : [];
+  const selectedValues = Array.isArray(value) ? value : value ? [value] : [];
 
   const handleSingleSelect = (optionValue: string) => {
     if (value === optionValue) {
@@ -53,13 +49,11 @@ export function EnumSelectFilter({
               className="flex items-center gap-2 py-1 px-1 hover:bg-gray-50 rounded cursor-pointer"
             >
               <input
-                type={multi ? "checkbox" : "radio"}
-                name={label.replace(/\s+/g, "-").toLowerCase()}
+                type={multi ? 'checkbox' : 'radio'}
+                name={label.replace(/\s+/g, '-').toLowerCase()}
                 checked={isSelected}
                 onChange={() =>
-                  multi
-                    ? handleMultiSelect(option.value)
-                    : handleSingleSelect(option.value)
+                  multi ? handleMultiSelect(option.value) : handleSingleSelect(option.value)
                 }
                 className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
               />

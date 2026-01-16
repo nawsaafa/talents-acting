@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef, useTransition } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Search, X, Loader2 } from "lucide-react";
-import { getSearchSuggestions, type SearchSuggestion } from "@/lib/search/search-queries";
-import { addRecentSearch } from "@/lib/search/recent-searches";
-import { isValidSearchQuery } from "@/lib/search/search-utils";
-import { SearchSuggestions } from "./SearchSuggestions";
-import { RecentSearches } from "./RecentSearches";
+import { useState, useEffect, useRef, useTransition } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Search, X, Loader2 } from 'lucide-react';
+import { getSearchSuggestions, type SearchSuggestion } from '@/lib/search/search-queries';
+import { addRecentSearch } from '@/lib/search/recent-searches';
+import { isValidSearchQuery } from '@/lib/search/search-utils';
+import { SearchSuggestions } from './SearchSuggestions';
+import { RecentSearches } from './RecentSearches';
 
 interface SearchBarProps {
   placeholder?: string;
@@ -19,14 +19,14 @@ interface SearchBarProps {
  * Updates URL params for shareable search links.
  */
 export function SearchBar({
-  placeholder = "Search talents by name, skills, location...",
-  className = "",
+  placeholder = 'Search talents by name, skills, location...',
+  className = '',
 }: SearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   // Initialize from URL param
-  const initialQuery = searchParams.get("q") || "";
+  const initialQuery = searchParams.get('q') || '';
 
   const [query, setQuery] = useState(initialQuery);
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
@@ -40,7 +40,7 @@ export function SearchBar({
 
   // Sync with URL changes
   useEffect(() => {
-    const urlQuery = searchParams.get("q") || "";
+    const urlQuery = searchParams.get('q') || '';
     if (urlQuery !== query) {
       setQuery(urlQuery);
     }
@@ -66,7 +66,7 @@ export function SearchBar({
         const results = await getSearchSuggestions(query);
         setSuggestions(results);
       } catch (error) {
-        console.error("Failed to fetch suggestions:", error);
+        console.error('Failed to fetch suggestions:', error);
         setSuggestions([]);
       } finally {
         setIsLoadingSuggestions(false);
@@ -83,16 +83,13 @@ export function SearchBar({
   // Close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   // Submit search (update URL)
@@ -103,11 +100,11 @@ export function SearchBar({
     const params = new URLSearchParams(searchParams.toString());
 
     if (trimmed && isValidSearchQuery(trimmed)) {
-      params.set("q", trimmed);
-      params.delete("page"); // Reset pagination on new search
+      params.set('q', trimmed);
+      params.delete('page'); // Reset pagination on new search
       addRecentSearch(trimmed);
     } else {
-      params.delete("q");
+      params.delete('q');
     }
 
     setIsOpen(false);
@@ -123,19 +120,19 @@ export function SearchBar({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
       submitSearch(query);
-    } else if (e.key === "Escape") {
+    } else if (e.key === 'Escape') {
       setIsOpen(false);
       inputRef.current?.blur();
     }
   };
 
   const handleClear = () => {
-    setQuery("");
+    setQuery('');
     setSuggestions([]);
-    submitSearch("");
+    submitSearch('');
     inputRef.current?.focus();
   };
 
@@ -170,6 +167,7 @@ export function SearchBar({
         <input
           ref={inputRef}
           type="text"
+          role="combobox"
           value={query}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
@@ -178,6 +176,7 @@ export function SearchBar({
           className="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
           aria-label="Search talents"
           aria-autocomplete="list"
+          aria-controls="search-listbox"
           aria-expanded={showDropdown}
         />
 
@@ -196,12 +195,13 @@ export function SearchBar({
 
       {/* Dropdown */}
       {(showDropdown || showRecentSearches) && (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+        <div
+          id="search-listbox"
+          role="listbox"
+          className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+        >
           {showRecentSearches ? (
-            <RecentSearches
-              onSelect={handleRecentSelect}
-              onClear={() => setIsOpen(false)}
-            />
+            <RecentSearches onSelect={handleRecentSelect} onClear={() => setIsOpen(false)} />
           ) : (
             <SearchSuggestions
               suggestions={suggestions}

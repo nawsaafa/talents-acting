@@ -25,18 +25,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             className="block text-sm font-medium text-[var(--color-neutral-700)] mb-1.5"
           >
             {label}
-            {props.required && (
-              <span className="text-[var(--color-error)] ml-1">*</span>
-            )}
+            {props.required && <span className="text-[var(--color-error)] ml-1">*</span>}
           </label>
         )}
         <input
           ref={ref}
           id={inputId}
           aria-invalid={hasError}
-          aria-describedby={
-            hasError ? errorId : helperText ? helperId : undefined
-          }
+          aria-describedby={hasError ? errorId : helperText ? helperId : undefined}
           className={`
             w-full px-3 py-2
             border rounded-[var(--radius-md)]
@@ -60,10 +56,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           </p>
         )}
         {!hasError && helperText && (
-          <p
-            id={helperId}
-            className="mt-1.5 text-sm text-[var(--color-neutral-500)]"
-          >
+          <p id={helperId} className="mt-1.5 text-sm text-[var(--color-neutral-500)]">
             {helperText}
           </p>
         )}

@@ -5,7 +5,7 @@
  * Used by ProfileCompleteness component to show progress.
  */
 
-import type { TalentProfile } from "@prisma/client";
+import type { TalentProfile } from '@prisma/client';
 
 // Field weights for completeness calculation
 // Higher weight = more important for a complete profile
@@ -49,41 +49,48 @@ const FIELD_WEIGHTS: Record<string, number> = {
 
 // Human-readable field labels
 const FIELD_LABELS: Record<string, string> = {
-  firstName: "First Name",
-  lastName: "Last Name",
-  gender: "Gender",
-  ageRangeMin: "Minimum Playable Age",
-  ageRangeMax: "Maximum Playable Age",
-  photo: "Primary Photo",
-  height: "Height",
-  physique: "Physique",
-  ethnicAppearance: "Ethnic Appearance",
-  hairColor: "Hair Color",
-  eyeColor: "Eye Color",
-  hairLength: "Hair Length",
-  languages: "Languages",
-  accents: "Accents",
-  athleticSkills: "Athletic Skills",
-  performanceSkills: "Performance Skills",
-  danceStyles: "Dance Styles",
-  musicalInstruments: "Musical Instruments",
-  photos: "Additional Photos",
-  videoUrls: "Video Links",
-  showreel: "Showreel",
-  presentationVideo: "Presentation Video",
-  bio: "Biography",
-  location: "Location",
-  dailyRate: "Daily Rate",
-  contactEmail: "Contact Email",
+  firstName: 'First Name',
+  lastName: 'Last Name',
+  gender: 'Gender',
+  ageRangeMin: 'Minimum Playable Age',
+  ageRangeMax: 'Maximum Playable Age',
+  photo: 'Primary Photo',
+  height: 'Height',
+  physique: 'Physique',
+  ethnicAppearance: 'Ethnic Appearance',
+  hairColor: 'Hair Color',
+  eyeColor: 'Eye Color',
+  hairLength: 'Hair Length',
+  languages: 'Languages',
+  accents: 'Accents',
+  athleticSkills: 'Athletic Skills',
+  performanceSkills: 'Performance Skills',
+  danceStyles: 'Dance Styles',
+  musicalInstruments: 'Musical Instruments',
+  photos: 'Additional Photos',
+  videoUrls: 'Video Links',
+  showreel: 'Showreel',
+  presentationVideo: 'Presentation Video',
+  bio: 'Biography',
+  location: 'Location',
+  dailyRate: 'Daily Rate',
+  contactEmail: 'Contact Email',
 };
 
 // Field categories for grouping
 export const FIELD_CATEGORIES = {
-  basic: ["firstName", "lastName", "gender", "ageRangeMin", "ageRangeMax", "photo"],
-  physical: ["height", "physique", "ethnicAppearance", "hairColor", "eyeColor", "hairLength"],
-  skills: ["languages", "accents", "athleticSkills", "performanceSkills", "danceStyles", "musicalInstruments"],
-  media: ["photos", "videoUrls", "showreel", "presentationVideo"],
-  professional: ["bio", "location", "dailyRate", "contactEmail"],
+  basic: ['firstName', 'lastName', 'gender', 'ageRangeMin', 'ageRangeMax', 'photo'],
+  physical: ['height', 'physique', 'ethnicAppearance', 'hairColor', 'eyeColor', 'hairLength'],
+  skills: [
+    'languages',
+    'accents',
+    'athleticSkills',
+    'performanceSkills',
+    'danceStyles',
+    'musicalInstruments',
+  ],
+  media: ['photos', 'videoUrls', 'showreel', 'presentationVideo'],
+  professional: ['bio', 'location', 'dailyRate', 'contactEmail'],
 } as const;
 
 export type FieldCategory = keyof typeof FIELD_CATEGORIES;
@@ -107,7 +114,7 @@ export interface CompletenessResult {
  */
 function isFieldFilled(value: unknown): boolean {
   if (value === null || value === undefined) return false;
-  if (typeof value === "string" && value.trim() === "") return false;
+  if (typeof value === 'string' && value.trim() === '') return false;
   if (Array.isArray(value) && value.length === 0) return false;
   return true;
 }
@@ -143,7 +150,7 @@ export function calculateCompleteness(
       missingFields: Object.entries(FIELD_WEIGHTS).map(([field, weight]) => ({
         field,
         label: FIELD_LABELS[field] || field,
-        category: getFieldCategory(field) || "basic",
+        category: getFieldCategory(field) || 'basic',
         weight,
       })),
       filledFields: [],
@@ -158,11 +165,14 @@ export function calculateCompleteness(
   }
 
   let earnedPoints = 0;
-  const missingFields: CompletenessResult["missingFields"] = [];
+  const missingFields: CompletenessResult['missingFields'] = [];
   const filledFields: string[] = [];
 
   // Initialize category scores
-  const categoryScores: Record<FieldCategory, { filled: number; total: number; percentage: number }> = {
+  const categoryScores: Record<
+    FieldCategory,
+    { filled: number; total: number; percentage: number }
+  > = {
     basic: { filled: 0, total: 0, percentage: 0 },
     physical: { filled: 0, total: 0, percentage: 0 },
     skills: { filled: 0, total: 0, percentage: 0 },
@@ -189,7 +199,7 @@ export function calculateCompleteness(
       missingFields.push({
         field,
         label: FIELD_LABELS[field] || field,
-        category: category || "basic",
+        category: category || 'basic',
         weight,
       });
     }
@@ -222,7 +232,7 @@ export function calculateCompleteness(
 export function getTopMissingFields(
   result: CompletenessResult,
   limit: number = 5
-): CompletenessResult["missingFields"] {
+): CompletenessResult['missingFields'] {
   return result.missingFields.slice(0, limit);
 }
 
@@ -231,19 +241,19 @@ export function getTopMissingFields(
  */
 export function getCompletenessStatus(percentage: number): {
   label: string;
-  color: "red" | "yellow" | "blue" | "green";
+  color: 'red' | 'yellow' | 'blue' | 'green';
 } {
   if (percentage < 25) {
-    return { label: "Just Started", color: "red" };
+    return { label: 'Just Started', color: 'red' };
   }
   if (percentage < 50) {
-    return { label: "In Progress", color: "yellow" };
+    return { label: 'In Progress', color: 'yellow' };
   }
   if (percentage < 75) {
-    return { label: "Getting There", color: "blue" };
+    return { label: 'Getting There', color: 'blue' };
   }
   if (percentage < 100) {
-    return { label: "Almost Complete", color: "green" };
+    return { label: 'Almost Complete', color: 'green' };
   }
-  return { label: "Complete", color: "green" };
+  return { label: 'Complete', color: 'green' };
 }

@@ -16,6 +16,7 @@ Initialize the project with a modern tech stack, development environment, and fo
 ## Scope
 
 ### In Scope (MVP)
+
 - Project directory structure
 - Package manager setup (npm/yarn/pnpm)
 - Frontend framework initialization (React/Next.js or Vue.js)
@@ -27,6 +28,7 @@ Initialize the project with a modern tech stack, development environment, and fo
 - Basic README with setup instructions
 
 ### Out of Scope
+
 - Deployment pipeline (later phase)
 - CI/CD configuration (later phase)
 - Production hosting setup

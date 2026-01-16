@@ -1,22 +1,17 @@
-"use server";
+'use server';
 
-import { auth } from "@/lib/auth/auth";
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import sharp from "sharp";
-import { mkdir, unlink } from "fs/promises";
-import { existsSync } from "fs";
-import path from "path";
-import { randomUUID } from "crypto";
-import {
-  validateFile,
-  MAX_PHOTOS,
-  IMAGE_VARIANTS,
-  videoUrlSchema,
-} from "./validation";
+import { auth } from '@/lib/auth/auth';
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import sharp from 'sharp';
+import { mkdir, unlink } from 'fs/promises';
+import { existsSync } from 'fs';
+import path from 'path';
+import { randomUUID } from 'crypto';
+import { validateFile, MAX_PHOTOS, IMAGE_VARIANTS, videoUrlSchema } from './validation';
 
 // Base upload directory
-const UPLOAD_DIR = "public/uploads/talents";
+const UPLOAD_DIR = 'public/uploads/talents';
 
 // Ensure upload directory exists for user
 async function ensureUploadDir(userId: string): Promise<string> {
@@ -40,7 +35,7 @@ async function processAndSaveImage(
   userDir: string,
   filename: string
 ): Promise<{ thumbnail: string; card: string; full: string }> {
-  const nameWithoutExt = filename.replace(/\.[^.]+$/, "");
+  const nameWithoutExt = filename.replace(/\.[^.]+$/, '');
 
   // Generate all variants
   const variants = {
@@ -52,8 +47,8 @@ async function processAndSaveImage(
   // Process thumbnail (square crop)
   await sharp(buffer)
     .resize(IMAGE_VARIANTS.thumbnail.width, IMAGE_VARIANTS.thumbnail.height, {
-      fit: "cover",
-      position: "center",
+      fit: 'cover',
+      position: 'center',
     })
     .webp({ quality: 80 })
     .toFile(path.join(userDir, variants.thumbnail));
@@ -61,8 +56,8 @@ async function processAndSaveImage(
   // Process card size (portrait crop)
   await sharp(buffer)
     .resize(IMAGE_VARIANTS.card.width, IMAGE_VARIANTS.card.height, {
-      fit: "cover",
-      position: "top", // Focus on face/top of image
+      fit: 'cover',
+      position: 'top', // Focus on face/top of image
     })
     .webp({ quality: 85 })
     .toFile(path.join(userDir, variants.card));
@@ -70,7 +65,7 @@ async function processAndSaveImage(
   // Process full size (contain within bounds)
   await sharp(buffer)
     .resize(IMAGE_VARIANTS.full.width, IMAGE_VARIANTS.full.height, {
-      fit: "inside",
+      fit: 'inside',
       withoutEnlargement: true,
     })
     .webp({ quality: 90 })
@@ -91,7 +86,7 @@ export async function uploadPhoto(formData: FormData): Promise<UploadResult> {
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return { success: false, error: "Unauthorized" };
+      return { success: false, error: 'Unauthorized' };
     }
 
     const userId = session.user.id;
@@ -103,7 +98,7 @@ export async function uploadPhoto(formData: FormData): Promise<UploadResult> {
     });
 
     if (!profile) {
-      return { success: false, error: "Talent profile not found" };
+      return { success: false, error: 'Talent profile not found' };
     }
 
     // Check photo limit
@@ -115,9 +110,9 @@ export async function uploadPhoto(formData: FormData): Promise<UploadResult> {
     }
 
     // Get file from form data
-    const file = formData.get("file") as File | null;
+    const file = formData.get('file') as File | null;
     if (!file) {
-      return { success: false, error: "No file provided" };
+      return { success: false, error: 'No file provided' };
     }
 
     // Validate file
@@ -134,7 +129,7 @@ export async function uploadPhoto(formData: FormData): Promise<UploadResult> {
     try {
       await sharp(buffer).metadata();
     } catch {
-      return { success: false, error: "Invalid image file" };
+      return { success: false, error: 'Invalid image file' };
     }
 
     // Setup upload directory
@@ -155,13 +150,13 @@ export async function uploadPhoto(formData: FormData): Promise<UploadResult> {
       },
     });
 
-    revalidatePath("/dashboard/profile/media");
-    revalidatePath("/dashboard/profile");
+    revalidatePath('/dashboard/profile/media');
+    revalidatePath('/dashboard/profile');
 
     return { success: true, photoUrl };
   } catch (error) {
-    console.error("Upload error:", error);
-    return { success: false, error: "Failed to upload photo" };
+    console.error('Upload error:', error);
+    return { success: false, error: 'Failed to upload photo' };
   }
 }
 
@@ -175,7 +170,7 @@ export async function deletePhoto(photoUrl: string): Promise<DeleteResult> {
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return { success: false, error: "Unauthorized" };
+      return { success: false, error: 'Unauthorized' };
     }
 
     const userId = session.user.id;
@@ -187,27 +182,23 @@ export async function deletePhoto(photoUrl: string): Promise<DeleteResult> {
     });
 
     if (!profile) {
-      return { success: false, error: "Talent profile not found" };
+      return { success: false, error: 'Talent profile not found' };
     }
 
     // Check if photo exists in profile
     if (!profile.photos.includes(photoUrl)) {
-      return { success: false, error: "Photo not found in profile" };
+      return { success: false, error: 'Photo not found in profile' };
     }
 
     // Extract filename from URL to delete files
-    const urlParts = photoUrl.split("/");
+    const urlParts = photoUrl.split('/');
     const cardFilename = urlParts[urlParts.length - 1];
-    const baseName = cardFilename.replace("-card.webp", "");
+    const baseName = cardFilename.replace('-card.webp', '');
 
     const userDir = path.join(process.cwd(), UPLOAD_DIR, userId);
 
     // Delete all variants
-    const variants = [
-      `${baseName}-thumb.webp`,
-      `${baseName}-card.webp`,
-      `${baseName}-full.webp`,
-    ];
+    const variants = [`${baseName}-thumb.webp`, `${baseName}-card.webp`, `${baseName}-full.webp`];
 
     for (const variant of variants) {
       const filePath = path.join(userDir, variant);
@@ -234,13 +225,13 @@ export async function deletePhoto(photoUrl: string): Promise<DeleteResult> {
       data: updateData,
     });
 
-    revalidatePath("/dashboard/profile/media");
-    revalidatePath("/dashboard/profile");
+    revalidatePath('/dashboard/profile/media');
+    revalidatePath('/dashboard/profile');
 
     return { success: true };
   } catch (error) {
-    console.error("Delete error:", error);
-    return { success: false, error: "Failed to delete photo" };
+    console.error('Delete error:', error);
+    return { success: false, error: 'Failed to delete photo' };
   }
 }
 
@@ -249,7 +240,7 @@ export async function setPrimaryPhoto(photoUrl: string): Promise<DeleteResult> {
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return { success: false, error: "Unauthorized" };
+      return { success: false, error: 'Unauthorized' };
     }
 
     const userId = session.user.id;
@@ -261,12 +252,12 @@ export async function setPrimaryPhoto(photoUrl: string): Promise<DeleteResult> {
     });
 
     if (!profile) {
-      return { success: false, error: "Talent profile not found" };
+      return { success: false, error: 'Talent profile not found' };
     }
 
     // Check if photo exists in profile
     if (!profile.photos.includes(photoUrl)) {
-      return { success: false, error: "Photo not found in profile" };
+      return { success: false, error: 'Photo not found in profile' };
     }
 
     // Update primary photo
@@ -275,14 +266,14 @@ export async function setPrimaryPhoto(photoUrl: string): Promise<DeleteResult> {
       data: { photo: photoUrl },
     });
 
-    revalidatePath("/dashboard/profile/media");
-    revalidatePath("/dashboard/profile");
-    revalidatePath("/talents");
+    revalidatePath('/dashboard/profile/media');
+    revalidatePath('/dashboard/profile');
+    revalidatePath('/talents');
 
     return { success: true };
   } catch (error) {
-    console.error("Set primary error:", error);
-    return { success: false, error: "Failed to set primary photo" };
+    console.error('Set primary error:', error);
+    return { success: false, error: 'Failed to set primary photo' };
   }
 }
 
@@ -292,13 +283,11 @@ interface ReorderResult {
   error?: string;
 }
 
-export async function reorderPhotos(
-  photoUrls: string[]
-): Promise<ReorderResult> {
+export async function reorderPhotos(photoUrls: string[]): Promise<ReorderResult> {
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return { success: false, error: "Unauthorized" };
+      return { success: false, error: 'Unauthorized' };
     }
 
     const userId = session.user.id;
@@ -310,18 +299,15 @@ export async function reorderPhotos(
     });
 
     if (!profile) {
-      return { success: false, error: "Talent profile not found" };
+      return { success: false, error: 'Talent profile not found' };
     }
 
     // Validate that all URLs exist in current photos
     const currentSet = new Set(profile.photos);
     const newSet = new Set(photoUrls);
 
-    if (
-      currentSet.size !== newSet.size ||
-      !profile.photos.every((p) => newSet.has(p))
-    ) {
-      return { success: false, error: "Invalid photo list" };
+    if (currentSet.size !== newSet.size || !profile.photos.every((p) => newSet.has(p))) {
+      return { success: false, error: 'Invalid photo list' };
     }
 
     // Update photo order
@@ -330,12 +316,12 @@ export async function reorderPhotos(
       data: { photos: photoUrls },
     });
 
-    revalidatePath("/dashboard/profile/media");
+    revalidatePath('/dashboard/profile/media');
 
     return { success: true };
   } catch (error) {
-    console.error("Reorder error:", error);
-    return { success: false, error: "Failed to reorder photos" };
+    console.error('Reorder error:', error);
+    return { success: false, error: 'Failed to reorder photos' };
   }
 }
 
@@ -349,7 +335,7 @@ export async function addVideoUrl(url: string): Promise<VideoResult> {
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return { success: false, error: "Unauthorized" };
+      return { success: false, error: 'Unauthorized' };
     }
 
     // Validate URL
@@ -367,17 +353,17 @@ export async function addVideoUrl(url: string): Promise<VideoResult> {
     });
 
     if (!profile) {
-      return { success: false, error: "Talent profile not found" };
+      return { success: false, error: 'Talent profile not found' };
     }
 
     // Check limit
     if (profile.videoUrls.length >= 5) {
-      return { success: false, error: "Maximum 5 videos allowed" };
+      return { success: false, error: 'Maximum 5 videos allowed' };
     }
 
     // Check for duplicate
     if (profile.videoUrls.includes(url)) {
-      return { success: false, error: "Video already added" };
+      return { success: false, error: 'Video already added' };
     }
 
     // Add video URL
@@ -388,12 +374,12 @@ export async function addVideoUrl(url: string): Promise<VideoResult> {
       },
     });
 
-    revalidatePath("/dashboard/profile/media");
+    revalidatePath('/dashboard/profile/media');
 
     return { success: true };
   } catch (error) {
-    console.error("Add video error:", error);
-    return { success: false, error: "Failed to add video" };
+    console.error('Add video error:', error);
+    return { success: false, error: 'Failed to add video' };
   }
 }
 
@@ -402,7 +388,7 @@ export async function removeVideoUrl(url: string): Promise<VideoResult> {
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return { success: false, error: "Unauthorized" };
+      return { success: false, error: 'Unauthorized' };
     }
 
     const userId = session.user.id;
@@ -414,12 +400,12 @@ export async function removeVideoUrl(url: string): Promise<VideoResult> {
     });
 
     if (!profile) {
-      return { success: false, error: "Talent profile not found" };
+      return { success: false, error: 'Talent profile not found' };
     }
 
     // Check if URL exists
     if (!profile.videoUrls.includes(url)) {
-      return { success: false, error: "Video not found" };
+      return { success: false, error: 'Video not found' };
     }
 
     // Remove video URL
@@ -430,11 +416,11 @@ export async function removeVideoUrl(url: string): Promise<VideoResult> {
       },
     });
 
-    revalidatePath("/dashboard/profile/media");
+    revalidatePath('/dashboard/profile/media');
 
     return { success: true };
   } catch (error) {
-    console.error("Remove video error:", error);
-    return { success: false, error: "Failed to remove video" };
+    console.error('Remove video error:', error);
+    return { success: false, error: 'Failed to remove video' };
   }
 }

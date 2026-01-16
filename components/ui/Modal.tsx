@@ -70,9 +70,9 @@ export function Modal({
       document.addEventListener('keydown', handleKeyDown);
 
       setTimeout(() => {
-        const focusableElements = modalRef.current?.querySelectorAll(
-          FOCUSABLE_SELECTORS
-        ) as NodeListOf<HTMLElement> | undefined;
+        const focusableElements = modalRef.current?.querySelectorAll(FOCUSABLE_SELECTORS) as
+          | NodeListOf<HTMLElement>
+          | undefined;
         focusableElements?.[0]?.focus();
       }, 0);
 

@@ -30,6 +30,7 @@ This is the **final session** of Phase 00 (Foundation). Completing it will:
 ## Session Scope
 
 ### In Scope (MVP)
+
 - Admin dashboard layout (separate from public site)
 - Dashboard overview with key metrics:
   - Pending talent validations count
@@ -49,6 +50,7 @@ This is the **final session** of Phase 00 (Foundation). Completing it will:
 - Admin-only route protection
 
 ### Out of Scope
+
 - Bulk operations (mass approve/reject)
 - Analytics/reporting dashboard
 - Content management
@@ -59,6 +61,7 @@ This is the **final session** of Phase 00 (Foundation). Completing it will:
 ## Prerequisites
 
 All prerequisites met:
+
 - [x] Session 04 completed (admin role authentication)
 - [x] Session 05 completed (talent profiles exist)
 
@@ -67,10 +70,12 @@ All prerequisites met:
 ## Dependencies
 
 ### Builds On
+
 - Session 04: Authentication with admin role
 - Session 05: Talent profiles and validation status
 
 ### Enables
+
 - Phase 01: Full talent management
 - Phase 02: Professional/company registration fees
 - Production deployment readiness

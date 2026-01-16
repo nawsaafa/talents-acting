@@ -1,76 +1,73 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button, Input, Select } from "@/components/ui";
-import { PhotoUpload } from "./PhotoUpload";
-import {
-  createTalentProfile,
-  updateTalentProfile,
-} from "@/lib/talents/actions";
-import type { CreateProfileInput } from "@/lib/talents/validation";
-import type { FullTalentProfile } from "@/lib/talents/queries";
-import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button, Input, Select } from '@/components/ui';
+import { PhotoUpload } from './PhotoUpload';
+import { createTalentProfile, updateTalentProfile } from '@/lib/talents/actions';
+import type { CreateProfileInput } from '@/lib/talents/validation';
+import type { FullTalentProfile } from '@/lib/talents/queries';
+import { ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
 
 interface ProfileFormProps {
   profile?: FullTalentProfile | null;
-  mode: "create" | "edit";
+  mode: 'create' | 'edit';
 }
 
 const GENDER_OPTIONS = [
-  { value: "MALE", label: "Male" },
-  { value: "FEMALE", label: "Female" },
-  { value: "NON_BINARY", label: "Non-Binary" },
-  { value: "OTHER", label: "Other" },
+  { value: 'MALE', label: 'Male' },
+  { value: 'FEMALE', label: 'Female' },
+  { value: 'NON_BINARY', label: 'Non-Binary' },
+  { value: 'OTHER', label: 'Other' },
 ];
 
 const PHYSIQUE_OPTIONS = [
-  { value: "", label: "Select physique" },
-  { value: "SLIM", label: "Slim" },
-  { value: "AVERAGE", label: "Average" },
-  { value: "ATHLETIC", label: "Athletic" },
-  { value: "MUSCULAR", label: "Muscular" },
-  { value: "CURVY", label: "Curvy" },
-  { value: "PLUS_SIZE", label: "Plus Size" },
+  { value: '', label: 'Select physique' },
+  { value: 'SLIM', label: 'Slim' },
+  { value: 'AVERAGE', label: 'Average' },
+  { value: 'ATHLETIC', label: 'Athletic' },
+  { value: 'MUSCULAR', label: 'Muscular' },
+  { value: 'CURVY', label: 'Curvy' },
+  { value: 'PLUS_SIZE', label: 'Plus Size' },
 ];
 
 const HAIR_COLOR_OPTIONS = [
-  { value: "", label: "Select hair color" },
-  { value: "BLACK", label: "Black" },
-  { value: "BROWN", label: "Brown" },
-  { value: "BLONDE", label: "Blonde" },
-  { value: "RED", label: "Red" },
-  { value: "GRAY", label: "Gray" },
-  { value: "WHITE", label: "White" },
-  { value: "OTHER", label: "Other" },
+  { value: '', label: 'Select hair color' },
+  { value: 'BLACK', label: 'Black' },
+  { value: 'BROWN', label: 'Brown' },
+  { value: 'BLONDE', label: 'Blonde' },
+  { value: 'RED', label: 'Red' },
+  { value: 'GRAY', label: 'Gray' },
+  { value: 'WHITE', label: 'White' },
+  { value: 'OTHER', label: 'Other' },
 ];
 
 const EYE_COLOR_OPTIONS = [
-  { value: "", label: "Select eye color" },
-  { value: "BROWN", label: "Brown" },
-  { value: "BLUE", label: "Blue" },
-  { value: "GREEN", label: "Green" },
-  { value: "HAZEL", label: "Hazel" },
-  { value: "GRAY", label: "Gray" },
-  { value: "OTHER", label: "Other" },
+  { value: '', label: 'Select eye color' },
+  { value: 'BROWN', label: 'Brown' },
+  { value: 'BLUE', label: 'Blue' },
+  { value: 'GREEN', label: 'Green' },
+  { value: 'HAZEL', label: 'Hazel' },
+  { value: 'GRAY', label: 'Gray' },
+  { value: 'OTHER', label: 'Other' },
 ];
 
 const HAIR_LENGTH_OPTIONS = [
-  { value: "", label: "Select hair length" },
-  { value: "BALD", label: "Bald" },
-  { value: "SHORT", label: "Short" },
-  { value: "MEDIUM", label: "Medium" },
-  { value: "LONG", label: "Long" },
+  { value: '', label: 'Select hair length' },
+  { value: 'BALD', label: 'Bald' },
+  { value: 'SHORT', label: 'Short' },
+  { value: 'MEDIUM', label: 'Medium' },
+  { value: 'LONG', label: 'Long' },
 ];
 
 const BEARD_TYPE_OPTIONS = [
-  { value: "", label: "Select beard type" },
-  { value: "NONE", label: "None" },
-  { value: "STUBBLE", label: "Stubble" },
-  { value: "SHORT", label: "Short" },
-  { value: "MEDIUM", label: "Medium" },
-  { value: "LONG", label: "Long" },
-  { value: "FULL", label: "Full" },
+  { value: '', label: 'Select beard type' },
+  { value: 'NONE', label: 'None' },
+  { value: 'STUBBLE', label: 'Stubble' },
+  { value: 'SHORT', label: 'Short' },
+  { value: 'MEDIUM', label: 'Medium' },
+  { value: 'LONG', label: 'Long' },
+  { value: 'FULL', label: 'Full' },
 ];
 
 interface SectionProps {
@@ -108,25 +105,25 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
 
   // Form state
   const [formData, setFormData] = useState<Partial<CreateProfileInput>>({
-    firstName: profile?.firstName || "",
-    lastName: profile?.lastName || "",
+    firstName: profile?.firstName || '',
+    lastName: profile?.lastName || '',
     gender: profile?.gender || undefined,
     ageRangeMin: profile?.ageRangeMin || 18,
     ageRangeMax: profile?.ageRangeMax || 35,
     photo: profile?.photo || null,
-    location: profile?.location || "",
-    bio: profile?.bio || "",
+    location: profile?.location || '',
+    bio: profile?.bio || '',
     height: profile?.height || undefined,
     physique: profile?.physique || undefined,
-    ethnicAppearance: profile?.ethnicAppearance || "",
+    ethnicAppearance: profile?.ethnicAppearance || '',
     hairColor: profile?.hairColor || undefined,
     eyeColor: profile?.eyeColor || undefined,
     hairLength: profile?.hairLength || undefined,
     beardType: profile?.beardType || undefined,
     hasTattoos: profile?.hasTattoos || false,
     hasScars: profile?.hasScars || false,
-    tattooDescription: profile?.tattooDescription || "",
-    scarDescription: profile?.scarDescription || "",
+    tattooDescription: profile?.tattooDescription || '',
+    scarDescription: profile?.scarDescription || '',
     languages: profile?.languages || [],
     accents: profile?.accents || [],
     athleticSkills: profile?.athleticSkills || [],
@@ -136,8 +133,8 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
     isAvailable: profile?.isAvailable ?? true,
     dailyRate: profile?.dailyRate ? Number(profile.dailyRate) : undefined,
     rateNegotiable: profile?.rateNegotiable ?? true,
-    contactEmail: profile?.contactEmail || "",
-    contactPhone: profile?.contactPhone || "",
+    contactEmail: profile?.contactEmail || '',
+    contactPhone: profile?.contactPhone || '',
   });
 
   const updateField = <K extends keyof CreateProfileInput>(
@@ -147,12 +144,9 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const updateArrayField = (
-    field: keyof CreateProfileInput,
-    value: string
-  ) => {
+  const updateArrayField = (field: keyof CreateProfileInput, value: string) => {
     const items = value
-      .split(",")
+      .split(',')
       .map((s) => s.trim())
       .filter(Boolean);
     setFormData((prev) => ({ ...prev, [field]: items }));
@@ -165,19 +159,19 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
 
     try {
       const result =
-        mode === "create"
+        mode === 'create'
           ? await createTalentProfile(formData as CreateProfileInput)
           : await updateTalentProfile(formData);
 
       if (!result.success) {
-        setError(result.error || "An error occurred");
+        setError(result.error || 'An error occurred');
         return;
       }
 
-      router.push("/dashboard/profile");
+      router.push('/dashboard/profile');
       router.refresh();
     } catch {
-      setError("An unexpected error occurred");
+      setError('An unexpected error occurred');
     } finally {
       setIsSubmitting(false);
     }
@@ -195,7 +189,7 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
       <div className="flex justify-center">
         <PhotoUpload
           currentPhoto={formData.photo}
-          onPhotoChange={(url) => updateField("photo", url)}
+          onPhotoChange={(url) => updateField('photo', url)}
           disabled={isSubmitting}
         />
       </div>
@@ -206,14 +200,14 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
           <Input
             label="First Name *"
             value={formData.firstName}
-            onChange={(e) => updateField("firstName", e.target.value)}
+            onChange={(e) => updateField('firstName', e.target.value)}
             required
             disabled={isSubmitting}
           />
           <Input
             label="Last Name *"
             value={formData.lastName}
-            onChange={(e) => updateField("lastName", e.target.value)}
+            onChange={(e) => updateField('lastName', e.target.value)}
             required
             disabled={isSubmitting}
           />
@@ -221,11 +215,9 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
 
         <Select
           label="Gender *"
-          value={formData.gender || ""}
-          onChange={(e) =>
-            updateField("gender", e.target.value as CreateProfileInput["gender"])
-          }
-          options={[{ value: "", label: "Select gender" }, ...GENDER_OPTIONS]}
+          value={formData.gender || ''}
+          onChange={(e) => updateField('gender', e.target.value as CreateProfileInput['gender'])}
+          options={[{ value: '', label: 'Select gender' }, ...GENDER_OPTIONS]}
           required
           disabled={isSubmitting}
         />
@@ -235,7 +227,7 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
             type="number"
             label="Age Range Min *"
             value={formData.ageRangeMin}
-            onChange={(e) => updateField("ageRangeMin", parseInt(e.target.value))}
+            onChange={(e) => updateField('ageRangeMin', parseInt(e.target.value))}
             min={1}
             max={100}
             required
@@ -245,7 +237,7 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
             type="number"
             label="Age Range Max *"
             value={formData.ageRangeMax}
-            onChange={(e) => updateField("ageRangeMax", parseInt(e.target.value))}
+            onChange={(e) => updateField('ageRangeMax', parseInt(e.target.value))}
             min={1}
             max={100}
             required
@@ -255,19 +247,17 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
 
         <Input
           label="Location"
-          value={formData.location || ""}
-          onChange={(e) => updateField("location", e.target.value)}
+          value={formData.location || ''}
+          onChange={(e) => updateField('location', e.target.value)}
           placeholder="City, Country"
           disabled={isSubmitting}
         />
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Bio
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
           <textarea
-            value={formData.bio || ""}
-            onChange={(e) => updateField("bio", e.target.value)}
+            value={formData.bio || ''}
+            onChange={(e) => updateField('bio', e.target.value)}
             rows={4}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Tell us about yourself and your experience..."
@@ -283,9 +273,9 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
           <Input
             type="number"
             label="Height (cm)"
-            value={formData.height || ""}
+            value={formData.height || ''}
             onChange={(e) =>
-              updateField("height", e.target.value ? parseInt(e.target.value) : undefined)
+              updateField('height', e.target.value ? parseInt(e.target.value) : undefined)
             }
             min={50}
             max={300}
@@ -293,12 +283,9 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
           />
           <Select
             label="Physique"
-            value={formData.physique || ""}
+            value={formData.physique || ''}
             onChange={(e) =>
-              updateField(
-                "physique",
-                e.target.value as CreateProfileInput["physique"]
-              )
+              updateField('physique', e.target.value as CreateProfileInput['physique'])
             }
             options={PHYSIQUE_OPTIONS}
             disabled={isSubmitting}
@@ -307,8 +294,8 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
 
         <Input
           label="Ethnic Appearance"
-          value={formData.ethnicAppearance || ""}
-          onChange={(e) => updateField("ethnicAppearance", e.target.value)}
+          value={formData.ethnicAppearance || ''}
+          onChange={(e) => updateField('ethnicAppearance', e.target.value)}
           placeholder="e.g., Middle Eastern, Mediterranean"
           disabled={isSubmitting}
         />
@@ -316,36 +303,27 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Select
             label="Hair Color"
-            value={formData.hairColor || ""}
+            value={formData.hairColor || ''}
             onChange={(e) =>
-              updateField(
-                "hairColor",
-                e.target.value as CreateProfileInput["hairColor"]
-              )
+              updateField('hairColor', e.target.value as CreateProfileInput['hairColor'])
             }
             options={HAIR_COLOR_OPTIONS}
             disabled={isSubmitting}
           />
           <Select
             label="Eye Color"
-            value={formData.eyeColor || ""}
+            value={formData.eyeColor || ''}
             onChange={(e) =>
-              updateField(
-                "eyeColor",
-                e.target.value as CreateProfileInput["eyeColor"]
-              )
+              updateField('eyeColor', e.target.value as CreateProfileInput['eyeColor'])
             }
             options={EYE_COLOR_OPTIONS}
             disabled={isSubmitting}
           />
           <Select
             label="Hair Length"
-            value={formData.hairLength || ""}
+            value={formData.hairLength || ''}
             onChange={(e) =>
-              updateField(
-                "hairLength",
-                e.target.value as CreateProfileInput["hairLength"]
-              )
+              updateField('hairLength', e.target.value as CreateProfileInput['hairLength'])
             }
             options={HAIR_LENGTH_OPTIONS}
             disabled={isSubmitting}
@@ -354,12 +332,9 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
 
         <Select
           label="Beard Type"
-          value={formData.beardType || ""}
+          value={formData.beardType || ''}
           onChange={(e) =>
-            updateField(
-              "beardType",
-              e.target.value as CreateProfileInput["beardType"]
-            )
+            updateField('beardType', e.target.value as CreateProfileInput['beardType'])
           }
           options={BEARD_TYPE_OPTIONS}
           disabled={isSubmitting}
@@ -373,7 +348,7 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
             <input
               type="checkbox"
               checked={formData.hasTattoos}
-              onChange={(e) => updateField("hasTattoos", e.target.checked)}
+              onChange={(e) => updateField('hasTattoos', e.target.checked)}
               disabled={isSubmitting}
               className="rounded border-gray-300"
             />
@@ -382,8 +357,8 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
           {formData.hasTattoos && (
             <Input
               label="Tattoo Description"
-              value={formData.tattooDescription || ""}
-              onChange={(e) => updateField("tattooDescription", e.target.value)}
+              value={formData.tattooDescription || ''}
+              onChange={(e) => updateField('tattooDescription', e.target.value)}
               placeholder="Describe visible tattoos"
               disabled={isSubmitting}
             />
@@ -393,7 +368,7 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
             <input
               type="checkbox"
               checked={formData.hasScars}
-              onChange={(e) => updateField("hasScars", e.target.checked)}
+              onChange={(e) => updateField('hasScars', e.target.checked)}
               disabled={isSubmitting}
               className="rounded border-gray-300"
             />
@@ -402,8 +377,8 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
           {formData.hasScars && (
             <Input
               label="Scar Description"
-              value={formData.scarDescription || ""}
-              onChange={(e) => updateField("scarDescription", e.target.value)}
+              value={formData.scarDescription || ''}
+              onChange={(e) => updateField('scarDescription', e.target.value)}
               placeholder="Describe visible scars"
               disabled={isSubmitting}
             />
@@ -415,43 +390,43 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
       <FormSection title="Skills & Languages" defaultOpen={false}>
         <Input
           label="Languages"
-          value={formData.languages?.join(", ") || ""}
-          onChange={(e) => updateArrayField("languages", e.target.value)}
+          value={formData.languages?.join(', ') || ''}
+          onChange={(e) => updateArrayField('languages', e.target.value)}
           placeholder="Arabic, English, French (comma-separated)"
           disabled={isSubmitting}
         />
         <Input
           label="Accents"
-          value={formData.accents?.join(", ") || ""}
-          onChange={(e) => updateArrayField("accents", e.target.value)}
+          value={formData.accents?.join(', ') || ''}
+          onChange={(e) => updateArrayField('accents', e.target.value)}
           placeholder="British, American, Gulf Arabic (comma-separated)"
           disabled={isSubmitting}
         />
         <Input
           label="Performance Skills"
-          value={formData.performanceSkills?.join(", ") || ""}
-          onChange={(e) => updateArrayField("performanceSkills", e.target.value)}
+          value={formData.performanceSkills?.join(', ') || ''}
+          onChange={(e) => updateArrayField('performanceSkills', e.target.value)}
           placeholder="Stand-up Comedy, Improvisation (comma-separated)"
           disabled={isSubmitting}
         />
         <Input
           label="Athletic Skills"
-          value={formData.athleticSkills?.join(", ") || ""}
-          onChange={(e) => updateArrayField("athleticSkills", e.target.value)}
+          value={formData.athleticSkills?.join(', ') || ''}
+          onChange={(e) => updateArrayField('athleticSkills', e.target.value)}
           placeholder="Swimming, Martial Arts (comma-separated)"
           disabled={isSubmitting}
         />
         <Input
           label="Musical Instruments"
-          value={formData.musicalInstruments?.join(", ") || ""}
-          onChange={(e) => updateArrayField("musicalInstruments", e.target.value)}
+          value={formData.musicalInstruments?.join(', ') || ''}
+          onChange={(e) => updateArrayField('musicalInstruments', e.target.value)}
           placeholder="Piano, Guitar, Oud (comma-separated)"
           disabled={isSubmitting}
         />
         <Input
           label="Dance Styles"
-          value={formData.danceStyles?.join(", ") || ""}
-          onChange={(e) => updateArrayField("danceStyles", e.target.value)}
+          value={formData.danceStyles?.join(', ') || ''}
+          onChange={(e) => updateArrayField('danceStyles', e.target.value)}
           placeholder="Contemporary, Hip Hop (comma-separated)"
           disabled={isSubmitting}
         />
@@ -463,7 +438,7 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
           <input
             type="checkbox"
             checked={formData.isAvailable}
-            onChange={(e) => updateField("isAvailable", e.target.checked)}
+            onChange={(e) => updateField('isAvailable', e.target.checked)}
             disabled={isSubmitting}
             className="rounded border-gray-300"
           />
@@ -474,12 +449,9 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
           <Input
             type="number"
             label="Daily Rate"
-            value={formData.dailyRate || ""}
+            value={formData.dailyRate || ''}
             onChange={(e) =>
-              updateField(
-                "dailyRate",
-                e.target.value ? parseFloat(e.target.value) : undefined
-              )
+              updateField('dailyRate', e.target.value ? parseFloat(e.target.value) : undefined)
             }
             min={0}
             placeholder="0.00"
@@ -490,7 +462,7 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
               <input
                 type="checkbox"
                 checked={formData.rateNegotiable}
-                onChange={(e) => updateField("rateNegotiable", e.target.checked)}
+                onChange={(e) => updateField('rateNegotiable', e.target.checked)}
                 disabled={isSubmitting}
                 className="rounded border-gray-300"
               />
@@ -509,16 +481,16 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
           <Input
             type="email"
             label="Contact Email"
-            value={formData.contactEmail || ""}
-            onChange={(e) => updateField("contactEmail", e.target.value)}
+            value={formData.contactEmail || ''}
+            onChange={(e) => updateField('contactEmail', e.target.value)}
             placeholder="your@email.com"
             disabled={isSubmitting}
           />
           <Input
             type="tel"
             label="Contact Phone"
-            value={formData.contactPhone || ""}
-            onChange={(e) => updateField("contactPhone", e.target.value)}
+            value={formData.contactPhone || ''}
+            onChange={(e) => updateField('contactPhone', e.target.value)}
             placeholder="+212 600 000 000"
             disabled={isSubmitting}
           />
@@ -539,12 +511,12 @@ export function ProfileForm({ profile, mode }: ProfileFormProps) {
           {isSubmitting ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              {mode === "create" ? "Creating..." : "Saving..."}
+              {mode === 'create' ? 'Creating...' : 'Saving...'}
             </>
-          ) : mode === "create" ? (
-            "Create Profile"
+          ) : mode === 'create' ? (
+            'Create Profile'
           ) : (
-            "Save Changes"
+            'Save Changes'
           )}
         </Button>
       </div>

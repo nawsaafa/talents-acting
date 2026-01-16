@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useMemo } from "react";
-import { extractSearchTerms, findMatchPositions } from "@/lib/search/search-utils";
+import { useMemo } from 'react';
+import { extractSearchTerms, findMatchPositions } from '@/lib/search/search-utils';
 
 interface SearchHighlightProps {
   text: string;
@@ -17,8 +17,8 @@ interface SearchHighlightProps {
 export function SearchHighlight({
   text,
   query,
-  className = "",
-  highlightClassName = "bg-yellow-200 text-yellow-900",
+  className = '',
+  highlightClassName = 'bg-yellow-200 text-yellow-900',
 }: SearchHighlightProps) {
   const highlighted = useMemo(() => {
     if (!query || !text) {

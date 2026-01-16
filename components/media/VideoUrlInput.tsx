@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import { Plus, Loader2, Youtube, Video, AlertCircle } from "lucide-react";
-import { isValidVideoUrl, detectPlatform } from "@/lib/media/video-utils";
-import { addVideoUrl } from "@/lib/media/upload";
+import { useState, useTransition } from 'react';
+import { Plus, Loader2, Youtube, Video, AlertCircle } from 'lucide-react';
+import { isValidVideoUrl, detectPlatform } from '@/lib/media/video-utils';
+import { addVideoUrl } from '@/lib/media/upload';
 
 interface VideoUrlInputProps {
   onAdded?: () => void;
@@ -11,12 +11,8 @@ interface VideoUrlInputProps {
   maxVideos?: number;
 }
 
-export function VideoUrlInput({
-  onAdded,
-  currentCount = 0,
-  maxVideos = 5,
-}: VideoUrlInputProps) {
-  const [url, setUrl] = useState("");
+export function VideoUrlInput({ onAdded, currentCount = 0, maxVideos = 5 }: VideoUrlInputProps) {
+  const [url, setUrl] = useState('');
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
@@ -28,12 +24,12 @@ export function VideoUrlInput({
     e.preventDefault();
 
     if (!url.trim()) {
-      setError("Please enter a URL");
+      setError('Please enter a URL');
       return;
     }
 
     if (!isValidVideoUrl(url)) {
-      setError("Only YouTube and Vimeo URLs are supported");
+      setError('Only YouTube and Vimeo URLs are supported');
       return;
     }
 
@@ -41,10 +37,10 @@ export function VideoUrlInput({
     startTransition(async () => {
       const result = await addVideoUrl(url.trim());
       if (result.success) {
-        setUrl("");
+        setUrl('');
         onAdded?.();
       } else {
-        setError(result.error || "Failed to add video");
+        setError(result.error || 'Failed to add video');
       }
     });
   }
@@ -80,17 +76,17 @@ export function VideoUrlInput({
                 disabled={isPending}
                 className={`w-full rounded-md border px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:opacity-50 ${
                   error
-                    ? "border-red-300"
+                    ? 'border-red-300'
                     : isValid === true
-                      ? "border-green-300"
-                      : "border-gray-300"
+                      ? 'border-green-300'
+                      : 'border-gray-300'
                 }`}
               />
 
               {/* Platform indicator */}
-              {platform && platform !== "unknown" && (
+              {platform && platform !== 'unknown' && (
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  {platform === "youtube" ? (
+                  {platform === 'youtube' ? (
                     <Youtube className="h-4 w-4 text-red-600" />
                   ) : (
                     <Video className="h-4 w-4 text-blue-500" />
@@ -124,9 +120,7 @@ export function VideoUrlInput({
           )}
 
           {/* Help text */}
-          <p className="mt-2 text-xs text-gray-500">
-            Supported: YouTube and Vimeo URLs
-          </p>
+          <p className="mt-2 text-xs text-gray-500">Supported: YouTube and Vimeo URLs</p>
         </form>
       )}
     </div>

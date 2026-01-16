@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { Prisma, ValidationStatus } from "@prisma/client";
-import { sanitizeSearchQuery, toTsQuery } from "./search-utils";
+import { prisma } from '@/lib/prisma';
+import { Prisma, ValidationStatus } from '@prisma/client';
+import { sanitizeSearchQuery, toTsQuery } from './search-utils';
 
 // Result type for search suggestions
 export interface SearchSuggestion {
@@ -20,10 +20,7 @@ export interface SearchSuggestion {
  * Note: Requires search-setup.sql to be run on the database first.
  * If search_vector column doesn't exist, falls back to ILIKE search.
  */
-export async function searchTalentIds(
-  query: string,
-  limit: number = 50
-): Promise<string[]> {
+export async function searchTalentIds(query: string, limit: number = 50): Promise<string[]> {
   const sanitized = sanitizeSearchQuery(query);
 
   if (!sanitized) {
@@ -48,7 +45,7 @@ export async function searchTalentIds(
     return results.map((r) => r.id);
   } catch (error) {
     // Fallback to ILIKE if search_vector doesn't exist
-    console.warn("FTS search failed, falling back to ILIKE:", error);
+    console.warn('FTS search failed, falling back to ILIKE:', error);
     return searchTalentIdsFallback(sanitized, limit);
   }
 }
@@ -56,10 +53,7 @@ export async function searchTalentIds(
 /**
  * Fallback search using ILIKE for when FTS isn't set up.
  */
-async function searchTalentIdsFallback(
-  query: string,
-  limit: number
-): Promise<string[]> {
+async function searchTalentIdsFallback(query: string, limit: number): Promise<string[]> {
   const pattern = `%${query}%`;
 
   const results = await prisma.$queryRaw<Array<{ id: string }>>`
@@ -92,9 +86,7 @@ async function searchTalentIdsFallback(
  * Get search suggestions for autocomplete.
  * Returns top 5 matching talents with minimal data.
  */
-export async function getSearchSuggestions(
-  query: string
-): Promise<SearchSuggestion[]> {
+export async function getSearchSuggestions(query: string): Promise<SearchSuggestion[]> {
   const sanitized = sanitizeSearchQuery(query);
 
   if (!sanitized || sanitized.length < 2) {
@@ -126,9 +118,7 @@ export async function getSearchSuggestions(
 /**
  * Fallback suggestions using ILIKE.
  */
-async function getSearchSuggestionsFallback(
-  query: string
-): Promise<SearchSuggestion[]> {
+async function getSearchSuggestionsFallback(query: string): Promise<SearchSuggestion[]> {
   const pattern = `%${query}%`;
 
   return prisma.$queryRaw<SearchSuggestion[]>`

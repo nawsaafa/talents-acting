@@ -29,16 +29,19 @@ This is the first session of Phase 01 and directly builds on the talent listing 
 ## 3. Prerequisites
 
 ### Required Sessions
+
 - [x] `phase00-session02-database_schema` - TalentProfile model with all fields
 - [x] `phase00-session03-core_ui_framework` - UI primitives (Input, Select, Button)
 - [x] `phase00-session05-talent_profile_foundation` - Basic talent listing and queries
 
 ### Required Tools/Knowledge
+
 - Prisma dynamic query building
 - Next.js App Router searchParams
 - React client components with hooks
 
 ### Environment Requirements
+
 - PostgreSQL database with talent data
 - Node.js 20+
 - All Phase 00 dependencies installed
@@ -48,6 +51,7 @@ This is the first session of Phase 01 and directly builds on the talent listing 
 ## 4. Scope
 
 ### In Scope (MVP)
+
 - FilterPanel component with collapsible sections
 - Gender filter (single select from enum)
 - Age range filter (min/max number inputs)
@@ -66,11 +70,12 @@ This is the first session of Phase 01 and directly builds on the talent listing 
 - Server-side query builder for all filters
 
 ### Out of Scope (Deferred)
-- Saved filter presets - *Reason: requires user preferences storage*
-- Filter analytics/tracking - *Reason: requires analytics infrastructure*
-- Accents filter - *Reason: complex nested data, defer to Phase 01 Session 03*
-- Musical instruments filter - *Reason: lower priority, defer*
-- Boolean filters (hasTattoos, hasScars, hasShowreel) - *Reason: lower priority*
+
+- Saved filter presets - _Reason: requires user preferences storage_
+- Filter analytics/tracking - _Reason: requires analytics infrastructure_
+- Accents filter - _Reason: complex nested data, defer to Phase 01 Session 03_
+- Musical instruments filter - _Reason: lower priority, defer_
+- Boolean filters (hasTattoos, hasScars, hasShowreel) - _Reason: lower priority_
 
 ---
 
@@ -97,12 +102,14 @@ app/talents/page.tsx (Server Component)
 ```
 
 ### Design Patterns
+
 - **URL State**: All filter state in searchParams for shareability and SSR
 - **Server-Side Filtering**: Prisma queries built from URL params, not client-side
 - **Compound Components**: FilterPanel > FilterSection > specific filter controls
 - **Controlled Components**: Filter inputs controlled by URL state via hooks
 
 ### Technology Stack
+
 - Next.js 16 App Router (searchParams, server components)
 - React 19 (useSearchParams, useRouter)
 - Prisma 5 (dynamic WHERE clause building)
@@ -114,31 +121,34 @@ app/talents/page.tsx (Server Component)
 ## 6. Deliverables
 
 ### Files to Create
-| File | Purpose | Est. Lines |
-|------|---------|------------|
-| `lib/talents/filters.ts` | Query builder for all filter types | ~200 |
-| `lib/talents/filter-options.ts` | Static options for enum filters | ~100 |
-| `hooks/useFilters.ts` | URL state management hook | ~80 |
-| `components/talents/FilterPanel.tsx` | Main filter container | ~150 |
-| `components/talents/FilterSection.tsx` | Collapsible section wrapper | ~60 |
-| `components/talents/filters/RangeFilter.tsx` | Min/max range inputs | ~70 |
-| `components/talents/filters/MultiSelectFilter.tsx` | Checkbox list with search | ~120 |
-| `components/talents/filters/EnumSelectFilter.tsx` | Single/multi enum select | ~80 |
-| `components/talents/filters/index.ts` | Barrel exports | ~10 |
+
+| File                                               | Purpose                            | Est. Lines |
+| -------------------------------------------------- | ---------------------------------- | ---------- |
+| `lib/talents/filters.ts`                           | Query builder for all filter types | ~200       |
+| `lib/talents/filter-options.ts`                    | Static options for enum filters    | ~100       |
+| `hooks/useFilters.ts`                              | URL state management hook          | ~80        |
+| `components/talents/FilterPanel.tsx`               | Main filter container              | ~150       |
+| `components/talents/FilterSection.tsx`             | Collapsible section wrapper        | ~60        |
+| `components/talents/filters/RangeFilter.tsx`       | Min/max range inputs               | ~70        |
+| `components/talents/filters/MultiSelectFilter.tsx` | Checkbox list with search          | ~120       |
+| `components/talents/filters/EnumSelectFilter.tsx`  | Single/multi enum select           | ~80        |
+| `components/talents/filters/index.ts`              | Barrel exports                     | ~10        |
 
 ### Files to Modify
-| File | Changes | Est. Lines |
-|------|---------|------------|
-| `app/talents/page.tsx` | Replace TalentFilters with FilterPanel, update layout | ~40 |
-| `lib/talents/queries.ts` | Update getPublicTalents to use filter builder | ~30 |
-| `lib/talents/validation.ts` | Extend TalentFilterInput schema | ~50 |
-| `components/talents/index.ts` | Export new filter components | ~5 |
+
+| File                          | Changes                                               | Est. Lines |
+| ----------------------------- | ----------------------------------------------------- | ---------- |
+| `app/talents/page.tsx`        | Replace TalentFilters with FilterPanel, update layout | ~40        |
+| `lib/talents/queries.ts`      | Update getPublicTalents to use filter builder         | ~30        |
+| `lib/talents/validation.ts`   | Extend TalentFilterInput schema                       | ~50        |
+| `components/talents/index.ts` | Export new filter components                          | ~5         |
 
 ---
 
 ## 7. Success Criteria
 
 ### Functional Requirements
+
 - [ ] FilterPanel displays with all sections (Basic, Physical, Skills, Professional)
 - [ ] Each filter section is collapsible
 - [ ] Gender filter works with single selection
@@ -158,11 +168,13 @@ app/talents/page.tsx (Server Component)
 - [ ] Filter count badges show active filter count per section
 
 ### Testing Requirements
+
 - [ ] Manual testing of all filter combinations
 - [ ] Verify URL state persistence
 - [ ] Test on mobile viewport (drawer pattern)
 
 ### Quality Gates
+
 - [ ] All files ASCII-encoded
 - [ ] Unix LF line endings
 - [ ] ESLint passes with 0 errors
@@ -175,24 +187,28 @@ app/talents/page.tsx (Server Component)
 ## 8. Implementation Notes
 
 ### Key Considerations
+
 - Maintain existing pagination when filters change (reset to page 1)
 - Use debouncing for text inputs (search, range inputs)
 - Pre-populate filter options from database where applicable (languages, skills)
 - Handle empty arrays vs undefined for multi-select filters
 
 ### Potential Challenges
+
 - **Query Performance**: Many filter combinations may create slow queries
-  - *Mitigation*: Use existing indexes, limit complex OR conditions
+  - _Mitigation_: Use existing indexes, limit complex OR conditions
 - **URL Length**: Too many filters may exceed URL limits
-  - *Mitigation*: Use short param names, comma-separated values for arrays
+  - _Mitigation_: Use short param names, comma-separated values for arrays
 - **Mobile UX**: Full filter panel won't fit on mobile
-  - *Mitigation*: Use drawer/sheet pattern with filter button trigger
+  - _Mitigation_: Use drawer/sheet pattern with filter button trigger
 
 ### Relevant Considerations
+
 - [P00] **Tiered access control**: Filters only show approved, public talents
 - [P00] **Performance**: Use existing database indexes (gender, ageRange, physique, location, isAvailable)
 
 ### ASCII Reminder
+
 All output files must use ASCII-only characters (0-127).
 
 ---
@@ -200,12 +216,15 @@ All output files must use ASCII-only characters (0-127).
 ## 9. Testing Strategy
 
 ### Unit Tests
+
 - Not required for MVP (per project scope)
 
 ### Integration Tests
+
 - Not required for MVP (per project scope)
 
 ### Manual Testing
+
 1. Apply each filter type individually, verify results update
 2. Combine multiple filters, verify AND logic works
 3. Copy URL with filters, open in new tab, verify state preserved
@@ -216,6 +235,7 @@ All output files must use ASCII-only characters (0-127).
 8. Test with no matching results, verify empty state
 
 ### Edge Cases
+
 - No talents match filter criteria (empty state)
 - All talents match (no filtering)
 - Range filters with only min or only max
@@ -227,11 +247,13 @@ All output files must use ASCII-only characters (0-127).
 ## 10. Dependencies
 
 ### External Libraries
+
 - `@prisma/client`: ^5.22.0 (existing)
 - `lucide-react`: ^0.562.0 (existing)
 - `zod`: ^4.3.5 (existing)
 
 ### Other Sessions
+
 - **Depends on**: Phase 00 Sessions 02, 03, 05
 - **Depended by**: Phase 01 Session 03 (Search combines with filters)
 
