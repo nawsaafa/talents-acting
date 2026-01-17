@@ -125,6 +125,9 @@ model User {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime? // Soft delete
 
+  // Stripe customer reference
+  stripeCustomerId String? @unique
+
   // Profile relationships (one-to-one based on role)
   talentProfile       TalentProfile?
   professionalProfile ProfessionalProfile?
@@ -182,6 +185,11 @@ model TalentProfile {
   dailyRate         Decimal? @db.Decimal(10, 2) // Rate in local currency
   rateNegotiable    Boolean  @default(true)
 
+  // Subscription (membership)
+  subscriptionStatus   SubscriptionStatus @default(NONE)
+  subscriptionEndsAt   DateTime?
+  stripeSubscriptionId String? @unique
+
   // === T013: Validation and Visibility ===
   validationStatus ValidationStatus @default(PENDING)
   validatedAt      DateTime?
@@ -207,6 +215,7 @@ model TalentProfile {
   @@index([isAvailable])
   @@index([location])
   @@index([physique])
+  @@index([subscriptionStatus])
   @@index([createdAt])
 }
 
@@ -238,6 +247,7 @@ model ProfessionalProfile {
   // Subscription
   subscriptionStatus   SubscriptionStatus @default(NONE)
   subscriptionEndsAt   DateTime?
+  stripeSubscriptionId String? @unique
 
   // Contact (verified professionals only)
   contactEmail String?
@@ -288,8 +298,9 @@ model CompanyProfile {
   isVerifiedCompany  Boolean          @default(false)
 
   // Subscription
-  subscriptionStatus SubscriptionStatus @default(NONE)
-  subscriptionEndsAt DateTime?
+  subscriptionStatus   SubscriptionStatus @default(NONE)
+  subscriptionEndsAt   DateTime?
+  stripeSubscriptionId String? @unique
 
   // Terms acceptance
   termsAcceptedAt DateTime?

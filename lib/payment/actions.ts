@@ -2,8 +2,10 @@
 
 import { auth } from '@/lib/auth/auth';
 import { stripe } from './stripe';
-import { PRICING, CURRENCY, calculatePeriodEnd, getPaymentTypeForRole } from './config';
-import { createPaymentRecord, getPaymentBySessionId } from './queries';
+import { PRICING, CURRENCY, getPaymentTypeForRole } from './config';
+import { createPaymentRecord } from './queries';
+import { getOrCreateStripeCustomer } from './subscription';
+import { getPriceId } from './products';
 import { PaymentType } from '@prisma/client';
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
@@ -20,7 +22,7 @@ export async function createCheckoutSession(
   try {
     const session = await auth();
 
-    if (!session?.user?.id) {
+    if (!session?.user?.id || !session?.user?.email) {
       return { success: false, error: 'You must be logged in to make a payment' };
     }
 
@@ -29,37 +31,33 @@ export async function createCheckoutSession(
       return { success: false, error: 'Invalid payment type' };
     }
 
-    // Check if user already has an active payment for this type
-    const existingPayment = await getPaymentBySessionId(session.user.id);
-    if (existingPayment && existingPayment.status === 'COMPLETED') {
-      return { success: false, error: 'You already have an active subscription' };
-    }
+    // Get or create Stripe customer
+    const customerId = await getOrCreateStripeCustomer(session.user.id, session.user.email);
 
-    const periodEnd = calculatePeriodEnd(pricing.periodMonths);
+    // Get the price ID for this payment type
+    const priceId = await getPriceId(paymentType);
 
+    // Create subscription checkout session
     const checkoutSession = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      payment_method_types: ['card'],
+      mode: 'subscription',
+      customer: customerId,
       line_items: [
         {
-          price_data: {
-            currency: CURRENCY.code,
-            product_data: {
-              name: pricing.description,
-              description: `Valid for ${pricing.periodMonths} months`,
-            },
-            unit_amount: pricing.amount,
-          },
+          price: priceId,
           quantity: 1,
         },
       ],
       metadata: {
         userId: session.user.id,
-        userEmail: session.user.email || '',
+        userEmail: session.user.email,
         paymentType,
-        periodEnd: periodEnd.toISOString(),
       },
-      customer_email: session.user.email || undefined,
+      subscription_data: {
+        metadata: {
+          userId: session.user.id,
+          paymentType,
+        },
+      },
       success_url: `${APP_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${APP_URL}/payment/cancel`,
     });
@@ -77,7 +75,7 @@ export async function createCheckoutSession(
       currency: CURRENCY.code,
       description: pricing.description,
       periodStart: new Date(),
-      periodEnd,
+      periodEnd: undefined, // Will be set by webhook when subscription is created
     });
 
     return { success: true, url: checkoutSession.url };

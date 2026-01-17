@@ -6,6 +6,7 @@ import { Button, Card, CardBody } from '@/components/ui';
 import { ProfileCompleteness, ProfilePreview } from '@/components/profile';
 import { auth } from '@/lib/auth/auth';
 import { getTalentProfileByUserId } from '@/lib/talents/queries';
+import { getTalentSubscription } from '@/lib/payment/queries';
 import {
   User,
   Edit,
@@ -18,6 +19,7 @@ import {
   Calendar,
   Camera,
   Sparkles,
+  CreditCard,
 } from 'lucide-react';
 
 const VALIDATION_STATUS_CONFIG = {
@@ -62,6 +64,39 @@ const GENDER_LABELS: Record<string, string> = {
   OTHER: 'Other',
 };
 
+const SUBSCRIPTION_STATUS_CONFIG = {
+  NONE: {
+    label: 'No Subscription',
+    color: 'text-zinc-600',
+    bgColor: 'bg-zinc-100',
+  },
+  TRIAL: {
+    label: 'Trial',
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-100',
+  },
+  ACTIVE: {
+    label: 'Active',
+    color: 'text-green-600',
+    bgColor: 'bg-green-100',
+  },
+  PAST_DUE: {
+    label: 'Past Due',
+    color: 'text-amber-600',
+    bgColor: 'bg-amber-100',
+  },
+  CANCELLED: {
+    label: 'Cancelled',
+    color: 'text-red-600',
+    bgColor: 'bg-red-100',
+  },
+  EXPIRED: {
+    label: 'Expired',
+    color: 'text-zinc-600',
+    bgColor: 'bg-zinc-100',
+  },
+} as const;
+
 export const metadata = {
   title: 'My Profile | Dashboard - Acting Institute',
   description: 'Manage your talent profile',
@@ -95,8 +130,11 @@ export default async function ProfileDashboardPage() {
     );
   }
 
-  // Fetch user's talent profile
-  const profile = await getTalentProfileByUserId(session.user.id);
+  // Fetch user's talent profile and subscription
+  const [profile, subscription] = await Promise.all([
+    getTalentProfileByUserId(session.user.id),
+    getTalentSubscription(session.user.id),
+  ]);
 
   // No profile yet - show create CTA
   if (!profile) {
@@ -251,6 +289,12 @@ export default async function ProfileDashboardPage() {
                   Manage Media
                 </Button>
               </Link>
+              <Link href="/dashboard/talent/billing" className="block">
+                <Button variant="outline" className="w-full justify-start">
+                  <CreditCard className="w-4 h-4 mr-2" />
+                  Billing & Subscription
+                </Button>
+              </Link>
               {profile.validationStatus === 'APPROVED' && profile.isPublic && (
                 <Link href={`/talents/${profile.id}`} className="block">
                   <Button variant="outline" className="w-full justify-start">
@@ -259,6 +303,41 @@ export default async function ProfileDashboardPage() {
                   </Button>
                 </Link>
               )}
+            </div>
+
+            {/* Subscription Status */}
+            <div className="mt-6 pt-6 border-t">
+              <h4 className="text-sm font-medium text-gray-500 mb-3">Subscription</h4>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Status</span>
+                  <span
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                      SUBSCRIPTION_STATUS_CONFIG[subscription?.status || 'NONE'].bgColor
+                    } ${SUBSCRIPTION_STATUS_CONFIG[subscription?.status || 'NONE'].color}`}
+                  >
+                    {SUBSCRIPTION_STATUS_CONFIG[subscription?.status || 'NONE'].label}
+                  </span>
+                </div>
+                {subscription?.endsAt && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">
+                      {subscription.status === 'CANCELLED' ? 'Expires' : 'Renews'}
+                    </span>
+                    <span className="text-sm font-medium text-gray-900">
+                      {new Date(subscription.endsAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
+                {(!subscription || subscription.status === 'NONE') && (
+                  <Link
+                    href="/dashboard/talent/payment"
+                    className="mt-3 block text-center text-sm font-medium text-blue-600 hover:text-blue-700"
+                  >
+                    Subscribe Now
+                  </Link>
+                )}
+              </div>
             </div>
 
             {/* Stats */}

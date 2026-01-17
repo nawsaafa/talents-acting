@@ -4,7 +4,10 @@ import {
   constructWebhookEvent,
   handleCheckoutCompleted,
   handleCheckoutExpired,
-  handlePaymentFailed,
+  handleSubscriptionUpdated,
+  handleSubscriptionDeleted,
+  handleInvoicePaid,
+  handleInvoicePaymentFailed,
 } from '@/lib/payment/webhooks';
 
 export async function POST(request: NextRequest) {
@@ -52,11 +55,38 @@ export async function POST(request: NextRequest) {
         break;
       }
 
-      case 'payment_intent.payment_failed': {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        const result = await handlePaymentFailed(paymentIntent);
+      case 'customer.subscription.updated': {
+        const subscription = event.data.object as Stripe.Subscription;
+        const result = await handleSubscriptionUpdated(subscription);
         if (!result.success) {
-          console.error('Payment failure handling failed:', result.error);
+          console.error('Subscription update handling failed:', result.error);
+        }
+        break;
+      }
+
+      case 'customer.subscription.deleted': {
+        const subscription = event.data.object as Stripe.Subscription;
+        const result = await handleSubscriptionDeleted(subscription);
+        if (!result.success) {
+          console.error('Subscription deletion handling failed:', result.error);
+        }
+        break;
+      }
+
+      case 'invoice.paid': {
+        const invoice = event.data.object as Stripe.Invoice;
+        const result = await handleInvoicePaid(invoice);
+        if (!result.success) {
+          console.error('Invoice paid handling failed:', result.error);
+        }
+        break;
+      }
+
+      case 'invoice.payment_failed': {
+        const invoice = event.data.object as Stripe.Invoice;
+        const result = await handleInvoicePaymentFailed(invoice);
+        if (!result.success) {
+          console.error('Invoice payment failure handling failed:', result.error);
         }
         break;
       }

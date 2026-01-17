@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { PaymentType, Prisma } from '@prisma/client';
+import { PaymentType, Prisma, SubscriptionStatus } from '@prisma/client';
 
 interface CreatePaymentData {
   userId: string;
@@ -122,5 +122,170 @@ export async function getRecentPayments(limit: number = 10) {
   return prisma.payment.findMany({
     orderBy: { createdAt: 'desc' },
     take: limit,
+  });
+}
+
+// Subscription-related queries
+
+export interface SubscriptionInfo {
+  status: SubscriptionStatus;
+  endsAt: Date | null;
+  stripeSubscriptionId: string | null;
+}
+
+export async function getTalentSubscription(userId: string): Promise<SubscriptionInfo | null> {
+  const profile = await prisma.talentProfile.findUnique({
+    where: { userId },
+    select: {
+      subscriptionStatus: true,
+      subscriptionEndsAt: true,
+      stripeSubscriptionId: true,
+    },
+  });
+
+  if (!profile) return null;
+
+  return {
+    status: profile.subscriptionStatus,
+    endsAt: profile.subscriptionEndsAt,
+    stripeSubscriptionId: profile.stripeSubscriptionId,
+  };
+}
+
+export async function getProfessionalSubscription(
+  userId: string
+): Promise<SubscriptionInfo | null> {
+  const profile = await prisma.professionalProfile.findUnique({
+    where: { userId },
+    select: {
+      subscriptionStatus: true,
+      subscriptionEndsAt: true,
+      stripeSubscriptionId: true,
+    },
+  });
+
+  if (!profile) return null;
+
+  return {
+    status: profile.subscriptionStatus,
+    endsAt: profile.subscriptionEndsAt,
+    stripeSubscriptionId: profile.stripeSubscriptionId,
+  };
+}
+
+export async function getCompanySubscription(userId: string): Promise<SubscriptionInfo | null> {
+  const profile = await prisma.companyProfile.findUnique({
+    where: { userId },
+    select: {
+      subscriptionStatus: true,
+      subscriptionEndsAt: true,
+      stripeSubscriptionId: true,
+    },
+  });
+
+  if (!profile) return null;
+
+  return {
+    status: profile.subscriptionStatus,
+    endsAt: profile.subscriptionEndsAt,
+    stripeSubscriptionId: profile.stripeSubscriptionId,
+  };
+}
+
+export async function updateTalentSubscription(
+  userId: string,
+  status: SubscriptionStatus,
+  endsAt: Date | null,
+  stripeSubscriptionId?: string
+) {
+  return prisma.talentProfile.update({
+    where: { userId },
+    data: {
+      subscriptionStatus: status,
+      subscriptionEndsAt: endsAt,
+      ...(stripeSubscriptionId && { stripeSubscriptionId }),
+    },
+  });
+}
+
+export async function updateProfessionalSubscriptionFull(
+  userId: string,
+  status: SubscriptionStatus,
+  endsAt: Date | null,
+  stripeSubscriptionId?: string
+) {
+  return prisma.professionalProfile.update({
+    where: { userId },
+    data: {
+      subscriptionStatus: status,
+      subscriptionEndsAt: endsAt,
+      ...(stripeSubscriptionId && { stripeSubscriptionId }),
+    },
+  });
+}
+
+export async function updateCompanySubscriptionFull(
+  userId: string,
+  status: SubscriptionStatus,
+  endsAt: Date | null,
+  stripeSubscriptionId?: string
+) {
+  return prisma.companyProfile.update({
+    where: { userId },
+    data: {
+      subscriptionStatus: status,
+      subscriptionEndsAt: endsAt,
+      ...(stripeSubscriptionId && { stripeSubscriptionId }),
+    },
+  });
+}
+
+// Find profile by Stripe subscription ID
+export async function findProfileBySubscriptionId(subscriptionId: string) {
+  // Check talent profiles
+  const talent = await prisma.talentProfile.findUnique({
+    where: { stripeSubscriptionId: subscriptionId },
+    include: { user: { select: { id: true, email: true, role: true } } },
+  });
+  if (talent) return { type: 'TALENT' as const, profile: talent };
+
+  // Check professional profiles
+  const professional = await prisma.professionalProfile.findUnique({
+    where: { stripeSubscriptionId: subscriptionId },
+    include: { user: { select: { id: true, email: true, role: true } } },
+  });
+  if (professional) return { type: 'PROFESSIONAL' as const, profile: professional };
+
+  // Check company profiles
+  const company = await prisma.companyProfile.findUnique({
+    where: { stripeSubscriptionId: subscriptionId },
+    include: { user: { select: { id: true, email: true, role: true } } },
+  });
+  if (company) return { type: 'COMPANY' as const, profile: company };
+
+  return null;
+}
+
+// Get user's billing history with invoice details
+export async function getUserBillingHistory(userId: string, limit: number = 20) {
+  return prisma.payment.findMany({
+    where: {
+      userId,
+      status: 'COMPLETED',
+    },
+    orderBy: { createdAt: 'desc' },
+    take: limit,
+    select: {
+      id: true,
+      paymentType: true,
+      amount: true,
+      currency: true,
+      description: true,
+      periodStart: true,
+      periodEnd: true,
+      completedAt: true,
+      stripeInvoiceId: true,
+      createdAt: true,
+    },
   });
 }

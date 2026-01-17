@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/lib/auth/auth';
 import { getCompanyByUserId } from '@/lib/company/queries';
+import { getCompanySubscription } from '@/lib/payment/queries';
 import { TeamManagement } from '@/components/company/TeamManagement';
 
 export const metadata: Metadata = {
@@ -39,6 +40,27 @@ function getStatusBadge(status: string) {
   }
 }
 
+function SubscriptionBadge({ status }: { status: string }) {
+  const styles: Record<string, string> = {
+    NONE: 'bg-zinc-100 text-zinc-800',
+    TRIAL: 'bg-blue-100 text-blue-800',
+    ACTIVE: 'bg-green-100 text-green-800',
+    PAST_DUE: 'bg-amber-100 text-amber-800',
+    CANCELLED: 'bg-red-100 text-red-800',
+    EXPIRED: 'bg-zinc-100 text-zinc-800',
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${
+        styles[status] || styles.NONE
+      }`}
+    >
+      {status === 'NONE' ? 'No Subscription' : status}
+    </span>
+  );
+}
+
 export default async function CompanyDashboardPage() {
   const session = await auth();
 
@@ -46,7 +68,10 @@ export default async function CompanyDashboardPage() {
     redirect('/login');
   }
 
-  const company = await getCompanyByUserId(session.user.id);
+  const [company, subscription] = await Promise.all([
+    getCompanyByUserId(session.user.id),
+    getCompanySubscription(session.user.id),
+  ]);
 
   if (!company) {
     redirect('/register/company');
@@ -268,6 +293,47 @@ export default async function CompanyDashboardPage() {
                   </svg>
                   Edit Profile
                 </Link>
+                <Link
+                  href="/dashboard/company/billing"
+                  className="flex items-center rounded-md border border-zinc-200 bg-white px-4 py-3 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                >
+                  <svg
+                    className="mr-3 h-5 w-5 text-zinc-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                    />
+                  </svg>
+                  Billing
+                </Link>
+              </div>
+            </div>
+
+            {/* Subscription Status */}
+            <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
+              <h3 className="text-sm font-semibold text-zinc-900">Subscription</h3>
+              <div className="mt-4">
+                <SubscriptionBadge status={subscription?.status || 'NONE'} />
+                {subscription?.endsAt && (
+                  <p className="mt-3 text-sm text-zinc-600">
+                    {subscription.status === 'CANCELLED' ? 'Expires: ' : 'Renews: '}
+                    {new Date(subscription.endsAt).toLocaleDateString()}
+                  </p>
+                )}
+                {(!subscription || subscription.status === 'NONE') && (
+                  <Link
+                    href="/dashboard/company/payment"
+                    className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
+                  >
+                    Subscribe Now
+                  </Link>
+                )}
               </div>
             </div>
 
