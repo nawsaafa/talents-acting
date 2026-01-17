@@ -20,7 +20,7 @@
     "2": {
       "name": "Registration & Payments",
       "description": "Professional and company registration, payment integration, subscriptions, and access control",
-      "status": "in_progress",
+      "status": "complete",
       "session_count": 5
     }
   },
@@ -39,7 +39,8 @@
     "phase02-session01-professional_registration",
     "phase02-session02-company_registration",
     "phase02-session03-payment_integration",
-    "phase02-session04-subscription_management"
+    "phase02-session04-subscription_management",
+    "phase02-session05-access_control"
   ],
   "next_session_history": [
     {
@@ -410,6 +411,31 @@
     {
       "date": "2026-01-17",
       "session": "phase02-session04-subscription_management",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-17",
+      "session": "phase02-session05-access_control",
+      "status": "recommended"
+    },
+    {
+      "date": "2026-01-17",
+      "session": "phase02-session05-access_control",
+      "status": "spec_created"
+    },
+    {
+      "date": "2026-01-17",
+      "session": "phase02-session05-access_control",
+      "status": "tasks_created"
+    },
+    {
+      "date": "2026-01-17",
+      "session": "phase02-session05-access_control",
+      "status": "validated"
+    },
+    {
+      "date": "2026-01-17",
+      "session": "phase02-session05-access_control",
       "status": "completed"
     }
   ]

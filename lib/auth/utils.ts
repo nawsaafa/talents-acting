@@ -1,5 +1,6 @@
 import { auth } from './auth';
-import type { Role } from '@prisma/client';
+import type { Role, SubscriptionStatus } from '@prisma/client';
+import { checkPremiumAccess, buildAccessContext } from '@/lib/access/control';
 
 // Role hierarchy for permission checking
 const ROLE_HIERARCHY: Record<Role, number> = {
@@ -92,4 +93,56 @@ export async function protectedRoute() {
   } catch {
     return null;
   }
+}
+
+/**
+ * Require premium access - throws if user doesn't have valid subscription
+ * Use in server actions and API routes that serve premium data
+ */
+export async function requirePremiumAccess(subscriptionStatus?: SubscriptionStatus) {
+  const user = await requireAuth();
+
+  // Build access context
+  const context = buildAccessContext({
+    id: user.id,
+    role: user.role,
+    subscriptionStatus: subscriptionStatus || 'NONE',
+  });
+
+  // Check access
+  const result = checkPremiumAccess(context);
+
+  if (!result.granted) {
+    throw new Error(result.reason || 'Premium access required');
+  }
+
+  return { user, accessLevel: result.level };
+}
+
+/**
+ * Get current user with access context
+ * Returns null if not authenticated
+ */
+export async function getCurrentUserWithAccess(subscriptionStatus?: SubscriptionStatus) {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return null;
+  }
+
+  const context = buildAccessContext({
+    id: user.id,
+    role: user.role,
+    subscriptionStatus: subscriptionStatus || 'NONE',
+  });
+
+  const accessResult = checkPremiumAccess(context);
+
+  return {
+    user,
+    context,
+    hasAccess: accessResult.granted,
+    accessLevel: accessResult.level,
+    accessReason: accessResult.reason,
+  };
 }

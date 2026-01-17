@@ -289,3 +289,27 @@ export async function getUserBillingHistory(userId: string, limit: number = 20) 
     },
   });
 }
+
+// Get subscription status for any user based on their role
+export async function getUserSubscriptionByRole(
+  userId: string,
+  role: string
+): Promise<SubscriptionInfo | null> {
+  switch (role) {
+    case 'PROFESSIONAL':
+      return getProfessionalSubscription(userId);
+    case 'COMPANY':
+      return getCompanySubscription(userId);
+    case 'TALENT':
+      return getTalentSubscription(userId);
+    case 'ADMIN':
+      // Admins always have access - return active status
+      return {
+        status: 'ACTIVE',
+        endsAt: null,
+        stripeSubscriptionId: null,
+      };
+    default:
+      return null;
+  }
+}

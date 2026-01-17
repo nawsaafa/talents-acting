@@ -5,11 +5,12 @@ import { Container } from '@/components/layout';
 import { PremiumSection } from '@/components/talents';
 import {
   getPublicTalentById,
-  getPremiumTalentById,
+  getTalentWithAccessControl,
   type PremiumTalentProfile,
 } from '@/lib/talents/queries';
 import { auth } from '@/lib/auth/auth';
-import { canAccessPremium } from '@/lib/auth/utils';
+import { getUserSubscriptionByRole } from '@/lib/payment/queries';
+import { buildAccessContext } from '@/lib/access/control';
 import {
   ArrowLeft,
   MapPin,
@@ -60,11 +61,31 @@ export default async function TalentDetailPage({ params }: TalentDetailPageProps
   const { id } = await params;
   const session = await auth();
 
-  // Check if user can access premium data
-  const hasAccess = session?.user ? canAccessPremium(session.user.role) : false;
+  // Build access context with subscription status
+  let hasAccess = false;
+  let talent;
 
-  // Fetch appropriate data based on access level
-  const talent = hasAccess ? await getPremiumTalentById(id) : await getPublicTalentById(id);
+  if (session?.user) {
+    // Get subscription status for the user
+    const subscription = await getUserSubscriptionByRole(session.user.id, session.user.role);
+
+    // Build access context
+    const context = buildAccessContext({
+      id: session.user.id,
+      role: session.user.role,
+      subscriptionStatus: subscription?.status,
+      subscriptionEndsAt: subscription?.endsAt,
+    });
+
+    // Fetch talent with access control (handles logging and access checks)
+    const result = await getTalentWithAccessControl(id, context);
+    talent = result.data;
+    hasAccess = result.hasFullAccess || result.accessLevel === 'premium';
+  } else {
+    // Unauthenticated user - public access only
+    talent = await getPublicTalentById(id);
+    hasAccess = false;
+  }
 
   if (!talent) {
     notFound();

@@ -3,6 +3,9 @@ import { ValidationStatus, Prisma } from '@prisma/client';
 import type { TalentFilterInput } from './validation';
 import { buildTalentFilterQuery } from './filters';
 import { buildSearchWhere } from '@/lib/search/search-queries';
+import type { AccessContext, AccessLevel } from '@/lib/access/types';
+import { getAccessLevel, canAccessTalentPremiumData } from '@/lib/access/control';
+import { logAccessGranted, logAccessDenied } from '@/lib/access/logging';
 
 // Public fields visible to all users
 const publicSelect = {
@@ -157,4 +160,121 @@ export async function getApprovedTalentCount() {
       isPublic: true,
     },
   });
+}
+
+// Export select objects for use in other modules
+export { publicSelect, premiumSelect, fullSelect };
+
+/**
+ * Get talent by ID with access control
+ * Returns public or premium data based on user's subscription status
+ */
+export async function getTalentWithAccessControl(
+  talentId: string,
+  context: AccessContext
+): Promise<{
+  data: PublicTalentProfile | PremiumTalentProfile | null;
+  accessLevel: AccessLevel;
+  hasFullAccess: boolean;
+}> {
+  // First get the talent to check if viewing own profile
+  const talent = await prisma.talentProfile.findFirst({
+    where: {
+      id: talentId,
+      validationStatus: ValidationStatus.APPROVED,
+      isPublic: true,
+    },
+    select: { userId: true },
+  });
+
+  if (!talent) {
+    return { data: null, accessLevel: 'public', hasFullAccess: false };
+  }
+
+  // Check access with self-access bypass
+  const accessResult = canAccessTalentPremiumData(context, talent.userId);
+
+  if (accessResult.granted) {
+    // Log successful access
+    await logAccessGranted(context.userId, 'talent_profile', talentId, 'view');
+
+    // Fetch with premium or full select based on access level
+    const data = await prisma.talentProfile.findFirst({
+      where: { id: talentId },
+      select: accessResult.level === 'full' ? fullSelect : premiumSelect,
+    });
+
+    return {
+      data,
+      accessLevel: accessResult.level,
+      hasFullAccess: accessResult.level === 'full',
+    };
+  } else {
+    // Log denied access
+    await logAccessDenied(
+      context.userId,
+      'talent_profile',
+      talentId,
+      accessResult.reason || 'Subscription required'
+    );
+
+    // Return public data only
+    const data = await prisma.talentProfile.findFirst({
+      where: { id: talentId },
+      select: publicSelect,
+    });
+
+    return {
+      data,
+      accessLevel: 'public',
+      hasFullAccess: false,
+    };
+  }
+}
+
+/**
+ * Get talents list with appropriate data based on access level
+ */
+export async function getTalentsWithAccessControl(
+  filters: TalentFilterInput,
+  context: AccessContext
+): Promise<{
+  talents: PublicTalentProfile[] | PremiumTalentProfile[];
+  total: number;
+  page: number;
+  totalPages: number;
+  searchQuery: string | null;
+  accessLevel: AccessLevel;
+}> {
+  const { page = 1, limit = 12 } = filters;
+  const accessLevel = getAccessLevel(context);
+
+  // Use the filter query builder for all filtering logic
+  const baseWhere = buildTalentFilterQuery(filters);
+
+  // Apply search query if present
+  const where = await buildSearchWhere(filters.q, baseWhere);
+
+  // Select based on access level
+  const select = accessLevel === 'public' ? publicSelect : premiumSelect;
+
+  const [talents, total] = await Promise.all([
+    prisma.talentProfile.findMany({
+      where,
+      select,
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.talentProfile.count({ where }),
+  ]);
+
+  return {
+    talents,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+    searchQuery: filters.q || null,
+    accessLevel,
+  };
 }

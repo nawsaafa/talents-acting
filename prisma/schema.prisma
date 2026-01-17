@@ -401,3 +401,30 @@ model Payment {
   @@index([paymentType])
   @@index([createdAt])
 }
+
+// Access log for tracking premium data access attempts
+model AccessLog {
+  id        String   @id @default(uuid())
+  userId    String   // User attempting access
+
+  // Resource being accessed
+  resourceType String   // e.g., "talent_profile", "contact_info"
+  resourceId   String   // ID of the resource
+
+  // Access details
+  action       String   // e.g., "view", "download", "export"
+  granted      Boolean  // Whether access was granted
+  reason       String?  // Reason for denial if not granted
+
+  // Context
+  ipAddress    String?  // For audit trail
+  userAgent    String?  // Browser/client info
+
+  // Timestamps
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+  @@index([resourceType, resourceId])
+  @@index([granted])
+  @@index([createdAt])
+}

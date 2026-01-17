@@ -48,11 +48,11 @@ Morocco is a popular destination for international productions, and this platfor
 
 ## Phases
 
-| Phase | Name                    | Sessions | Status      |
-| ----- | ----------------------- | -------- | ----------- |
-| 00    | Foundation              | 6        | Complete    |
-| 01    | Talent Management       | 5        | Complete    |
-| 02    | Registration & Payments | 5        | In Progress |
+| Phase | Name                    | Sessions | Status   |
+| ----- | ----------------------- | -------- | -------- |
+| 00    | Foundation              | 6        | Complete |
+| 01    | Talent Management       | 5        | Complete |
+| 02    | Registration & Payments | 5        | Complete |
 
 ## Phase 00: Foundation
 

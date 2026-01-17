@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/lib/auth/auth';
 import { getProfessionalByUserId } from '@/lib/professional/queries';
+import { hasActiveAccess } from '@/lib/payment/subscription';
 
 export const metadata: Metadata = {
   title: 'Dashboard - Talents Acting',
@@ -65,6 +66,7 @@ export default async function ProfessionalDashboardPage() {
   const isApproved = profile.validationStatus === 'APPROVED';
   const isPending = profile.validationStatus === 'PENDING';
   const isRejected = profile.validationStatus === 'REJECTED';
+  const hasPremiumAccess = hasActiveAccess(profile.subscriptionStatus);
 
   return (
     <div className="min-h-screen bg-zinc-50">
@@ -133,6 +135,14 @@ export default async function ProfessionalDashboardPage() {
               <p className="mt-3 text-sm text-zinc-600">
                 Expires: {new Date(profile.subscriptionEndsAt).toLocaleDateString()}
               </p>
+            )}
+            {!hasPremiumAccess && isApproved && (
+              <Link
+                href="/dashboard/professional/payment"
+                className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
+              >
+                Subscribe to access premium talent data
+              </Link>
             )}
           </div>
         </div>

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { auth } from '@/lib/auth/auth';
 import { getCompanyByUserId } from '@/lib/company/queries';
 import { getCompanySubscription } from '@/lib/payment/queries';
+import { hasActiveAccess } from '@/lib/payment/subscription';
 import { TeamManagement } from '@/components/company/TeamManagement';
 
 export const metadata: Metadata = {
@@ -80,6 +81,7 @@ export default async function CompanyDashboardPage() {
   const isApproved = company.validationStatus === 'APPROVED';
   const isPending = company.validationStatus === 'PENDING';
   const isRejected = company.validationStatus === 'REJECTED';
+  const hasPremiumAccess = hasActiveAccess(subscription?.status || 'NONE');
 
   return (
     <div className="min-h-screen bg-zinc-50">
@@ -326,12 +328,17 @@ export default async function CompanyDashboardPage() {
                     {new Date(subscription.endsAt).toLocaleDateString()}
                   </p>
                 )}
-                {(!subscription || subscription.status === 'NONE') && (
+                {hasPremiumAccess && (
+                  <p className="mt-2 text-sm text-green-600">
+                    You have access to premium talent data
+                  </p>
+                )}
+                {!hasPremiumAccess && isApproved && (
                   <Link
                     href="/dashboard/company/payment"
                     className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
                   >
-                    Subscribe Now
+                    Subscribe to access premium talent data
                   </Link>
                 )}
               </div>
