@@ -37,7 +37,8 @@
     "phase01-session04-profile_enhancement",
     "phase01-session05-public_talent_gallery",
     "phase02-session01-professional_registration",
-    "phase02-session02-company_registration"
+    "phase02-session02-company_registration",
+    "phase02-session03-payment_integration"
   ],
   "next_session_history": [
     {
@@ -358,6 +359,31 @@
     {
       "date": "2026-01-17",
       "session": "phase02-session02-company_registration",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-17",
+      "session": "phase02-session03-payment_integration",
+      "status": "recommended"
+    },
+    {
+      "date": "2026-01-17",
+      "session": "phase02-session03-payment_integration",
+      "status": "spec_created"
+    },
+    {
+      "date": "2026-01-17",
+      "session": "phase02-session03-payment_integration",
+      "status": "tasks_created"
+    },
+    {
+      "date": "2026-01-17",
+      "session": "phase02-session03-payment_integration",
+      "status": "validated"
+    },
+    {
+      "date": "2026-01-17",
+      "session": "phase02-session03-payment_integration",
       "status": "completed"
     }
   ]

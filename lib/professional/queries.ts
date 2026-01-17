@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { ValidationStatus } from '@prisma/client';
+import { ValidationStatus, SubscriptionStatus } from '@prisma/client';
 import crypto from 'crypto';
 
 // Generate a secure verification token
@@ -276,4 +276,19 @@ export async function getProfessionalStats() {
   ]);
 
   return { total, pending, approved, rejected };
+}
+
+// Update subscription status after payment
+export async function updateProfessionalSubscription(
+  userId: string,
+  status: SubscriptionStatus,
+  subscriptionEndsAt: Date | null
+) {
+  return prisma.professionalProfile.update({
+    where: { userId },
+    data: {
+      subscriptionStatus: status,
+      subscriptionEndsAt,
+    },
+  });
 }

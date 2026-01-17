@@ -1,5 +1,10 @@
 import { prisma } from '@/lib/prisma';
-import { ValidationStatus, CompanyMemberStatus, CompanyMemberRole } from '@prisma/client';
+import {
+  ValidationStatus,
+  CompanyMemberStatus,
+  CompanyMemberRole,
+  SubscriptionStatus,
+} from '@prisma/client';
 import crypto from 'crypto';
 
 // Generate a secure verification token
@@ -538,5 +543,20 @@ export async function deactivateMember(memberId: string) {
 export async function deletePendingInvite(memberId: string) {
   return prisma.companyMember.delete({
     where: { id: memberId, status: 'PENDING' },
+  });
+}
+
+// Update subscription status after payment
+export async function updateCompanySubscription(
+  userId: string,
+  status: SubscriptionStatus,
+  subscriptionEndsAt: Date | null
+) {
+  return prisma.companyProfile.update({
+    where: { userId },
+    data: {
+      subscriptionStatus: status,
+      subscriptionEndsAt,
+    },
   });
 }

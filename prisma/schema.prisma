@@ -59,6 +59,21 @@ enum SubscriptionStatus {
   EXPIRED
 }
 
+// Payment status for tracking payment lifecycle
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// Payment type for categorizing payments
+enum PaymentType {
+  TALENT_MEMBERSHIP      // Annual membership for talents
+  PROFESSIONAL_ACCESS    // Annual access for professionals
+  COMPANY_ACCESS         // Annual access for companies
+}
+
 // Additional enums for talent attributes
 enum HairColor {
   BLACK
@@ -337,4 +352,41 @@ model CompanyMember {
   @@index([email])
   @@index([status])
   @@index([inviteToken])
+}
+
+// Payment record for tracking all payments
+model Payment {
+  id     String @id @default(uuid())
+  userId String
+
+  // Stripe references
+  stripeSessionId    String  @unique // Checkout session ID
+  stripePaymentIntent String? // Payment intent ID (set after completion)
+  stripeCustomerId   String? // Customer ID for future reference
+  stripeInvoiceId    String? // Invoice ID if generated
+
+  // Payment details
+  paymentType PaymentType
+  amount      Int            // Amount in smallest currency unit (cents/centimes)
+  currency    String         @default("mad") // ISO currency code
+  status      PaymentStatus  @default(PENDING)
+
+  // Subscription period
+  periodStart DateTime? // Subscription period start
+  periodEnd   DateTime? // Subscription period end
+
+  // Metadata
+  description String?
+  metadata    Json?    // Additional Stripe metadata
+
+  // Timestamps
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([stripeSessionId])
+  @@index([status])
+  @@index([paymentType])
+  @@index([createdAt])
 }
