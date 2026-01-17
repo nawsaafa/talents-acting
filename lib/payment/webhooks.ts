@@ -13,6 +13,7 @@ import {
 } from './queries';
 import { mapStripeStatus } from './subscription';
 import { sendPaymentConfirmationEmail } from './email';
+import { getStripe, isStripeConfigured } from './stripe';
 
 interface WebhookResult {
   success: boolean;
@@ -50,9 +51,7 @@ export async function handleCheckoutCompleted(
     let periodEnd: Date | null = null;
 
     if (subscriptionId) {
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-        apiVersion: '2025-12-15.clover',
-      });
+      const stripe = getStripe();
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const subData = subscription as any;
@@ -200,9 +199,7 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice): Promise<Webhoo
     const { type, profile } = profileResult;
 
     // Get subscription details for period end
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-      apiVersion: '2025-12-15.clover',
-    });
+    const stripe = getStripe();
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const subData = subscription as any;
@@ -363,8 +360,9 @@ export function constructWebhookEvent(
   signature: string,
   webhookSecret: string
 ): Stripe.Event {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2025-12-15.clover',
-  });
+  if (!isStripeConfigured()) {
+    throw new Error('Stripe is not configured');
+  }
+  const stripe = getStripe();
   return stripe.webhooks.constructEvent(payload, signature, webhookSecret);
 }

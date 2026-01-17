@@ -1,10 +1,14 @@
 import Stripe from 'stripe';
-import { stripe } from './stripe';
+import { getStripe, isStripeConfigured } from './stripe';
 import { prisma } from '@/lib/prisma';
 import { SubscriptionStatus, PaymentType } from '@prisma/client';
 
 // Get or create a Stripe customer for a user
 export async function getOrCreateStripeCustomer(userId: string, email: string): Promise<string> {
+  if (!isStripeConfigured()) {
+    throw new Error('Stripe is not configured');
+  }
+
   // Check if user already has a Stripe customer ID
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -16,6 +20,7 @@ export async function getOrCreateStripeCustomer(userId: string, email: string): 
   }
 
   // Create new Stripe customer
+  const stripe = getStripe();
   const customer = await stripe.customers.create({
     email,
     metadata: {
@@ -46,7 +51,12 @@ export async function getStripeCustomerId(userId: string): Promise<string | null
 export async function getStripeSubscription(
   subscriptionId: string
 ): Promise<Stripe.Subscription | null> {
+  if (!isStripeConfigured()) {
+    return null;
+  }
+
   try {
+    const stripe = getStripe();
     return await stripe.subscriptions.retrieve(subscriptionId);
   } catch {
     return null;
@@ -90,7 +100,12 @@ export async function getSubscriptionStatusFromStripe(
 // Cancel a subscription at period end
 export async function cancelSubscriptionAtPeriodEnd(
   subscriptionId: string
-): Promise<Stripe.Subscription> {
+): Promise<Stripe.Subscription | null> {
+  if (!isStripeConfigured()) {
+    return null;
+  }
+
+  const stripe = getStripe();
   return stripe.subscriptions.update(subscriptionId, {
     cancel_at_period_end: true,
   });
@@ -99,12 +114,24 @@ export async function cancelSubscriptionAtPeriodEnd(
 // Cancel a subscription immediately
 export async function cancelSubscriptionImmediately(
   subscriptionId: string
-): Promise<Stripe.Subscription> {
+): Promise<Stripe.Subscription | null> {
+  if (!isStripeConfigured()) {
+    return null;
+  }
+
+  const stripe = getStripe();
   return stripe.subscriptions.cancel(subscriptionId);
 }
 
 // Reactivate a cancelled subscription (if still within period)
-export async function reactivateSubscription(subscriptionId: string): Promise<Stripe.Subscription> {
+export async function reactivateSubscription(
+  subscriptionId: string
+): Promise<Stripe.Subscription | null> {
+  if (!isStripeConfigured()) {
+    return null;
+  }
+
+  const stripe = getStripe();
   return stripe.subscriptions.update(subscriptionId, {
     cancel_at_period_end: false,
   });
@@ -114,7 +141,12 @@ export async function reactivateSubscription(subscriptionId: string): Promise<St
 export async function getUpcomingInvoice(
   customerId: string
 ): Promise<Stripe.UpcomingInvoice | null> {
+  if (!isStripeConfigured()) {
+    return null;
+  }
+
   try {
+    const stripe = getStripe();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const invoices = stripe.invoices as any;
     return await invoices.retrieveUpcoming({
@@ -130,6 +162,11 @@ export async function listCustomerInvoices(
   customerId: string,
   limit: number = 10
 ): Promise<Stripe.Invoice[]> {
+  if (!isStripeConfigured()) {
+    return [];
+  }
+
+  const stripe = getStripe();
   const invoices = await stripe.invoices.list({
     customer: customerId,
     limit,

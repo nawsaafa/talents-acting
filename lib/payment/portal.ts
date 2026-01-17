@@ -1,6 +1,6 @@
 'use server';
 
-import { stripe } from './stripe';
+import { getStripe, isStripeConfigured } from './stripe';
 import { auth } from '@/lib/auth/auth';
 import { getStripeCustomerId } from './subscription';
 
@@ -15,6 +15,11 @@ interface PortalSessionResult {
 // Create a Stripe Customer Portal session
 export async function createPortalSession(returnUrl?: string): Promise<PortalSessionResult> {
   try {
+    // Check if Stripe is configured
+    if (!isStripeConfigured()) {
+      return { success: false, error: 'Billing portal is not configured. Please contact support.' };
+    }
+
     const session = await auth();
 
     if (!session?.user?.id) {
@@ -35,6 +40,7 @@ export async function createPortalSession(returnUrl?: string): Promise<PortalSes
           ? `${APP_URL}/dashboard/company/billing`
           : `${APP_URL}/dashboard/professional/billing`;
 
+    const stripe = getStripe();
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: customerId,
       return_url: returnUrl || defaultReturnUrl,

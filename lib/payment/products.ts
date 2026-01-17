@@ -1,5 +1,5 @@
 import { PaymentType } from '@prisma/client';
-import { stripe } from './stripe';
+import { getStripe, isStripeConfigured } from './stripe';
 import { PRICING, CURRENCY } from './config';
 
 // Stripe Price IDs - set in environment or create programmatically
@@ -33,6 +33,12 @@ export interface StripeProduct {
 
 // Get or create a Stripe product and price for a payment type
 export async function getOrCreateStripePrice(paymentType: PaymentType): Promise<StripeProduct> {
+  if (!isStripeConfigured()) {
+    throw new Error('Stripe is not configured');
+  }
+
+  const stripe = getStripe();
+
   // Check if we have an existing price ID in environment
   const existingPriceId = STRIPE_PRICE_IDS[paymentType];
   if (existingPriceId) {
@@ -112,7 +118,16 @@ export async function getPriceId(paymentType: PaymentType): Promise<string> {
 export async function validateStripePrices(): Promise<{
   valid: boolean;
   missing: PaymentType[];
+  stripeConfigured: boolean;
 }> {
+  if (!isStripeConfigured()) {
+    return {
+      valid: false,
+      missing: Object.keys(PRICING) as PaymentType[],
+      stripeConfigured: false,
+    };
+  }
+
   const missing: PaymentType[] = [];
 
   for (const paymentType of Object.keys(PRICING) as PaymentType[]) {
@@ -125,5 +140,6 @@ export async function validateStripePrices(): Promise<{
   return {
     valid: missing.length === 0,
     missing,
+    stripeConfigured: true,
   };
 }

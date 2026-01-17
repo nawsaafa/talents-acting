@@ -1,7 +1,7 @@
 'use server';
 
 import { auth } from '@/lib/auth/auth';
-import { stripe } from './stripe';
+import { getStripe, isStripeConfigured } from './stripe';
 import { PRICING, CURRENCY, getPaymentTypeForRole } from './config';
 import { createPaymentRecord } from './queries';
 import { getOrCreateStripeCustomer } from './subscription';
@@ -20,6 +20,11 @@ export async function createCheckoutSession(
   paymentType: PaymentType
 ): Promise<CreateCheckoutResult> {
   try {
+    // Check if Stripe is configured
+    if (!isStripeConfigured()) {
+      return { success: false, error: 'Payment system is not configured. Please contact support.' };
+    }
+
     const session = await auth();
 
     if (!session?.user?.id || !session?.user?.email) {
@@ -38,6 +43,7 @@ export async function createCheckoutSession(
     const priceId = await getPriceId(paymentType);
 
     // Create subscription checkout session
+    const stripe = getStripe();
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'subscription',
       customer: customerId,
@@ -99,11 +105,17 @@ export async function createCompanyCheckout(): Promise<CreateCheckoutResult> {
 
 export async function getCheckoutSessionStatus(sessionId: string) {
   try {
+    // Check if Stripe is configured
+    if (!isStripeConfigured()) {
+      return { success: false, error: 'Payment system is not configured' };
+    }
+
     const session = await auth();
     if (!session?.user?.id) {
       return { success: false, error: 'Not authenticated' };
     }
 
+    const stripe = getStripe();
     const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId);
 
     return {
