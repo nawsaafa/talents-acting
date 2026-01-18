@@ -24,7 +24,7 @@ interface AccessGateProps {
  */
 export function AccessGate({
   hasAccess,
-  accessLevel,
+  accessLevel: _accessLevel,
   children,
   fallback,
   showPrompt = true,
@@ -33,6 +33,8 @@ export function AccessGate({
   promptMessage,
   className = '',
 }: AccessGateProps) {
+  // accessLevel is available for future use (e.g., showing different prompts per level)
+  void _accessLevel;
   // If access is granted, render children
   if (hasAccess) {
     return <>{children}</>;

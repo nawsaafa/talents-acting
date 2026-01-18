@@ -1,36 +1,36 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "UTC"
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'UTC'
     open-pull-requests-limit: 10
     commit-message:
-      prefix: "deps"
+      prefix: 'deps'
     labels:
-      - "dependencies"
-      - "automated"
+      - 'dependencies'
+      - 'automated'
     groups:
       development:
-        dependency-type: "development"
+        dependency-type: 'development'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
       production:
-        dependency-type: "production"
+        dependency-type: 'production'
         update-types:
-          - "patch"
+          - 'patch'
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: 'weekly'
+      day: 'monday'
     commit-message:
-      prefix: "ci"
+      prefix: 'ci'
     labels:
-      - "ci"
-      - "automated"
+      - 'ci'
+      - 'automated'

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeAll } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 // Mock Stripe before importing subscription module
 vi.mock('@/lib/payment/stripe', () => ({
