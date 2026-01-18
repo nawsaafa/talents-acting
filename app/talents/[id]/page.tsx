@@ -22,6 +22,7 @@ import {
   Languages,
   Drama,
 } from 'lucide-react';
+import { ContactButton } from '@/components/messaging/ContactButton';
 
 interface TalentDetailPageProps {
   params: Promise<{ id: string }>;
@@ -157,15 +158,33 @@ export default async function TalentDetailPage({ params }: TalentDetailPageProps
         {/* Right Column - Details */}
         <div className="lg:col-span-2 space-y-8">
           {/* Header */}
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              {talent.firstName}
-              {hasAccess && ` ${(talent as PremiumTalentProfile).lastName}`}
-            </h1>
-            <p className="mt-1 text-lg text-gray-600">
-              {GENDER_LABELS[talent.gender]}
-              {talent.physique && ` | ${PHYSIQUE_LABELS[talent.physique]}`}
-            </p>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                {talent.firstName}
+                {hasAccess && ` ${(talent as PremiumTalentProfile).lastName}`}
+              </h1>
+              <p className="mt-1 text-lg text-gray-600">
+                {GENDER_LABELS[talent.gender]}
+                {talent.physique && ` | ${PHYSIQUE_LABELS[talent.physique]}`}
+              </p>
+            </div>
+
+            {/* Contact Button - only show for authenticated users with premium access */}
+            {session?.user &&
+              hasAccess &&
+              (() => {
+                const premiumTalent = talent as PremiumTalentProfile;
+                if (session.user.id === premiumTalent.userId) return null;
+                return (
+                  <ContactButton
+                    talentId={premiumTalent.userId}
+                    talentName={talent.firstName}
+                    variant="primary"
+                    size="md"
+                  />
+                );
+              })()}
           </div>
 
           {/* Physical Attributes */}

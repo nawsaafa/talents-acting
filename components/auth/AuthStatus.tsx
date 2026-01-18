@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Button } from '@/components/ui';
 import { logout } from '@/lib/auth/actions';
-import { User, Shield } from 'lucide-react';
+import { User, Shield, MessageSquare } from 'lucide-react';
 
 export function AuthStatus() {
   const { data: session, status } = useSession();
@@ -39,6 +39,12 @@ export function AuthStatus() {
             </Button>
           </Link>
         )}
+        <Link href="/messages">
+          <Button variant="ghost" size="sm">
+            <MessageSquare className="w-4 h-4 mr-1" />
+            Messages
+          </Button>
+        </Link>
         <span className="text-sm text-gray-600 hidden sm:inline">{session.user.email}</span>
         <form action={logout}>
           <Button type="submit" variant="outline" size="sm">
