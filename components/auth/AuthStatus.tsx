@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Button } from '@/components/ui';
 import { logout } from '@/lib/auth/actions';
-import { User, Shield, MessageSquare } from 'lucide-react';
+import { User, Shield, MessageSquare, FolderOpen } from 'lucide-react';
 
 export function AuthStatus() {
   const { data: session, status } = useSession();
@@ -20,6 +20,7 @@ export function AuthStatus() {
   if (session?.user) {
     const isTalent = session.user.role === 'TALENT';
     const isAdmin = session.user.role === 'ADMIN';
+    const canUseCollections = ['PROFESSIONAL', 'COMPANY', 'ADMIN'].includes(session.user.role);
 
     return (
       <div className="flex items-center gap-3">
@@ -36,6 +37,14 @@ export function AuthStatus() {
             <Button variant="ghost" size="sm">
               <User className="w-4 h-4 mr-1" />
               My Profile
+            </Button>
+          </Link>
+        )}
+        {canUseCollections && (
+          <Link href="/collections">
+            <Button variant="ghost" size="sm">
+              <FolderOpen className="w-4 h-4 mr-1" />
+              Collections
             </Button>
           </Link>
         )}

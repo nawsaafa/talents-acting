@@ -4,7 +4,7 @@
 **Sessions**: 5
 **Estimated Duration**: 3-4 days
 
-**Progress**: 1/5 sessions (20%)
+**Progress**: 2/5 sessions (40%)
 
 ---
 
@@ -28,7 +28,7 @@ This phase adds the communication layer that makes the talent database actionabl
 | Session | Name                 | Status      | Est. Tasks | Validated  |
 | ------- | -------------------- | ----------- | ---------- | ---------- |
 | 01      | Messaging Foundation | Complete    | 20         | 2026-01-18 |
-| 02      | Talent Collections   | Not Started | 18         | -          |
+| 02      | Talent Collections   | Complete    | 20         | 2026-01-23 |
 | 03      | Notification System  | Not Started | 16         | -          |
 | 04      | Contact Requests     | Not Started | 18         | -          |
 | 05      | Activity Dashboard   | Not Started | 15         | -          |

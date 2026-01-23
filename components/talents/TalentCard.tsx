@@ -4,10 +4,13 @@ import { MapPin, CheckCircle } from 'lucide-react';
 import { Card } from '@/components/ui';
 import { SearchHighlight } from '@/components/search';
 import type { PublicTalentProfile } from '@/lib/talents/queries';
+import type { ReactNode } from 'react';
 
 interface TalentCardProps {
   talent: PublicTalentProfile;
   searchQuery?: string;
+  /** Optional action buttons to render in the card's photo area */
+  actions?: ReactNode;
 }
 
 const GENDER_LABELS: Record<string, string> = {
@@ -17,7 +20,7 @@ const GENDER_LABELS: Record<string, string> = {
   OTHER: 'Other',
 };
 
-export function TalentCard({ talent, searchQuery }: TalentCardProps) {
+export function TalentCard({ talent, searchQuery, actions }: TalentCardProps) {
   // Use primary photo, or first from photos array, or null
   const displayPhoto =
     talent.photo || (talent.photos && talent.photos.length > 0 ? talent.photos[0] : null);
@@ -46,6 +49,13 @@ export function TalentCard({ talent, searchQuery }: TalentCardProps) {
             <div className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
               <CheckCircle className="w-3 h-3" />
               Available
+            </div>
+          )}
+
+          {/* Action Buttons (e.g., Add to Collection) */}
+          {actions && (
+            <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              {actions}
             </div>
           )}
         </div>

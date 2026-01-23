@@ -23,6 +23,7 @@ import {
   Drama,
 } from 'lucide-react';
 import { ContactButton } from '@/components/messaging/ContactButton';
+import { AddToCollectionButton } from '@/components/collections';
 
 interface TalentDetailPageProps {
   params: Promise<{ id: string }>;
@@ -170,21 +171,29 @@ export default async function TalentDetailPage({ params }: TalentDetailPageProps
               </p>
             </div>
 
-            {/* Contact Button - only show for authenticated users with premium access */}
-            {session?.user &&
-              hasAccess &&
-              (() => {
-                const premiumTalent = talent as PremiumTalentProfile;
-                if (session.user.id === premiumTalent.userId) return null;
-                return (
-                  <ContactButton
-                    talentId={premiumTalent.userId}
-                    talentName={talent.firstName}
-                    variant="primary"
-                    size="md"
-                  />
-                );
-              })()}
+            {/* Action Buttons - Contact and Add to Collection */}
+            {session?.user && hasAccess && (
+              <div className="flex items-center gap-2">
+                {/* Add to Collection - for PROFESSIONAL, COMPANY, ADMIN */}
+                {['PROFESSIONAL', 'COMPANY', 'ADMIN'].includes(session.user.role) && (
+                  <AddToCollectionButton talentProfileId={id} size="md" />
+                )}
+
+                {/* Contact Button */}
+                {(() => {
+                  const premiumTalent = talent as PremiumTalentProfile;
+                  if (session.user.id === premiumTalent.userId) return null;
+                  return (
+                    <ContactButton
+                      talentId={premiumTalent.userId}
+                      talentName={talent.firstName}
+                      variant="primary"
+                      size="md"
+                    />
+                  );
+                })()}
+              </div>
+            )}
           </div>
 
           {/* Physical Attributes */}

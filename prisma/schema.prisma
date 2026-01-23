@@ -207,6 +207,9 @@ model TalentProfile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // Collections relation
+  collections CollectionTalent[]
+
   // === T016: Indexes for filtering ===
   @@index([gender])
   @@index([ageRangeMin, ageRangeMax])
@@ -448,6 +451,61 @@ model Message {
   @@index([senderId])
   @@index([createdAt])
   @@index([conversationId, createdAt])
+}
+
+// =============================================================================
+// COLLECTION MODELS
+// =============================================================================
+
+// Talent collection for organizing talents into project-based lists
+model Collection {
+  id          String   @id @default(uuid())
+  name        String
+  description String?  @db.Text
+  ownerId     String   // User who owns this collection
+
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  talents     CollectionTalent[]
+  shares      CollectionShare[]
+
+  @@index([ownerId])
+  @@index([createdAt])
+}
+
+// Join table for collection <-> talent many-to-many relationship
+model CollectionTalent {
+  id             String        @id @default(uuid())
+  collectionId   String
+  collection     Collection    @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  talentProfileId String
+  talentProfile  TalentProfile @relation(fields: [talentProfileId], references: [id], onDelete: Cascade)
+
+  // When talent was added to collection
+  addedAt        DateTime      @default(now())
+
+  @@unique([collectionId, talentProfileId])
+  @@index([collectionId])
+  @@index([talentProfileId])
+}
+
+// Shareable link for a collection
+model CollectionShare {
+  id           String      @id @default(uuid())
+  collectionId String
+  collection   Collection  @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  token        String      @unique // Secure random token for access
+  expiresAt    DateTime?   // Optional expiry date
+
+  // Timestamps
+  createdAt    DateTime    @default(now())
+
+  @@index([token])
+  @@index([collectionId])
+  @@index([expiresAt])
 }
 
 // =============================================================================
