@@ -14,6 +14,7 @@ import {
 } from './queries';
 import { canInitiateConversation, canReplyToConversation, buildMessagingContext } from './access';
 import type { SendMessageResult, MessagingAccessResult } from './types';
+import { sendMessageNotification } from '@/lib/notifications/service';
 
 // Maximum message content length
 const MAX_MESSAGE_LENGTH = 5000;
@@ -122,6 +123,20 @@ export async function sendMessage(
       conversationId,
       senderId: user.id,
       messageId: message.id,
+    });
+
+    // Send notification to recipient (non-blocking)
+    sendMessageNotification({
+      recipientId,
+      senderId: user.id,
+      senderName: user.email?.split('@')[0] || 'Someone',
+      messagePreview: trimmedContent.slice(0, 100) + (trimmedContent.length > 100 ? '...' : ''),
+      conversationId,
+    }).catch((error) => {
+      log.error('Failed to send message notification', error as Error, {
+        recipientId,
+        senderId: user.id,
+      });
     });
 
     // Revalidate relevant paths

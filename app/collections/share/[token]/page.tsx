@@ -4,6 +4,7 @@ import { Container } from '@/components/layout';
 import { Card, Button } from '@/components/ui';
 import { CollectionTalentCard } from '@/components/collections';
 import { getShareLinkByToken } from '@/lib/collections/queries';
+import { recordShareLinkAccess } from '@/lib/collections/actions';
 import { Users, ArrowLeft, Download } from 'lucide-react';
 import { SharedCollectionExport } from './SharedCollectionExport';
 
@@ -50,6 +51,9 @@ export default async function SharedCollectionPage({ params }: SharedCollectionP
       </Container>
     );
   }
+
+  // Record access and notify owner (non-blocking)
+  recordShareLinkAccess(token);
 
   const { collection } = data;
 

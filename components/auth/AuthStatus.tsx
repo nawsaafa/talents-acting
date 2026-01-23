@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui';
 import { logout } from '@/lib/auth/actions';
 import { User, Shield, MessageSquare, FolderOpen } from 'lucide-react';
+import { NotificationBell } from '@/components/notifications';
 
 export function AuthStatus() {
   const { data: session, status } = useSession();
@@ -54,6 +55,7 @@ export function AuthStatus() {
             Messages
           </Button>
         </Link>
+        <NotificationBell />
         <span className="text-sm text-gray-600 hidden sm:inline">{session.user.email}</span>
         <form action={logout}>
           <Button type="submit" variant="outline" size="sm">

@@ -48,7 +48,8 @@
     "phase02-session04-subscription_management",
     "phase02-session05-access_control",
     "phase03-session01-messaging_foundation",
-    "phase03-session02-talent_collections"
+    "phase03-session02-talent_collections",
+    "phase03-session03-notification_system"
   ],
   "next_session_history": [
     {
@@ -494,6 +495,31 @@
     {
       "date": "2026-01-23",
       "session": "phase03-session02-talent_collections",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-23",
+      "session": "phase03-session03-notification_system",
+      "status": "recommended"
+    },
+    {
+      "date": "2026-01-23",
+      "session": "phase03-session03-notification_system",
+      "status": "spec_created"
+    },
+    {
+      "date": "2026-01-23",
+      "session": "phase03-session03-notification_system",
+      "status": "tasks_created"
+    },
+    {
+      "date": "2026-01-23",
+      "session": "phase03-session03-notification_system",
+      "status": "validated"
+    },
+    {
+      "date": "2026-01-24",
+      "session": "phase03-session03-notification_system",
       "status": "completed"
     }
   ]

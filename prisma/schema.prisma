@@ -509,6 +509,71 @@ model CollectionShare {
 }
 
 // =============================================================================
+// NOTIFICATION MODELS
+// =============================================================================
+
+// Notification types for categorizing notifications
+enum NotificationType {
+  MESSAGE
+  COLLECTION_SHARE
+  SYSTEM
+  CONTACT_REQUEST
+}
+
+// User notifications
+model Notification {
+  id          String           @id @default(uuid())
+  type        NotificationType
+  title       String
+  content     String           @db.Text
+  actionLink  String?          // URL to navigate on click
+
+  // Recipient
+  recipientId String
+
+  // Optional sender (for user-triggered notifications)
+  senderId    String?
+
+  // Status
+  readAt      DateTime?
+
+  // Timestamps
+  createdAt   DateTime         @default(now())
+
+  @@index([recipientId])
+  @@index([recipientId, readAt])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// User notification preferences
+model NotificationPreference {
+  id        String  @id @default(uuid())
+  userId    String  @unique
+
+  // Global settings
+  enabled   Boolean @default(true)
+
+  // Channel preferences (JSON)
+  // { inApp: true, email: true }
+  channels  Json    @default("{\"inApp\": true, \"email\": true}")
+
+  // Event type preferences (JSON)
+  // { MESSAGE: { inApp: true, email: true }, ... }
+  eventTypes Json   @default("{}")
+
+  // Email rate limiting
+  // { eventType: timestamp }
+  lastEmailSentAt Json @default("{}")
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// =============================================================================
 // ACCESS LOGGING
 // =============================================================================
 

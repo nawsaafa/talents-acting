@@ -18,6 +18,7 @@ import {
   getCollectionShareLinks,
   revokeShareLink as revokeShareLinkQuery,
   getCollectionsContainingTalent,
+  getShareLinkByToken,
 } from './queries';
 import {
   canCreateCollection,
@@ -38,6 +39,7 @@ import type {
   CollectionWithTalents,
   CollectionShareInfo,
 } from './types';
+import { sendCollectionSharedNotification } from '@/lib/notifications/service';
 
 // Validation constants
 const MAX_COLLECTION_NAME_LENGTH = 100;
@@ -558,4 +560,40 @@ export async function getMyCollectionsWithTalent(talentProfileId: string): Promi
   }
 
   return getCollectionsContainingTalent(user.id, talentProfileId);
+}
+
+/**
+ * Server action to record when a share link is accessed and notify the owner.
+ * This should be called from the shared collection page.
+ */
+export async function recordShareLinkAccess(token: string): Promise<void> {
+  try {
+    // Get share link data
+    const data = await getShareLinkByToken(token);
+    if (!data) {
+      return;
+    }
+
+    const { collection } = data;
+
+    // Get viewer info (may be anonymous)
+    const viewer = await getCurrentUser();
+    const viewerName = viewer?.email?.split('@')[0] || 'Someone';
+
+    // Send notification to collection owner (non-blocking)
+    sendCollectionSharedNotification({
+      recipientId: collection.ownerId,
+      sharerId: viewer?.id,
+      sharerName: viewerName,
+      collectionName: collection.name,
+      collectionId: collection.id,
+    }).catch((error) => {
+      log.error('Failed to send collection share access notification', error as Error, {
+        collectionId: collection.id,
+        ownerId: collection.ownerId,
+      });
+    });
+  } catch (error) {
+    log.error('Failed to record share link access', error as Error, { token });
+  }
 }
