@@ -14,7 +14,7 @@ import {
   getNotificationPreferences,
   upsertNotificationPreferences,
 } from './queries';
-import { canViewNotification, canMarkNotificationRead, validatePreferencesInput } from './access';
+import { canMarkNotificationRead, validatePreferencesInput } from './access';
 import type {
   NotificationsResult,
   NotificationPaginationOptions,

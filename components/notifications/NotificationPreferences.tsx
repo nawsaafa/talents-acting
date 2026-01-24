@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react';
 import { Bell, Mail, MessageSquare, FolderOpen, UserPlus } from 'lucide-react';
 import { NotificationType } from '@prisma/client';
-import { Card, Button } from '@/components/ui';
+import { Card } from '@/components/ui';
 import {
   toggleNotificationsEnabled,
   toggleChannelPreference,

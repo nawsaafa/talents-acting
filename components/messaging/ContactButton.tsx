@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { MessageSquare, Loader2, Lock } from 'lucide-react';
+import { MessageSquare, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { UpgradePrompt } from '@/components/subscription/UpgradePrompt';

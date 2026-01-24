@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { BellOff, CheckCheck, Filter } from 'lucide-react';
-import { NotificationType } from '@prisma/client';
+import { BellOff, CheckCheck } from 'lucide-react';
 import { NotificationItem } from './NotificationItem';
 import { Button, Select } from '@/components/ui';
 import { markAsRead, markAllAsRead } from '@/lib/notifications/actions';

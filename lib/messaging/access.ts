@@ -5,9 +5,6 @@ import type { MessagingContext, MessagingAccessResult } from './types';
 // Roles that can receive messages (talents)
 const MESSAGEABLE_ROLES: Role[] = ['TALENT'];
 
-// Roles that can always send messages (admins)
-const ALWAYS_CAN_SEND_ROLES: Role[] = ['ADMIN'];
-
 /**
  * Check if a user can initiate a new conversation with a recipient.
  * Rules:

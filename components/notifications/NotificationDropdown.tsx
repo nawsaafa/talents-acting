@@ -13,7 +13,7 @@ interface NotificationDropdownProps {
 }
 
 export function NotificationDropdown({ notifications, onClose }: NotificationDropdownProps) {
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const [localNotifications, setLocalNotifications] = useState(notifications);
 
   const handleMarkRead = (id: string) => {

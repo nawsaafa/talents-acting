@@ -1,4 +1,3 @@
-import { NotificationType } from '@prisma/client';
 import { log } from '@/lib/logger';
 import { sendEmail } from '@/lib/email/send';
 import {

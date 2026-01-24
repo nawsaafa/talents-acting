@@ -1,5 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { NotificationType } from '@prisma/client';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock dependencies
 vi.mock('@/lib/logger', () => ({
@@ -57,7 +56,6 @@ import {
 } from '@/lib/notifications/service';
 import {
   createNotification,
-  getNotificationPreferences,
   updateLastEmailSentAt,
   getUserEmail,
 } from '@/lib/notifications/queries';

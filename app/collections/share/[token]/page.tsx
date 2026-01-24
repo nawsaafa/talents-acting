@@ -1,11 +1,10 @@
-import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Container } from '@/components/layout';
 import { Card, Button } from '@/components/ui';
 import { CollectionTalentCard } from '@/components/collections';
 import { getShareLinkByToken } from '@/lib/collections/queries';
 import { recordShareLinkAccess } from '@/lib/collections/actions';
-import { Users, ArrowLeft, Download } from 'lucide-react';
+import { Users, ArrowLeft } from 'lucide-react';
 import { SharedCollectionExport } from './SharedCollectionExport';
 
 interface SharedCollectionPageProps {

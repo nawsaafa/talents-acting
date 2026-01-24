@@ -1,7 +1,6 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import type { ProjectType } from '@prisma/client';
 import { getCurrentUser } from '@/lib/auth/utils';
 import { log } from '@/lib/logger';
 import { submitContactRequest, respondToContactRequest } from './service';

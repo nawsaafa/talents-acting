@@ -9,7 +9,6 @@ import {
   createMessage,
   markConversationAsRead,
   isConversationParticipant,
-  getConversationParticipantIds,
   getUserRole,
 } from './queries';
 import { canInitiateConversation, canReplyToConversation, buildMessagingContext } from './access';

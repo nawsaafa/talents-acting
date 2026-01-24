@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { NotificationType, Role } from '@prisma/client';
+import { NotificationType } from '@prisma/client';
 import type {
   NotificationInfo,
   NotificationPaginationOptions,

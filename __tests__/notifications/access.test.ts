@@ -48,10 +48,14 @@ describe('canMarkNotificationRead', () => {
 
 describe('shouldSendInAppNotification', () => {
   const defaultPreferences: NotificationPreferences = {
+    id: 'pref-1',
+    userId: 'user-123',
     enabled: true,
     channels: { inApp: true, email: true },
     eventTypes: {},
     lastEmailSentAt: {},
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   it('should send when preferences are null (default behavior)', () => {
@@ -100,6 +104,8 @@ describe('shouldSendInAppNotification', () => {
 
   it('should respect per-type settings over global channel settings', () => {
     const prefs: NotificationPreferences = {
+      id: 'pref-2',
+      userId: 'user-123',
       enabled: true,
       channels: { inApp: true, email: true },
       eventTypes: {
@@ -107,6 +113,8 @@ describe('shouldSendInAppNotification', () => {
         COLLECTION_SHARE: { inApp: true, email: false },
       },
       lastEmailSentAt: {},
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
     expect(shouldSendInAppNotification(prefs, 'MESSAGE')).toBe(false);
@@ -116,10 +124,14 @@ describe('shouldSendInAppNotification', () => {
 
 describe('shouldSendEmailNotification', () => {
   const defaultPreferences: NotificationPreferences = {
+    id: 'pref-3',
+    userId: 'user-123',
     enabled: true,
     channels: { inApp: true, email: true },
     eventTypes: {},
     lastEmailSentAt: {},
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   describe('basic preference checks', () => {
@@ -215,10 +227,14 @@ describe('shouldSendEmailNotification', () => {
     it('should check all conditions in order', () => {
       // Disabled globally
       const globalDisabled: NotificationPreferences = {
+        id: 'pref-4',
+        userId: 'user-123',
         enabled: false,
         channels: { inApp: true, email: false },
         eventTypes: { MESSAGE: { inApp: false, email: false } },
         lastEmailSentAt: { MESSAGE: new Date().toISOString() },
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const result = shouldSendEmailNotification(globalDisabled, 'MESSAGE');
