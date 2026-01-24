@@ -83,7 +83,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Pending Talents */}
         <Card padding="lg">
           <div className="flex items-center justify-between mb-4">
@@ -150,6 +150,30 @@ export default async function AdminDashboardPage() {
             className="inline-flex items-center text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-dark)]"
           >
             View queue
+            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </Card>
+
+        {/* Contact Requests Overview */}
+        <Card padding="lg">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-[var(--color-neutral-900)]">
+              Contact Requests
+            </h2>
+            <span className="px-2 py-1 text-sm font-medium bg-blue-50 text-blue-600 rounded-full">
+              {stats.totalContactRequests}
+            </span>
+          </div>
+          <p className="text-[var(--color-neutral-600)] mb-4">
+            {stats.pendingContactRequests} pending requests
+          </p>
+          <Link
+            href="/admin/contact-requests"
+            className="inline-flex items-center text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-dark)]"
+          >
+            View all
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>

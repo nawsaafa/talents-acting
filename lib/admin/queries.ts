@@ -4,25 +4,36 @@ import type { UserFilterInput, ValidationFilterInput } from './validation';
 
 // Dashboard statistics
 export async function getDashboardStats() {
-  const [pendingTalents, pendingProfessionals, pendingCompanies, activeTalents, totalUsers] =
-    await Promise.all([
-      prisma.talentProfile.count({
-        where: { validationStatus: ValidationStatus.PENDING },
-      }),
-      prisma.professionalProfile.count({
-        where: { validationStatus: ValidationStatus.PENDING },
-      }),
-      prisma.companyProfile.count({
-        where: { validationStatus: ValidationStatus.PENDING },
-      }),
-      prisma.talentProfile.count({
-        where: {
-          validationStatus: ValidationStatus.APPROVED,
-          isPublic: true,
-        },
-      }),
-      prisma.user.count(),
-    ]);
+  const [
+    pendingTalents,
+    pendingProfessionals,
+    pendingCompanies,
+    activeTalents,
+    totalUsers,
+    pendingContactRequests,
+    totalContactRequests,
+  ] = await Promise.all([
+    prisma.talentProfile.count({
+      where: { validationStatus: ValidationStatus.PENDING },
+    }),
+    prisma.professionalProfile.count({
+      where: { validationStatus: ValidationStatus.PENDING },
+    }),
+    prisma.companyProfile.count({
+      where: { validationStatus: ValidationStatus.PENDING },
+    }),
+    prisma.talentProfile.count({
+      where: {
+        validationStatus: ValidationStatus.APPROVED,
+        isPublic: true,
+      },
+    }),
+    prisma.user.count(),
+    prisma.contactRequest.count({
+      where: { status: 'PENDING' },
+    }),
+    prisma.contactRequest.count(),
+  ]);
 
   return {
     pendingTalents,
@@ -30,6 +41,8 @@ export async function getDashboardStats() {
     pendingCompanies,
     activeTalents,
     totalUsers,
+    pendingContactRequests,
+    totalContactRequests,
     totalPending: pendingTalents + pendingProfessionals + pendingCompanies,
   };
 }

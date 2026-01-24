@@ -20,7 +20,9 @@ import {
   Camera,
   Sparkles,
   CreditCard,
+  UserPlus,
 } from 'lucide-react';
+import { getMyRequestCounts } from '@/lib/contact-requests/actions';
 
 const VALIDATION_STATUS_CONFIG = {
   PENDING: {
@@ -130,10 +132,11 @@ export default async function ProfileDashboardPage() {
     );
   }
 
-  // Fetch user's talent profile and subscription
-  const [profile, subscription] = await Promise.all([
+  // Fetch user's talent profile, subscription, and contact request counts
+  const [profile, subscription, requestCounts] = await Promise.all([
     getTalentProfileByUserId(session.user.id),
     getTalentSubscription(session.user.id),
+    getMyRequestCounts(),
   ]);
 
   // No profile yet - show create CTA
@@ -287,6 +290,17 @@ export default async function ProfileDashboardPage() {
                 <Button variant="outline" className="w-full justify-start">
                   <Camera className="w-4 h-4 mr-2" />
                   Manage Media
+                </Button>
+              </Link>
+              <Link href="/dashboard/requests" className="block">
+                <Button variant="outline" className="w-full justify-start">
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  Contact Requests
+                  {requestCounts.received && requestCounts.received.pending > 0 && (
+                    <span className="ml-auto px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
+                      {requestCounts.received.pending}
+                    </span>
+                  )}
                 </Button>
               </Link>
               <Link href="/dashboard/talent/billing" className="block">

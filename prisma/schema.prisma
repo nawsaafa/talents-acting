@@ -210,6 +210,9 @@ model TalentProfile {
   // Collections relation
   collections CollectionTalent[]
 
+  // Contact requests relation
+  contactRequests ContactRequest[]
+
   // === T016: Indexes for filtering ===
   @@index([gender])
   @@index([ageRangeMin, ageRangeMax])
@@ -602,4 +605,62 @@ model AccessLog {
   @@index([resourceType, resourceId])
   @@index([granted])
   @@index([createdAt])
+}
+
+// =============================================================================
+// CONTACT REQUEST MODELS
+// =============================================================================
+
+// Contact request status state machine
+enum ContactRequestStatus {
+  PENDING   // Awaiting talent response
+  APPROVED  // Talent approved, contact info revealed
+  DECLINED  // Talent declined
+  EXPIRED   // Request expired (future enhancement)
+}
+
+// Project type for categorizing contact requests
+enum ProjectType {
+  FILM
+  TV_SERIES
+  COMMERCIAL
+  THEATER
+  VOICE_OVER
+  MODELING
+  OTHER
+}
+
+// Contact request from professional/company to talent
+model ContactRequest {
+  id        String               @id @default(uuid())
+  status    ContactRequestStatus @default(PENDING)
+
+  // Requester (professional or company user)
+  requesterId String
+
+  // Target talent
+  talentProfileId String
+  talentProfile   TalentProfile @relation(fields: [talentProfileId], references: [id], onDelete: Cascade)
+
+  // Request details
+  projectType   ProjectType
+  projectName   String?         // Optional project name
+  purpose       String          @db.Text  // Why they want to contact
+  message       String?         @db.Text  // Optional personal message
+
+  // Response details
+  declineReason String?         // Talent's reason if declined
+
+  // Timestamps
+  createdAt     DateTime        @default(now())
+  respondedAt   DateTime?       // When talent responded
+  expiresAt     DateTime?       // Optional expiry date
+
+  // Indexes
+  @@index([requesterId])
+  @@index([talentProfileId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([requesterId, status])
+  @@index([talentProfileId, status])
 }

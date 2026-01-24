@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { ContactButton } from '@/components/messaging/ContactButton';
 import { AddToCollectionButton } from '@/components/collections';
+import { RequestContactButton } from '@/components/contact-requests';
 
 interface TalentDetailPageProps {
   params: Promise<{ id: string }>;
@@ -179,7 +180,21 @@ export default async function TalentDetailPage({ params }: TalentDetailPageProps
                   <AddToCollectionButton talentProfileId={id} size="md" />
                 )}
 
-                {/* Contact Button */}
+                {/* Request Contact Button */}
+                {(() => {
+                  const premiumTalent = talent as PremiumTalentProfile;
+                  if (session.user.id === premiumTalent.userId) return null;
+                  return (
+                    <RequestContactButton
+                      talentProfileId={id}
+                      talentName={talent.firstName}
+                      variant="primary"
+                      size="md"
+                    />
+                  );
+                })()}
+
+                {/* Direct Message Button */}
                 {(() => {
                   const premiumTalent = talent as PremiumTalentProfile;
                   if (session.user.id === premiumTalent.userId) return null;
@@ -187,7 +202,7 @@ export default async function TalentDetailPage({ params }: TalentDetailPageProps
                     <ContactButton
                       talentId={premiumTalent.userId}
                       talentName={talent.firstName}
-                      variant="primary"
+                      variant="outline"
                       size="md"
                     />
                   );
