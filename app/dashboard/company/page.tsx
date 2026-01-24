@@ -6,6 +6,7 @@ import { getCompanyByUserId } from '@/lib/company/queries';
 import { getCompanySubscription } from '@/lib/payment/queries';
 import { hasActiveAccess } from '@/lib/payment/subscription';
 import { TeamManagement } from '@/components/company/TeamManagement';
+import { CompanyActivitySection } from '@/components/activity';
 
 export const metadata: Metadata = {
   title: 'Company Dashboard - Talents Acting',
@@ -150,6 +151,13 @@ export default async function CompanyDashboardPage() {
                 </p>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Activity Section */}
+        {isApproved && (
+          <div className="mb-8">
+            <CompanyActivitySection />
           </div>
         )}
 

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Container } from '@/components/layout';
 import { Button, Card, CardBody } from '@/components/ui';
 import { ProfileCompleteness, ProfilePreview } from '@/components/profile';
+import { TalentActivitySection } from '@/components/activity';
 import { auth } from '@/lib/auth/auth';
 import { getTalentProfileByUserId } from '@/lib/talents/queries';
 import { getTalentSubscription } from '@/lib/payment/queries';
@@ -383,6 +384,14 @@ export default async function ProfileDashboardPage() {
           </CardBody>
         </Card>
       </div>
+
+      {/* Activity Section */}
+      {profile.validationStatus === 'APPROVED' && (
+        <div className="mt-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Activity Overview</h2>
+          <TalentActivitySection />
+        </div>
+      )}
 
       {/* Profile Completeness */}
       <div className="mt-6">

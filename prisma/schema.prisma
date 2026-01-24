@@ -577,6 +577,28 @@ model NotificationPreference {
 }
 
 // =============================================================================
+// PROFILE VIEW TRACKING (Privacy-conscious aggregate only)
+// =============================================================================
+
+// Profile view aggregate counter for talents
+// Stores daily aggregate counts - no individual viewer data
+model ProfileView {
+  id              String   @id @default(uuid())
+  talentProfileId String
+  date            DateTime @db.Date  // Date of views (daily aggregation)
+  viewCount       Int      @default(0)
+
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([talentProfileId, date])
+  @@index([talentProfileId])
+  @@index([date])
+  @@index([talentProfileId, date])
+}
+
+// =============================================================================
 // ACCESS LOGGING
 // =============================================================================
 

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { auth } from '@/lib/auth/auth';
 import { getProfessionalByUserId } from '@/lib/professional/queries';
 import { hasActiveAccess } from '@/lib/payment/subscription';
+import { ProfessionalActivitySection } from '@/components/activity';
 
 export const metadata: Metadata = {
   title: 'Dashboard - Talents Acting',
@@ -168,6 +169,13 @@ export default async function ProfessionalDashboardPage() {
                 </p>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Activity Section */}
+        {isApproved && (
+          <div className="mb-8">
+            <ProfessionalActivitySection />
           </div>
         )}
 
