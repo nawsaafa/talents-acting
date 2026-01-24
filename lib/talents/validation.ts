@@ -22,6 +22,27 @@ export const HairColorSchema = z.enum([
 export const EyeColorSchema = z.enum(['BROWN', 'BLUE', 'GREEN', 'HAZEL', 'GRAY', 'OTHER']);
 export const HairLengthSchema = z.enum(['BALD', 'SHORT', 'MEDIUM', 'LONG']);
 export const BeardTypeSchema = z.enum(['NONE', 'STUBBLE', 'SHORT', 'MEDIUM', 'LONG', 'FULL']);
+export const AvailabilityTypeSchema = z.enum([
+  'ALWAYS',
+  'SHORT_TERM_1_2_DAYS',
+  'MEDIUM_TERM_1_2_WEEKS',
+  'LONG_TERM_1_4_MONTHS',
+  'WEEKENDS_AND_HOLIDAYS',
+  'HOLIDAYS_ONLY',
+  'WEEKENDS_ONLY',
+  'EVENINGS',
+  'DAYS',
+]);
+
+// IMDB URL validation pattern
+export const imdbUrlSchema = z
+  .string()
+  .regex(
+    /^https?:\/\/(www\.)?imdb\.com\/name\/nm\d+\/?$/,
+    'Invalid IMDB URL. Expected format: https://www.imdb.com/name/nm[digits]/'
+  )
+  .optional()
+  .nullable();
 
 // Profile creation schema - required fields for initial creation
 export const createProfileSchema = z.object({
@@ -43,6 +64,7 @@ export const createProfileSchema = z.object({
   // Optional fields for creation
   photo: z.string().url().optional().nullable(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  birthPlace: z.string().max(100).optional().nullable(),
   location: z.string().max(100).optional().nullable(),
   bio: z.string().max(2000).optional().nullable(),
 
@@ -71,8 +93,10 @@ export const createProfileSchema = z.object({
 
   // Media and availability (optional)
   isAvailable: z.boolean().default(true),
+  availabilityTypes: z.array(AvailabilityTypeSchema).default([]),
   dailyRate: z.number().positive().optional().nullable(),
   rateNegotiable: z.boolean().default(true),
+  imdbUrl: imdbUrlSchema,
 
   // Contact info (premium fields)
   contactEmail: z.string().email().optional().nullable(),
@@ -109,6 +133,7 @@ export const talentFilterSchema = z.object({
 
   // Professional filters
   isAvailable: z.boolean().optional(),
+  availabilityTypes: z.array(AvailabilityTypeSchema).optional(),
   minRate: z.number().positive().optional(),
   maxRate: z.number().positive().optional(),
 

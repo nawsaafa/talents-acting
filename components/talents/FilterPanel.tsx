@@ -11,6 +11,7 @@ import {
   HAIR_COLOR_OPTIONS,
   EYE_COLOR_OPTIONS,
   HAIR_LENGTH_OPTIONS,
+  AVAILABILITY_TYPE_OPTIONS,
   COMMON_LANGUAGES,
   ATHLETIC_SKILLS,
   DANCE_STYLES,
@@ -43,6 +44,7 @@ export function FilterPanel() {
 
   const professionalCount =
     (filters.isAvailable !== undefined ? 1 : 0) +
+    (filters.availabilityTypes?.length ? 1 : 0) +
     (filters.minRate !== undefined || filters.maxRate !== undefined ? 1 : 0);
 
   const filterContent = (
@@ -190,7 +192,7 @@ export function FilterPanel() {
       <FilterSection
         title="Professional"
         activeCount={professionalCount}
-        onClear={() => clearSection(['isAvailable', 'minRate', 'maxRate'])}
+        onClear={() => clearSection(['isAvailable', 'availabilityTypes', 'minRate', 'maxRate'])}
         defaultOpen={false}
       >
         <div className="space-y-4">
@@ -203,6 +205,13 @@ export function FilterPanel() {
             />
             <span className="text-sm text-gray-700">Available only</span>
           </label>
+          <EnumSelectFilter
+            label="Availability Schedule"
+            options={[...AVAILABILITY_TYPE_OPTIONS]}
+            value={filters.availabilityTypes}
+            multi
+            onChange={(value) => setFilter('availabilityTypes', value as string[])}
+          />
           <RangeFilter
             label="Daily Rate"
             minValue={filters.minRate}

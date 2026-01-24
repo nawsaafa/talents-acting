@@ -89,16 +89,29 @@ export function BasicInfoStep() {
       </div>
 
       {/* Location */}
-      <FormField label="Location" name="location" error={errors.location}>
-        <TextInput
-          name="location"
-          value={formData.location}
-          onChange={(v) => updateField('location' as keyof TalentProfile, v)}
-          placeholder="City or region"
-          disabled={isSubmitting}
-          maxLength={100}
-        />
-      </FormField>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Location" name="location" error={errors.location}>
+          <TextInput
+            name="location"
+            value={formData.location}
+            onChange={(v) => updateField('location' as keyof TalentProfile, v)}
+            placeholder="City or region"
+            disabled={isSubmitting}
+            maxLength={100}
+          />
+        </FormField>
+
+        <FormField label="Place of Birth" name="birthPlace" error={errors.birthPlace}>
+          <TextInput
+            name="birthPlace"
+            value={formData.birthPlace}
+            onChange={(v) => updateField('birthPlace' as keyof TalentProfile, v)}
+            placeholder="e.g., Casablanca, Morocco"
+            disabled={isSubmitting}
+            maxLength={100}
+          />
+        </FormField>
+      </div>
 
       {/* Contact Information */}
       <div className="border-t pt-6">

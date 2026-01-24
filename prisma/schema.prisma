@@ -110,6 +110,19 @@ enum BeardType {
   FULL
 }
 
+// Legacy availability options for talent profiles
+enum AvailabilityType {
+  ALWAYS                    // Always available
+  SHORT_TERM_1_2_DAYS       // 1-2 days availability
+  MEDIUM_TERM_1_2_WEEKS     // 1-2 weeks availability
+  LONG_TERM_1_4_MONTHS      // 1-4 months availability
+  WEEKENDS_AND_HOLIDAYS     // Weekends and holidays only
+  HOLIDAYS_ONLY             // Holidays only
+  WEEKENDS_ONLY             // Weekends only
+  EVENINGS                  // Evenings only
+  DAYS                      // Daytime only
+}
+
 // =============================================================================
 // MODELS
 // =============================================================================
@@ -150,6 +163,7 @@ model TalentProfile {
   ageRangeMin Int // Playable age range minimum
   ageRangeMax Int // Playable age range maximum
   dateOfBirth DateTime? // Actual DOB (premium field)
+  birthPlace  String? // Place of birth (legacy field)
   photo       String? // Primary headshot URL
 
   // === T009: Physical Attributes ===
@@ -182,8 +196,10 @@ model TalentProfile {
   showreel          String? // Demo reel URL
   hasShowreel       Boolean  @default(false)
   isAvailable       Boolean  @default(true)
+  availabilityTypes AvailabilityType[] // Multi-select availability options
   dailyRate         Decimal? @db.Decimal(10, 2) // Rate in local currency
   rateNegotiable    Boolean  @default(true)
+  imdbUrl           String? // IMDB profile link
 
   // Subscription (membership)
   subscriptionStatus   SubscriptionStatus @default(NONE)

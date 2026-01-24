@@ -233,6 +233,52 @@ export function CheckboxInput({
   );
 }
 
+interface MultiCheckboxInputProps {
+  name: string;
+  values: string[];
+  onChange: (values: string[]) => void;
+  options: Array<{ value: string; label: string }>;
+  disabled?: boolean;
+  columns?: number;
+}
+
+export function MultiCheckboxInput({
+  name,
+  values,
+  onChange,
+  options,
+  disabled = false,
+  columns = 2,
+}: MultiCheckboxInputProps) {
+  const handleChange = (optValue: string, checked: boolean) => {
+    if (checked) {
+      onChange([...values, optValue]);
+    } else {
+      onChange(values.filter((v) => v !== optValue));
+    }
+  };
+
+  return (
+    <div
+      className={`grid gap-2 ${columns === 2 ? 'grid-cols-1 sm:grid-cols-2' : columns === 3 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}
+    >
+      {options.map((opt) => (
+        <label key={opt.value} className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            name={`${name}-${opt.value}`}
+            checked={values.includes(opt.value)}
+            onChange={(e) => handleChange(opt.value, e.target.checked)}
+            disabled={disabled}
+            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 disabled:cursor-not-allowed"
+          />
+          <span className="text-sm text-gray-700">{opt.label}</span>
+        </label>
+      ))}
+    </div>
+  );
+}
+
 interface TextareaInputProps {
   name: string;
   value: string | null | undefined;

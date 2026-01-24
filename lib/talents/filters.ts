@@ -82,6 +82,11 @@ export function buildTalentFilterQuery(params: TalentFilterInput): Prisma.Talent
     where.isAvailable = params.isAvailable;
   }
 
+  // Availability types filter - use hasSome for partial matching
+  if (params.availabilityTypes && params.availabilityTypes.length > 0) {
+    where.availabilityTypes = { hasSome: params.availabilityTypes };
+  }
+
   // Daily rate range filter
   if (params.minRate !== undefined || params.maxRate !== undefined) {
     where.dailyRate = {};
@@ -185,6 +190,12 @@ export function parseFilterParams(
   // Professional filters
   if (searchParams.isAvailable === 'true') {
     params.isAvailable = true;
+  }
+
+  if (searchParams.availabilityTypes) {
+    params.availabilityTypes = searchParams.availabilityTypes
+      .split(',')
+      .filter(Boolean) as TalentFilterInput['availabilityTypes'];
   }
 
   if (searchParams.minRate) {

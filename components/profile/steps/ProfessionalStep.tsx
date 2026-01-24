@@ -1,7 +1,15 @@
 'use client';
 
-import { useWizardContext, FormField, CheckboxInput, TextareaInput } from '../WizardStep';
+import {
+  useWizardContext,
+  FormField,
+  CheckboxInput,
+  TextareaInput,
+  TextInput,
+  MultiCheckboxInput,
+} from '../WizardStep';
 import type { TalentProfile } from '@prisma/client';
+import { AVAILABILITY_TYPE_OPTIONS } from '@/lib/talents/filter-options';
 
 export function ProfessionalStep() {
   const { formData, updateField, errors, isSubmitting } = useWizardContext();
@@ -41,6 +49,26 @@ export function ProfessionalStep() {
           <p className="text-xs text-gray-500">
             When unchecked, your profile will still be visible but marked as unavailable
           </p>
+
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <FormField
+              label="Availability Schedule"
+              name="availabilityTypes"
+              error={errors.availabilityTypes}
+            >
+              <p className="text-xs text-gray-500 mb-3">
+                Select all that apply to your typical availability
+              </p>
+              <MultiCheckboxInput
+                name="availabilityTypes"
+                values={(formData.availabilityTypes as string[]) ?? []}
+                onChange={(v) => updateField('availabilityTypes' as keyof TalentProfile, v)}
+                options={[...AVAILABILITY_TYPE_OPTIONS]}
+                disabled={isSubmitting}
+                columns={2}
+              />
+            </FormField>
+          </div>
         </div>
       </div>
 
@@ -85,6 +113,21 @@ export function ProfessionalStep() {
           />
         </div>
       </div>
+
+      {/* IMDB Profile */}
+      <FormField label="IMDB Profile URL" name="imdbUrl" error={errors.imdbUrl}>
+        <TextInput
+          name="imdbUrl"
+          value={formData.imdbUrl}
+          onChange={(v) => updateField('imdbUrl' as keyof TalentProfile, v)}
+          type="url"
+          placeholder="https://www.imdb.com/name/nm1234567/"
+          disabled={isSubmitting}
+        />
+        <p className="mt-1 text-xs text-gray-500">
+          Link to your IMDB profile (e.g., https://www.imdb.com/name/nm1234567/)
+        </p>
+      </FormField>
 
       {/* Tips section */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">

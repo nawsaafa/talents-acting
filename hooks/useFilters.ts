@@ -13,6 +13,7 @@ const ARRAY_FILTER_KEYS = [
   'athleticSkills',
   'danceStyles',
   'performanceSkills',
+  'availabilityTypes',
 ] as const;
 
 type ArrayFilterKey = (typeof ARRAY_FILTER_KEYS)[number];
@@ -42,6 +43,7 @@ export interface FilterState {
 
   // Professional filters
   isAvailable?: boolean;
+  availabilityTypes?: string[];
   minRate?: number;
   maxRate?: number;
 }
@@ -112,6 +114,7 @@ export function useFilters() {
     if (filters.danceStyles?.length) count++;
     if (filters.performanceSkills?.length) count++;
     if (filters.isAvailable !== undefined) count++;
+    if (filters.availabilityTypes?.length) count++;
     if (filters.minRate !== undefined || filters.maxRate !== undefined) count++;
 
     return count;

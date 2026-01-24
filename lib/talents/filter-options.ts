@@ -43,6 +43,19 @@ export const HAIR_LENGTH_OPTIONS = [
   { value: 'LONG', label: 'Long' },
 ] as const;
 
+// Availability type options matching legacy WordPress system
+export const AVAILABILITY_TYPE_OPTIONS = [
+  { value: 'ALWAYS', label: 'Always available' },
+  { value: 'SHORT_TERM_1_2_DAYS', label: '1-2 days' },
+  { value: 'MEDIUM_TERM_1_2_WEEKS', label: '1-2 weeks' },
+  { value: 'LONG_TERM_1_4_MONTHS', label: '1-4 months' },
+  { value: 'WEEKENDS_AND_HOLIDAYS', label: 'Weekends and holidays' },
+  { value: 'HOLIDAYS_ONLY', label: 'Holidays only' },
+  { value: 'WEEKENDS_ONLY', label: 'Weekends only' },
+  { value: 'EVENINGS', label: 'Evenings only' },
+  { value: 'DAYS', label: 'Daytime only' },
+] as const;
+
 // Common languages for Morocco and international productions
 export const COMMON_LANGUAGES = [
   'Arabic',
