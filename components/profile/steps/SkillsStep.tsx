@@ -5,90 +5,23 @@ import { X, Plus } from 'lucide-react';
 import { useWizardContext, FormField } from '../WizardStep';
 import type { TalentProfile } from '@prisma/client';
 
-// Common skill suggestions
-const LANGUAGE_SUGGESTIONS = [
-  'Arabic',
-  'English',
-  'French',
-  'Spanish',
-  'German',
-  'Italian',
-  'Mandarin',
-  'Hindi',
-  'Japanese',
-  'Korean',
-  'Russian',
-  'Portuguese',
-];
+// Import comprehensive skill options from seed-options
+import {
+  LANGUAGES,
+  ACCENTS,
+  ATHLETIC_SKILLS,
+  MUSICAL_INSTRUMENTS,
+  PERFORMANCE_SKILLS,
+  DANCE_STYLES,
+} from '@/lib/talents/seed-options';
 
-const ACCENT_SUGGESTIONS = [
-  'American',
-  'British',
-  'Australian',
-  'Gulf Arabic',
-  'Levantine',
-  'Egyptian',
-  'French',
-  'German',
-  'Indian',
-  'Irish',
-  'Scottish',
-  'South African',
-];
-
-const ATHLETIC_SUGGESTIONS = [
-  'Swimming',
-  'Martial Arts',
-  'Horse Riding',
-  'Football',
-  'Basketball',
-  'Tennis',
-  'Boxing',
-  'Gymnastics',
-  'Yoga',
-  'Fencing',
-  'Archery',
-  'Rock Climbing',
-];
-
-const INSTRUMENT_SUGGESTIONS = [
-  'Piano',
-  'Guitar',
-  'Violin',
-  'Drums',
-  'Oud',
-  'Saxophone',
-  'Flute',
-  'Trumpet',
-  'Cello',
-  'Bass',
-];
-
-const PERFORMANCE_SUGGESTIONS = [
-  'Stand-up Comedy',
-  'Improvisation',
-  'Voice Acting',
-  'Stage Combat',
-  'Singing',
-  'Puppetry',
-  'Mime',
-  'Clowning',
-  'Magic',
-  'Storytelling',
-];
-
-const DANCE_SUGGESTIONS = [
-  'Contemporary',
-  'Hip Hop',
-  'Ballet',
-  'Jazz',
-  'Traditional Arabic',
-  'Salsa',
-  'Tango',
-  'Breakdancing',
-  'Ballroom',
-  'Belly Dance',
-];
+// Convert readonly arrays to mutable string arrays for suggestions
+const LANGUAGE_SUGGESTIONS = [...LANGUAGES];
+const ACCENT_SUGGESTIONS = [...ACCENTS];
+const ATHLETIC_SUGGESTIONS = [...ATHLETIC_SKILLS];
+const INSTRUMENT_SUGGESTIONS = [...MUSICAL_INSTRUMENTS];
+const PERFORMANCE_SUGGESTIONS = [...PERFORMANCE_SKILLS];
+const DANCE_SUGGESTIONS = [...DANCE_STYLES];
 
 interface TagInputProps {
   label: string;

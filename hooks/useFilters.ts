@@ -14,6 +14,7 @@ const ARRAY_FILTER_KEYS = [
   'danceStyles',
   'performanceSkills',
   'availabilityTypes',
+  'regions',
 ] as const;
 
 type ArrayFilterKey = (typeof ARRAY_FILTER_KEYS)[number];
@@ -40,6 +41,9 @@ export interface FilterState {
   athleticSkills?: string[];
   danceStyles?: string[];
   performanceSkills?: string[];
+
+  // Location filters
+  regions?: string[];
 
   // Professional filters
   isAvailable?: boolean;
@@ -113,6 +117,7 @@ export function useFilters() {
     if (filters.athleticSkills?.length) count++;
     if (filters.danceStyles?.length) count++;
     if (filters.performanceSkills?.length) count++;
+    if (filters.regions?.length) count++;
     if (filters.isAvailable !== undefined) count++;
     if (filters.availabilityTypes?.length) count++;
     if (filters.minRate !== undefined || filters.maxRate !== undefined) count++;

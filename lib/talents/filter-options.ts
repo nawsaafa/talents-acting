@@ -1,5 +1,34 @@
 // Filter options for talent filtering UI
-// Static arrays matching Prisma enum values
+// Static arrays matching Prisma enum values and legacy WordPress options
+
+// Re-export skill/language options from seed-options for filter compatibility
+export {
+  LANGUAGE_OPTIONS,
+  LANGUAGES,
+  ATHLETIC_SKILL_OPTIONS,
+  ATHLETIC_SKILLS,
+  DANCE_STYLE_OPTIONS,
+  DANCE_STYLES,
+  DANCE_STYLE_GROUPS,
+  GROUPED_DANCE_STYLE_OPTIONS,
+  MOROCCAN_DANCE_STYLES,
+  PERFORMANCE_SKILL_OPTIONS,
+  PERFORMANCE_SKILLS,
+  ACCENT_OPTIONS,
+  ACCENTS,
+  ACCENT_GROUPS,
+  GROUPED_ACCENT_OPTIONS,
+  MOROCCAN_ACCENTS,
+  MUSICAL_INSTRUMENT_OPTIONS,
+  MUSICAL_INSTRUMENTS,
+  MUSICAL_INSTRUMENT_GROUPS,
+  MOROCCAN_REGION_OPTIONS,
+  MOROCCAN_REGIONS,
+  MOROCCAN_REGION_SHORT_LABELS,
+} from './seed-options';
+
+// Backward compatibility aliases for existing code
+export { LANGUAGES as COMMON_LANGUAGES } from './seed-options';
 
 export const GENDER_OPTIONS = [
   { value: 'MALE', label: 'Male' },
@@ -56,90 +85,14 @@ export const AVAILABILITY_TYPE_OPTIONS = [
   { value: 'DAYS', label: 'Daytime only' },
 ] as const;
 
-// Common languages for Morocco and international productions
-export const COMMON_LANGUAGES = [
-  'Arabic',
-  'Moroccan Darija',
-  'French',
-  'English',
-  'Spanish',
-  'Berber',
-  'German',
-  'Italian',
-  'Portuguese',
-  'Dutch',
-  'Russian',
-  'Chinese',
-  'Japanese',
-  'Korean',
-  'Hindi',
-  'Turkish',
-] as const;
-
-// Athletic skills commonly needed in film/TV
-export const ATHLETIC_SKILLS = [
-  'Swimming',
-  'Horse Riding',
-  'Martial Arts',
-  'Boxing',
-  'Fencing',
-  'Gymnastics',
-  'Parkour',
-  'Rock Climbing',
-  'Skateboarding',
-  'Surfing',
-  'Skiing',
-  'Snowboarding',
-  'Soccer',
-  'Basketball',
-  'Tennis',
-  'Golf',
-  'Cycling',
-  'Running',
-  'Yoga',
-  'Pilates',
-] as const;
-
-// Dance styles for performance
-export const DANCE_STYLES = [
-  'Contemporary',
-  'Ballet',
-  'Hip Hop',
-  'Jazz',
-  'Ballroom',
-  'Salsa',
-  'Tango',
-  'Belly Dance',
-  'Traditional Moroccan',
-  'Folk',
-  'Breakdance',
-  'Tap',
-  'Modern',
-  'Street Dance',
-  'Flamenco',
-] as const;
-
-// Performance skills for acting
-export const PERFORMANCE_SKILLS = [
-  'Stand-up Comedy',
-  'Improvisation',
-  'Voice Acting',
-  'Singing',
-  'Stage Combat',
-  'Stunt Work',
-  'Mime',
-  'Puppetry',
-  'Magic',
-  'Clowning',
-  'Dialect Coaching',
-  'Mo-Cap',
-  'Voiceover',
-  'Commercial Acting',
-  'Theater',
-] as const;
-
 // Helper type for filter option
 export type FilterOption = {
   value: string;
   label: string;
+};
+
+// Grouped filter option type for categorized selects
+export type GroupedFilterOption = {
+  group: string;
+  options: FilterOption[];
 };

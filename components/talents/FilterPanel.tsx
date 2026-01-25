@@ -12,10 +12,11 @@ import {
   EYE_COLOR_OPTIONS,
   HAIR_LENGTH_OPTIONS,
   AVAILABILITY_TYPE_OPTIONS,
-  COMMON_LANGUAGES,
+  LANGUAGES,
   ATHLETIC_SKILLS,
   DANCE_STYLES,
   PERFORMANCE_SKILLS,
+  MOROCCAN_REGIONS,
 } from '@/lib/talents/filter-options';
 import { Button } from '@/components/ui';
 
@@ -41,6 +42,8 @@ export function FilterPanel() {
     (filters.athleticSkills?.length ? 1 : 0) +
     (filters.danceStyles?.length ? 1 : 0) +
     (filters.performanceSkills?.length ? 1 : 0);
+
+  const locationCount = filters.regions?.length ? 1 : 0;
 
   const professionalCount =
     (filters.isAvailable !== undefined ? 1 : 0) +
@@ -159,31 +162,49 @@ export function FilterPanel() {
         <div className="space-y-4">
           <MultiSelectFilter
             label="Languages"
-            options={COMMON_LANGUAGES}
+            options={[...LANGUAGES]}
             value={filters.languages}
             onChange={(value) => setFilter('languages', value ?? null)}
             placeholder="Search languages..."
           />
           <MultiSelectFilter
             label="Athletic Skills"
-            options={ATHLETIC_SKILLS}
+            options={[...ATHLETIC_SKILLS]}
             value={filters.athleticSkills}
             onChange={(value) => setFilter('athleticSkills', value ?? null)}
             placeholder="Search skills..."
           />
           <MultiSelectFilter
             label="Dance Styles"
-            options={DANCE_STYLES}
+            options={[...DANCE_STYLES]}
             value={filters.danceStyles}
             onChange={(value) => setFilter('danceStyles', value ?? null)}
             placeholder="Search dance styles..."
           />
           <MultiSelectFilter
             label="Performance Skills"
-            options={PERFORMANCE_SKILLS}
+            options={[...PERFORMANCE_SKILLS]}
             value={filters.performanceSkills}
             onChange={(value) => setFilter('performanceSkills', value ?? null)}
             placeholder="Search skills..."
+          />
+        </div>
+      </FilterSection>
+
+      {/* Location */}
+      <FilterSection
+        title="Location"
+        activeCount={locationCount}
+        onClear={() => clearSection(['regions'])}
+        defaultOpen={false}
+      >
+        <div className="space-y-4">
+          <MultiSelectFilter
+            label="Region"
+            options={[...MOROCCAN_REGIONS]}
+            value={filters.regions}
+            onChange={(value) => setFilter('regions', value ?? null)}
+            placeholder="Search regions..."
           />
         </div>
       </FilterSection>
