@@ -141,6 +141,9 @@ model User {
   // Stripe customer reference
   stripeCustomerId String? @unique
 
+  // Migration tracking (WordPress user ID)
+  legacyId String? @unique
+
   // Profile relationships (one-to-one based on role)
   talentProfile       TalentProfile?
   professionalProfile ProfessionalProfile?
@@ -148,6 +151,7 @@ model User {
 
   @@index([email])
   @@index([role])
+  @@index([legacyId])
 }
 
 // T008-T013: Complete talent profile with all 40+ fields
@@ -155,6 +159,9 @@ model TalentProfile {
   id     String @id @default(uuid())
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Migration tracking (WordPress post ID)
+  legacyId String? @unique
 
   // === T008: Basic Info ===
   firstName   String
@@ -239,6 +246,7 @@ model TalentProfile {
   @@index([physique])
   @@index([subscriptionStatus])
   @@index([createdAt])
+  @@index([legacyId])
 }
 
 // T014: Professional profile for film industry professionals

@@ -1,0 +1,421 @@
+{
+  "site_url": "https://example-talents.com",
+  "export_date": "2026-01-25T00:00:00Z",
+  "users": [
+    {
+      "ID": "1",
+      "user_login": "ahmed_benali",
+      "user_email": "ahmed.benali@example.com",
+      "user_registered": "2023-06-15 10:30:00",
+      "display_name": "Ahmed Ben Ali",
+      "user_status": "0"
+    },
+    {
+      "ID": "2",
+      "user_login": "fatima_zahrae",
+      "user_email": "fatima.zahrae@example.com",
+      "user_registered": "2023-07-20 14:45:00",
+      "display_name": "Fatima Zahrae",
+      "user_status": "0"
+    },
+    {
+      "ID": "3",
+      "user_login": "youssef_morocco",
+      "user_email": "youssef.morocco@example.com",
+      "user_registered": "2023-08-10 09:15:00",
+      "display_name": "Youssef El Amrani",
+      "user_status": "0"
+    },
+    {
+      "ID": "4",
+      "user_login": "sara_actress",
+      "user_email": "sara.actress@example.com",
+      "user_registered": "2023-09-05 16:20:00",
+      "display_name": "Sara Idrissi",
+      "user_status": "0"
+    },
+    {
+      "ID": "5",
+      "user_login": "karim_comedy",
+      "user_email": "karim.comedy@example.com",
+      "user_registered": "2023-10-12 11:00:00",
+      "display_name": "Karim Bouazza",
+      "user_status": "0"
+    }
+  ],
+  "usermeta": [
+    { "user_id": "1", "meta_key": "first_name", "meta_value": "Ahmed" },
+    { "user_id": "1", "meta_key": "last_name", "meta_value": "Ben Ali" },
+    { "user_id": "1", "meta_key": "gender", "meta_value": "male" },
+    { "user_id": "1", "meta_key": "age_min", "meta_value": "28" },
+    { "user_id": "1", "meta_key": "age_max", "meta_value": "35" },
+    { "user_id": "1", "meta_key": "birth_date", "meta_value": "1992-03-15" },
+    { "user_id": "1", "meta_key": "birth_place", "meta_value": "Casablanca" },
+    { "user_id": "1", "meta_key": "height", "meta_value": "178" },
+    { "user_id": "1", "meta_key": "physique", "meta_value": "athletic" },
+    { "user_id": "1", "meta_key": "hair_color", "meta_value": "black" },
+    { "user_id": "1", "meta_key": "eye_color", "meta_value": "brown" },
+    { "user_id": "1", "meta_key": "hair_length", "meta_value": "short" },
+    { "user_id": "1", "meta_key": "beard_type", "meta_value": "stubble" },
+    { "user_id": "1", "meta_key": "has_tattoos", "meta_value": "false" },
+    { "user_id": "1", "meta_key": "has_scars", "meta_value": "false" },
+    {
+      "user_id": "1",
+      "meta_key": "languages",
+      "meta_value": "[\"Moroccan Darija\", \"Arabic\", \"French\", \"English\"]"
+    },
+    {
+      "user_id": "1",
+      "meta_key": "accents",
+      "meta_value": "[\"Casaoui\", \"Standard Arabic\", \"Parisian French\"]"
+    },
+    {
+      "user_id": "1",
+      "meta_key": "athletic_skills",
+      "meta_value": "[\"Swimming\", \"Horse Riding\", \"Martial Arts\"]"
+    },
+    { "user_id": "1", "meta_key": "musical_instruments", "meta_value": "[\"Oud\", \"Guitar\"]" },
+    {
+      "user_id": "1",
+      "meta_key": "performance_skills",
+      "meta_value": "[\"Improvisation\", \"Voice Acting\"]"
+    },
+    { "user_id": "1", "meta_key": "dance_styles", "meta_value": "[\"Chaabi\", \"Contemporary\"]" },
+    { "user_id": "1", "meta_key": "is_available", "meta_value": "true" },
+    {
+      "user_id": "1",
+      "meta_key": "availability_types",
+      "meta_value": "[\"always\", \"weekends\"]"
+    },
+    { "user_id": "1", "meta_key": "daily_rate", "meta_value": "500" },
+    { "user_id": "1", "meta_key": "rate_negotiable", "meta_value": "true" },
+    {
+      "user_id": "1",
+      "meta_key": "bio",
+      "meta_value": "Experienced actor with 10 years in Moroccan cinema. Specializes in dramatic roles and action sequences."
+    },
+    { "user_id": "1", "meta_key": "location", "meta_value": "Casablanca" },
+    { "user_id": "1", "meta_key": "contact_email", "meta_value": "ahmed.pro@example.com" },
+    { "user_id": "1", "meta_key": "contact_phone", "meta_value": "+212600123456" },
+    {
+      "user_id": "1",
+      "meta_key": "imdb_url",
+      "meta_value": "https://www.imdb.com/name/nm1234567/"
+    },
+    {
+      "user_id": "1",
+      "meta_key": "photos",
+      "meta_value": "[\"wp-content/uploads/2023/06/ahmed-headshot.jpg\", \"wp-content/uploads/2023/06/ahmed-full.jpg\"]"
+    },
+
+    { "user_id": "2", "meta_key": "first_name", "meta_value": "Fatima" },
+    { "user_id": "2", "meta_key": "last_name", "meta_value": "Zahrae" },
+    { "user_id": "2", "meta_key": "gender", "meta_value": "female" },
+    { "user_id": "2", "meta_key": "age_min", "meta_value": "22" },
+    { "user_id": "2", "meta_key": "age_max", "meta_value": "30" },
+    { "user_id": "2", "meta_key": "birth_date", "meta_value": "1998-11-22" },
+    { "user_id": "2", "meta_key": "birth_place", "meta_value": "Rabat" },
+    { "user_id": "2", "meta_key": "height", "meta_value": "165" },
+    { "user_id": "2", "meta_key": "physique", "meta_value": "slim" },
+    { "user_id": "2", "meta_key": "hair_color", "meta_value": "brown" },
+    { "user_id": "2", "meta_key": "eye_color", "meta_value": "green" },
+    { "user_id": "2", "meta_key": "hair_length", "meta_value": "long" },
+    { "user_id": "2", "meta_key": "beard_type", "meta_value": "none" },
+    { "user_id": "2", "meta_key": "has_tattoos", "meta_value": "false" },
+    { "user_id": "2", "meta_key": "has_scars", "meta_value": "false" },
+    {
+      "user_id": "2",
+      "meta_key": "languages",
+      "meta_value": "[\"Moroccan Darija\", \"Arabic\", \"French\"]"
+    },
+    { "user_id": "2", "meta_key": "accents", "meta_value": "[\"Rbati\", \"Parisian French\"]" },
+    { "user_id": "2", "meta_key": "athletic_skills", "meta_value": "[\"Yoga\", \"Swimming\"]" },
+    { "user_id": "2", "meta_key": "musical_instruments", "meta_value": "[\"Piano\"]" },
+    {
+      "user_id": "2",
+      "meta_key": "performance_skills",
+      "meta_value": "[\"Stand-up Comedy\", \"Improvisation\", \"Voice Acting\"]"
+    },
+    {
+      "user_id": "2",
+      "meta_key": "dance_styles",
+      "meta_value": "[\"Ballet\", \"Contemporary\", \"Ahidous\"]"
+    },
+    { "user_id": "2", "meta_key": "is_available", "meta_value": "true" },
+    {
+      "user_id": "2",
+      "meta_key": "availability_types",
+      "meta_value": "[\"weekends_only\", \"evenings\"]"
+    },
+    { "user_id": "2", "meta_key": "daily_rate", "meta_value": "350" },
+    { "user_id": "2", "meta_key": "rate_negotiable", "meta_value": "true" },
+    {
+      "user_id": "2",
+      "meta_key": "bio",
+      "meta_value": "Rising star in Moroccan television. Known for comedic timing and dramatic range."
+    },
+    { "user_id": "2", "meta_key": "location", "meta_value": "Rabat" },
+    {
+      "user_id": "2",
+      "meta_key": "photos",
+      "meta_value": "[\"wp-content/uploads/2023/07/fatima-headshot.jpg\"]"
+    },
+
+    { "user_id": "3", "meta_key": "first_name", "meta_value": "Youssef" },
+    { "user_id": "3", "meta_key": "last_name", "meta_value": "El Amrani" },
+    { "user_id": "3", "meta_key": "gender", "meta_value": "male" },
+    { "user_id": "3", "meta_key": "age_min", "meta_value": "35" },
+    { "user_id": "3", "meta_key": "age_max", "meta_value": "45" },
+    { "user_id": "3", "meta_key": "birth_date", "meta_value": "1985-05-10" },
+    { "user_id": "3", "meta_key": "birth_place", "meta_value": "Marrakech" },
+    { "user_id": "3", "meta_key": "height", "meta_value": "182" },
+    { "user_id": "3", "meta_key": "physique", "meta_value": "muscular" },
+    { "user_id": "3", "meta_key": "hair_color", "meta_value": "black" },
+    { "user_id": "3", "meta_key": "eye_color", "meta_value": "brown" },
+    { "user_id": "3", "meta_key": "hair_length", "meta_value": "short" },
+    { "user_id": "3", "meta_key": "beard_type", "meta_value": "full" },
+    { "user_id": "3", "meta_key": "has_tattoos", "meta_value": "true" },
+    {
+      "user_id": "3",
+      "meta_key": "tattoo_description",
+      "meta_value": "Small tribal design on left arm"
+    },
+    { "user_id": "3", "meta_key": "has_scars", "meta_value": "true" },
+    {
+      "user_id": "3",
+      "meta_key": "scar_description",
+      "meta_value": "Small scar on right eyebrow from stunt work"
+    },
+    {
+      "user_id": "3",
+      "meta_key": "languages",
+      "meta_value": "[\"Moroccan Darija\", \"Arabic\", \"French\", \"English\", \"Spanish\"]"
+    },
+    {
+      "user_id": "3",
+      "meta_key": "accents",
+      "meta_value": "[\"Marrakchi\", \"Gulf Arabic\", \"British English\"]"
+    },
+    {
+      "user_id": "3",
+      "meta_key": "athletic_skills",
+      "meta_value": "[\"Martial Arts\", \"Stunt Work\", \"Parkour\", \"Rock Climbing\", \"Fencing\"]"
+    },
+    {
+      "user_id": "3",
+      "meta_key": "performance_skills",
+      "meta_value": "[\"Stage Combat\", \"Mo-Cap\"]"
+    },
+    { "user_id": "3", "meta_key": "dance_styles", "meta_value": "[\"Gnawa\", \"Hip Hop\"]" },
+    { "user_id": "3", "meta_key": "is_available", "meta_value": "true" },
+    { "user_id": "3", "meta_key": "availability_types", "meta_value": "[\"always\"]" },
+    { "user_id": "3", "meta_key": "daily_rate", "meta_value": "800" },
+    { "user_id": "3", "meta_key": "rate_negotiable", "meta_value": "false" },
+    {
+      "user_id": "3",
+      "meta_key": "bio",
+      "meta_value": "Veteran stunt performer and action actor. 15 years of experience in international productions."
+    },
+    { "user_id": "3", "meta_key": "location", "meta_value": "Marrakech" },
+    { "user_id": "3", "meta_key": "contact_email", "meta_value": "youssef.stunts@example.com" },
+    {
+      "user_id": "3",
+      "meta_key": "imdb_url",
+      "meta_value": "https://www.imdb.com/name/nm2345678/"
+    },
+    {
+      "user_id": "3",
+      "meta_key": "showreel",
+      "meta_value": "https://www.youtube.com/watch?v=example123"
+    },
+    {
+      "user_id": "3",
+      "meta_key": "photos",
+      "meta_value": "[\"wp-content/uploads/2023/08/youssef-headshot.jpg\", \"wp-content/uploads/2023/08/youssef-action.jpg\", \"wp-content/uploads/2023/08/youssef-stunt.jpg\"]"
+    },
+
+    { "user_id": "4", "meta_key": "first_name", "meta_value": "Sara" },
+    { "user_id": "4", "meta_key": "last_name", "meta_value": "Idrissi" },
+    { "user_id": "4", "meta_key": "gender", "meta_value": "female" },
+    { "user_id": "4", "meta_key": "age_min", "meta_value": "18" },
+    { "user_id": "4", "meta_key": "age_max", "meta_value": "25" },
+    { "user_id": "4", "meta_key": "birth_date", "meta_value": "2001-08-30" },
+    { "user_id": "4", "meta_key": "birth_place", "meta_value": "Tangier" },
+    { "user_id": "4", "meta_key": "height", "meta_value": "170" },
+    { "user_id": "4", "meta_key": "physique", "meta_value": "average" },
+    { "user_id": "4", "meta_key": "hair_color", "meta_value": "black" },
+    { "user_id": "4", "meta_key": "eye_color", "meta_value": "brown" },
+    { "user_id": "4", "meta_key": "hair_length", "meta_value": "medium" },
+    { "user_id": "4", "meta_key": "beard_type", "meta_value": "none" },
+    { "user_id": "4", "meta_key": "has_tattoos", "meta_value": "false" },
+    { "user_id": "4", "meta_key": "has_scars", "meta_value": "false" },
+    {
+      "user_id": "4",
+      "meta_key": "languages",
+      "meta_value": "[\"Moroccan Darija\", \"Arabic\", \"French\", \"English\", \"Spanish\"]"
+    },
+    {
+      "user_id": "4",
+      "meta_key": "accents",
+      "meta_value": "[\"Chamali\", \"Castilian Spanish\", \"American English\"]"
+    },
+    { "user_id": "4", "meta_key": "athletic_skills", "meta_value": "[\"Swimming\", \"Tennis\"]" },
+    { "user_id": "4", "meta_key": "musical_instruments", "meta_value": "[\"Violin\", \"Piano\"]" },
+    {
+      "user_id": "4",
+      "meta_key": "performance_skills",
+      "meta_value": "[\"Singing\", \"Voice Acting\"]"
+    },
+    {
+      "user_id": "4",
+      "meta_key": "dance_styles",
+      "meta_value": "[\"Flamenco\", \"Salsa\", \"Contemporary\"]"
+    },
+    { "user_id": "4", "meta_key": "is_available", "meta_value": "true" },
+    {
+      "user_id": "4",
+      "meta_key": "availability_types",
+      "meta_value": "[\"holidays_only\", \"weekends_only\"]"
+    },
+    { "user_id": "4", "meta_key": "daily_rate", "meta_value": "250" },
+    { "user_id": "4", "meta_key": "rate_negotiable", "meta_value": "true" },
+    {
+      "user_id": "4",
+      "meta_key": "bio",
+      "meta_value": "Young actress with training from the Tangier Drama School. Fluent in multiple languages."
+    },
+    { "user_id": "4", "meta_key": "location", "meta_value": "Tangier" },
+    {
+      "user_id": "4",
+      "meta_key": "presentation_video",
+      "meta_value": "https://vimeo.com/example456"
+    },
+    {
+      "user_id": "4",
+      "meta_key": "photos",
+      "meta_value": "[\"wp-content/uploads/2023/09/sara-headshot.jpg\"]"
+    },
+
+    { "user_id": "5", "meta_key": "first_name", "meta_value": "Karim" },
+    { "user_id": "5", "meta_key": "last_name", "meta_value": "Bouazza" },
+    { "user_id": "5", "meta_key": "gender", "meta_value": "male" },
+    { "user_id": "5", "meta_key": "age_min", "meta_value": "30" },
+    { "user_id": "5", "meta_key": "age_max", "meta_value": "40" },
+    { "user_id": "5", "meta_key": "birth_date", "meta_value": "1990-12-05" },
+    { "user_id": "5", "meta_key": "birth_place", "meta_value": "Fes" },
+    { "user_id": "5", "meta_key": "height", "meta_value": "175" },
+    { "user_id": "5", "meta_key": "physique", "meta_value": "average" },
+    { "user_id": "5", "meta_key": "hair_color", "meta_value": "brown" },
+    { "user_id": "5", "meta_key": "eye_color", "meta_value": "hazel" },
+    { "user_id": "5", "meta_key": "hair_length", "meta_value": "short" },
+    { "user_id": "5", "meta_key": "beard_type", "meta_value": "short" },
+    { "user_id": "5", "meta_key": "has_tattoos", "meta_value": "false" },
+    { "user_id": "5", "meta_key": "has_scars", "meta_value": "false" },
+    {
+      "user_id": "5",
+      "meta_key": "languages",
+      "meta_value": "[\"Moroccan Darija\", \"Arabic\", \"French\"]"
+    },
+    { "user_id": "5", "meta_key": "accents", "meta_value": "[\"Fassi\", \"Egyptian Arabic\"]" },
+    {
+      "user_id": "5",
+      "meta_key": "performance_skills",
+      "meta_value": "[\"Stand-up Comedy\", \"Improvisation\", \"Sketch Comedy\"]"
+    },
+    { "user_id": "5", "meta_key": "is_available", "meta_value": "true" },
+    {
+      "user_id": "5",
+      "meta_key": "availability_types",
+      "meta_value": "[\"weekends_and_holidays\", \"evenings\"]"
+    },
+    { "user_id": "5", "meta_key": "daily_rate", "meta_value": "400" },
+    { "user_id": "5", "meta_key": "rate_negotiable", "meta_value": "true" },
+    {
+      "user_id": "5",
+      "meta_key": "bio",
+      "meta_value": "Popular stand-up comedian with a large social media following. Known for observational humor about Moroccan daily life."
+    },
+    { "user_id": "5", "meta_key": "location", "meta_value": "Fes" },
+    { "user_id": "5", "meta_key": "contact_email", "meta_value": "karim.comedy@example.com" },
+    {
+      "user_id": "5",
+      "meta_key": "social_media",
+      "meta_value": "{\"instagram\": \"@karim_comedy\", \"youtube\": \"KarimBouazzaComedy\"}"
+    },
+    {
+      "user_id": "5",
+      "meta_key": "showreel",
+      "meta_value": "https://www.youtube.com/watch?v=comedy789"
+    },
+    {
+      "user_id": "5",
+      "meta_key": "photos",
+      "meta_value": "[\"wp-content/uploads/2023/10/karim-headshot.jpg\", \"wp-content/uploads/2023/10/karim-stage.jpg\"]"
+    }
+  ],
+  "attachments": [
+    {
+      "ID": "101",
+      "post_author": "1",
+      "guid": "https://example-talents.com/wp-content/uploads/2023/06/ahmed-headshot.jpg",
+      "post_mime_type": "image/jpeg",
+      "post_title": "ahmed-headshot"
+    },
+    {
+      "ID": "102",
+      "post_author": "1",
+      "guid": "https://example-talents.com/wp-content/uploads/2023/06/ahmed-full.jpg",
+      "post_mime_type": "image/jpeg",
+      "post_title": "ahmed-full"
+    },
+    {
+      "ID": "103",
+      "post_author": "2",
+      "guid": "https://example-talents.com/wp-content/uploads/2023/07/fatima-headshot.jpg",
+      "post_mime_type": "image/jpeg",
+      "post_title": "fatima-headshot"
+    },
+    {
+      "ID": "104",
+      "post_author": "3",
+      "guid": "https://example-talents.com/wp-content/uploads/2023/08/youssef-headshot.jpg",
+      "post_mime_type": "image/jpeg",
+      "post_title": "youssef-headshot"
+    },
+    {
+      "ID": "105",
+      "post_author": "3",
+      "guid": "https://example-talents.com/wp-content/uploads/2023/08/youssef-action.jpg",
+      "post_mime_type": "image/jpeg",
+      "post_title": "youssef-action"
+    },
+    {
+      "ID": "106",
+      "post_author": "3",
+      "guid": "https://example-talents.com/wp-content/uploads/2023/08/youssef-stunt.jpg",
+      "post_mime_type": "image/jpeg",
+      "post_title": "youssef-stunt"
+    },
+    {
+      "ID": "107",
+      "post_author": "4",
+      "guid": "https://example-talents.com/wp-content/uploads/2023/09/sara-headshot.jpg",
+      "post_mime_type": "image/jpeg",
+      "post_title": "sara-headshot"
+    },
+    {
+      "ID": "108",
+      "post_author": "5",
+      "guid": "https://example-talents.com/wp-content/uploads/2023/10/karim-headshot.jpg",
+      "post_mime_type": "image/jpeg",
+      "post_title": "karim-headshot"
+    },
+    {
+      "ID": "109",
+      "post_author": "5",
+      "guid": "https://example-talents.com/wp-content/uploads/2023/10/karim-stage.jpg",
+      "post_mime_type": "image/jpeg",
+      "post_title": "karim-stage"
+    }
+  ]
+}
