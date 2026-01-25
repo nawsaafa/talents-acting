@@ -1,0 +1,242 @@
+{
+  "common": {
+    "buttons": {
+      "submit": "Soumettre",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "close": "Fermer",
+      "confirm": "Confirmer",
+      "back": "Retour",
+      "next": "Suivant",
+      "loading": "Chargement...",
+      "retry": "Reessayer",
+      "viewAll": "Voir tout",
+      "learnMore": "En savoir plus",
+      "search": "Rechercher",
+      "filter": "Filtrer",
+      "clear": "Effacer",
+      "apply": "Appliquer"
+    },
+    "labels": {
+      "name": "Nom",
+      "email": "Email",
+      "phone": "Telephone",
+      "address": "Adresse",
+      "city": "Ville",
+      "country": "Pays",
+      "date": "Date",
+      "time": "Heure",
+      "status": "Statut",
+      "actions": "Actions",
+      "description": "Description",
+      "details": "Details",
+      "optional": "Facultatif",
+      "required": "Obligatoire"
+    },
+    "navigation": {
+      "home": "Accueil",
+      "talents": "Talents",
+      "about": "A propos",
+      "contact": "Contact",
+      "dashboard": "Tableau de bord",
+      "profile": "Profil",
+      "settings": "Parametres",
+      "logout": "Deconnexion",
+      "login": "Connexion",
+      "register": "Inscription"
+    },
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "pending": "En attente",
+      "approved": "Approuve",
+      "rejected": "Rejete",
+      "draft": "Brouillon",
+      "published": "Publie"
+    },
+    "time": {
+      "today": "Aujourd'hui",
+      "yesterday": "Hier",
+      "thisWeek": "Cette semaine",
+      "thisMonth": "Ce mois-ci",
+      "ago": "il y a {time}"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "subtitle": "Bienvenue ! Veuillez vous connecter pour continuer.",
+      "emailLabel": "Adresse email",
+      "emailPlaceholder": "Entrez votre email",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "Entrez votre mot de passe",
+      "rememberMe": "Se souvenir de moi",
+      "forgotPassword": "Mot de passe oublie ?",
+      "submitButton": "Se connecter",
+      "noAccount": "Vous n'avez pas de compte ?",
+      "signUpLink": "Inscrivez-vous",
+      "orContinueWith": "Ou continuer avec"
+    },
+    "register": {
+      "title": "Creer un compte",
+      "subtitle": "Rejoignez notre plateforme de talents aujourd'hui.",
+      "firstNameLabel": "Prenom",
+      "lastNameLabel": "Nom",
+      "emailLabel": "Adresse email",
+      "passwordLabel": "Mot de passe",
+      "confirmPasswordLabel": "Confirmer le mot de passe",
+      "termsAgreement": "J'accepte les Conditions d'utilisation et la Politique de confidentialite",
+      "submitButton": "Creer le compte",
+      "hasAccount": "Vous avez deja un compte ?",
+      "signInLink": "Connectez-vous"
+    },
+    "forgotPassword": {
+      "title": "Reinitialiser le mot de passe",
+      "subtitle": "Entrez votre email pour recevoir un lien de reinitialisation.",
+      "emailLabel": "Adresse email",
+      "submitButton": "Envoyer le lien",
+      "backToLogin": "Retour a la connexion",
+      "checkEmail": "Verifiez votre email pour le lien de reinitialisation."
+    },
+    "errors": {
+      "invalidCredentials": "Email ou mot de passe invalide",
+      "emailRequired": "L'email est requis",
+      "passwordRequired": "Le mot de passe est requis",
+      "emailInvalid": "Veuillez entrer une adresse email valide",
+      "passwordTooShort": "Le mot de passe doit contenir au moins 8 caracteres",
+      "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+      "accountLocked": "Votre compte a ete verrouille. Veuillez contacter le support.",
+      "sessionExpired": "Votre session a expire. Veuillez vous reconnecter."
+    }
+  },
+  "talents": {
+    "profile": {
+      "title": "Profil du talent",
+      "editProfile": "Modifier le profil",
+      "viewPublicProfile": "Voir le profil public",
+      "personalInfo": "Informations personnelles",
+      "physicalAttributes": "Attributs physiques",
+      "skills": "Competences et talents",
+      "experience": "Experience",
+      "portfolio": "Portfolio",
+      "availability": "Disponibilite",
+      "bio": "Biographie",
+      "age": "Age",
+      "height": "Taille",
+      "weight": "Poids",
+      "eyeColor": "Couleur des yeux",
+      "hairColor": "Couleur des cheveux",
+      "languages": "Langues",
+      "yearsExperience": "{count, plural, =0 {Aucune experience} =1 {1 an} other {# ans}} d'experience"
+    },
+    "search": {
+      "title": "Trouver des talents",
+      "placeholder": "Rechercher par nom, competence ou lieu...",
+      "noResults": "Aucun talent trouve correspondant a vos criteres.",
+      "resultsCount": "{count, plural, =0 {Aucun talent} =1 {1 talent} other {# talents}} trouve(s)",
+      "sortBy": "Trier par",
+      "sortNewest": "Plus recents",
+      "sortRelevance": "Plus pertinents",
+      "sortName": "Nom A-Z"
+    },
+    "filters": {
+      "title": "Filtres",
+      "category": "Categorie",
+      "location": "Lieu",
+      "ageRange": "Tranche d'age",
+      "heightRange": "Tranche de taille",
+      "gender": "Genre",
+      "availability": "Disponibilite",
+      "experience": "Niveau d'experience",
+      "clearAll": "Effacer tous les filtres",
+      "apply": "Appliquer les filtres"
+    },
+    "categories": {
+      "actor": "Acteur",
+      "model": "Mannequin",
+      "voiceArtist": "Artiste vocal",
+      "dancer": "Danseur",
+      "musician": "Musicien",
+      "extra": "Figurant",
+      "stuntPerformer": "Cascadeur",
+      "host": "Animateur/Presentateur"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Tableau de bord administrateur",
+      "welcome": "Bienvenue, {name}",
+      "overview": "Apercu",
+      "recentActivity": "Activite recente",
+      "quickActions": "Actions rapides",
+      "totalTalents": "Total des talents",
+      "pendingApprovals": "Approbations en attente",
+      "activeProjects": "Projets actifs",
+      "monthlySignups": "Inscriptions mensuelles"
+    },
+    "validation": {
+      "title": "Validation des profils",
+      "pendingProfiles": "Profils en attente",
+      "approvedProfiles": "Profils approuves",
+      "rejectedProfiles": "Profils rejetes",
+      "approve": "Approuver",
+      "reject": "Rejeter",
+      "requestChanges": "Demander des modifications",
+      "viewDetails": "Voir les details",
+      "noProfilesPending": "Aucun profil en attente de validation.",
+      "rejectionReason": "Motif du rejet",
+      "rejectionReasonPlaceholder": "Veuillez fournir un motif de rejet..."
+    },
+    "users": {
+      "title": "Gestion des utilisateurs",
+      "allUsers": "Tous les utilisateurs",
+      "admins": "Administrateurs",
+      "talents": "Talents",
+      "addUser": "Ajouter un utilisateur",
+      "editUser": "Modifier l'utilisateur",
+      "deleteUser": "Supprimer l'utilisateur",
+      "userRole": "Role",
+      "lastActive": "Derniere activite"
+    }
+  },
+  "errors": {
+    "general": {
+      "somethingWentWrong": "Une erreur s'est produite",
+      "tryAgain": "Veuillez reessayer plus tard.",
+      "pageNotFound": "Page non trouvee",
+      "pageNotFoundMessage": "La page que vous recherchez n'existe pas ou a ete deplacee.",
+      "unauthorized": "Non autorise",
+      "unauthorizedMessage": "Vous n'avez pas la permission d'acceder a cette page.",
+      "serverError": "Erreur serveur",
+      "serverErrorMessage": "Nous rencontrons des difficultes techniques. Veuillez reessayer plus tard."
+    },
+    "validation": {
+      "required": "Ce champ est obligatoire",
+      "email": "Veuillez entrer une adresse email valide",
+      "minLength": "Doit contenir au moins {min} caracteres",
+      "maxLength": "Doit contenir au maximum {max} caracteres",
+      "minValue": "Doit etre au moins {min}",
+      "maxValue": "Doit etre au maximum {max}",
+      "invalidFormat": "Format invalide",
+      "invalidDate": "Veuillez entrer une date valide",
+      "invalidPhone": "Veuillez entrer un numero de telephone valide",
+      "fileTooLarge": "La taille du fichier doit etre inferieure a {size}",
+      "invalidFileType": "Type de fichier invalide. Types autorises : {types}"
+    },
+    "network": {
+      "offline": "Vous semblez etre hors ligne",
+      "offlineMessage": "Veuillez verifier votre connexion internet et reessayer.",
+      "timeout": "Delai d'attente depasse",
+      "timeoutMessage": "Le serveur a mis trop de temps a repondre. Veuillez reessayer.",
+      "connectionFailed": "Echec de la connexion",
+      "connectionFailedMessage": "Impossible de se connecter au serveur."
+    }
+  },
+  "metadata": {
+    "siteTitle": "Plateforme de Talents - Decouvrez les Talents Marocains",
+    "siteDescription": "Connectez-vous avec des acteurs, mannequins et artistes talentueux du Maroc.",
+    "keywords": "acting, talents, Maroc, casting, mannequins, artistes"
+  }
+}

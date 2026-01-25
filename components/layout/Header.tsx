@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Container } from './Container';
 import { Navigation } from './Navigation';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { AuthStatus } from '@/components/auth';
 
 export function Header() {
@@ -20,9 +21,10 @@ export function Header() {
             </span>
           </Link>
 
-          {/* Navigation and Auth */}
-          <div className="flex items-center gap-6">
+          {/* Navigation, Language Switcher, and Auth */}
+          <div className="flex items-center gap-4">
             <Navigation />
+            <LanguageSwitcher />
             <AuthStatus />
           </div>
         </div>

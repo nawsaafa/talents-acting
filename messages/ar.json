@@ -1,0 +1,242 @@
+{
+  "common": {
+    "buttons": {
+      "submit": "ارسال",
+      "cancel": "الغاء",
+      "save": "حفظ",
+      "delete": "حذف",
+      "edit": "تعديل",
+      "close": "اغلاق",
+      "confirm": "تاكيد",
+      "back": "رجوع",
+      "next": "التالي",
+      "loading": "جاري التحميل...",
+      "retry": "اعادة المحاولة",
+      "viewAll": "عرض الكل",
+      "learnMore": "معرفة المزيد",
+      "search": "بحث",
+      "filter": "تصفية",
+      "clear": "مسح",
+      "apply": "تطبيق"
+    },
+    "labels": {
+      "name": "الاسم",
+      "email": "البريد الالكتروني",
+      "phone": "الهاتف",
+      "address": "العنوان",
+      "city": "المدينة",
+      "country": "البلد",
+      "date": "التاريخ",
+      "time": "الوقت",
+      "status": "الحالة",
+      "actions": "الاجراءات",
+      "description": "الوصف",
+      "details": "التفاصيل",
+      "optional": "اختياري",
+      "required": "مطلوب"
+    },
+    "navigation": {
+      "home": "الرئيسية",
+      "talents": "المواهب",
+      "about": "من نحن",
+      "contact": "اتصل بنا",
+      "dashboard": "لوحة التحكم",
+      "profile": "الملف الشخصي",
+      "settings": "الاعدادات",
+      "logout": "تسجيل الخروج",
+      "login": "تسجيل الدخول",
+      "register": "انشاء حساب"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "pending": "قيد الانتظار",
+      "approved": "موافق عليه",
+      "rejected": "مرفوض",
+      "draft": "مسودة",
+      "published": "منشور"
+    },
+    "time": {
+      "today": "اليوم",
+      "yesterday": "امس",
+      "thisWeek": "هذا الاسبوع",
+      "thisMonth": "هذا الشهر",
+      "ago": "منذ {time}"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول",
+      "subtitle": "مرحبا بعودتك! يرجى تسجيل الدخول للمتابعة.",
+      "emailLabel": "البريد الالكتروني",
+      "emailPlaceholder": "ادخل بريدك الالكتروني",
+      "passwordLabel": "كلمة المرور",
+      "passwordPlaceholder": "ادخل كلمة المرور",
+      "rememberMe": "تذكرني",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "submitButton": "تسجيل الدخول",
+      "noAccount": "ليس لديك حساب؟",
+      "signUpLink": "انشاء حساب",
+      "orContinueWith": "او المتابعة عبر"
+    },
+    "register": {
+      "title": "انشاء حساب",
+      "subtitle": "انضم الى منصة المواهب اليوم.",
+      "firstNameLabel": "الاسم الاول",
+      "lastNameLabel": "اسم العائلة",
+      "emailLabel": "البريد الالكتروني",
+      "passwordLabel": "كلمة المرور",
+      "confirmPasswordLabel": "تاكيد كلمة المرور",
+      "termsAgreement": "اوافق على شروط الخدمة وسياسة الخصوصية",
+      "submitButton": "انشاء الحساب",
+      "hasAccount": "لديك حساب بالفعل؟",
+      "signInLink": "تسجيل الدخول"
+    },
+    "forgotPassword": {
+      "title": "اعادة تعيين كلمة المرور",
+      "subtitle": "ادخل بريدك الالكتروني لتلقي رابط اعادة التعيين.",
+      "emailLabel": "البريد الالكتروني",
+      "submitButton": "ارسال رابط اعادة التعيين",
+      "backToLogin": "العودة لتسجيل الدخول",
+      "checkEmail": "تحقق من بريدك الالكتروني للحصول على رابط اعادة التعيين."
+    },
+    "errors": {
+      "invalidCredentials": "البريد الالكتروني او كلمة المرور غير صحيحة",
+      "emailRequired": "البريد الالكتروني مطلوب",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "emailInvalid": "يرجى ادخال بريد الكتروني صحيح",
+      "passwordTooShort": "يجب ان تتكون كلمة المرور من 8 احرف على الاقل",
+      "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
+      "accountLocked": "تم قفل حسابك. يرجى التواصل مع الدعم.",
+      "sessionExpired": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة اخرى."
+    }
+  },
+  "talents": {
+    "profile": {
+      "title": "ملف الموهبة",
+      "editProfile": "تعديل الملف",
+      "viewPublicProfile": "عرض الملف العام",
+      "personalInfo": "المعلومات الشخصية",
+      "physicalAttributes": "السمات الجسدية",
+      "skills": "المهارات والمواهب",
+      "experience": "الخبرة",
+      "portfolio": "معرض الاعمال",
+      "availability": "التوفر",
+      "bio": "السيرة الذاتية",
+      "age": "العمر",
+      "height": "الطول",
+      "weight": "الوزن",
+      "eyeColor": "لون العين",
+      "hairColor": "لون الشعر",
+      "languages": "اللغات",
+      "yearsExperience": "{count, plural, =0 {بدون خبرة} =1 {سنة واحدة} two {سنتان} few {# سنوات} other {# سنة}} من الخبرة"
+    },
+    "search": {
+      "title": "البحث عن المواهب",
+      "placeholder": "البحث بالاسم او المهارة او الموقع...",
+      "noResults": "لم يتم العثور على مواهب تطابق معاييرك.",
+      "resultsCount": "{count, plural, =0 {لا توجد مواهب} =1 {موهبة واحدة} two {موهبتان} few {# مواهب} other {# موهبة}}",
+      "sortBy": "ترتيب حسب",
+      "sortNewest": "الاحدث اولا",
+      "sortRelevance": "الاكثر صلة",
+      "sortName": "الاسم ا-ي"
+    },
+    "filters": {
+      "title": "الفلاتر",
+      "category": "الفئة",
+      "location": "الموقع",
+      "ageRange": "الفئة العمرية",
+      "heightRange": "نطاق الطول",
+      "gender": "الجنس",
+      "availability": "التوفر",
+      "experience": "مستوى الخبرة",
+      "clearAll": "مسح جميع الفلاتر",
+      "apply": "تطبيق الفلاتر"
+    },
+    "categories": {
+      "actor": "ممثل",
+      "model": "عارض ازياء",
+      "voiceArtist": "فنان صوتي",
+      "dancer": "راقص",
+      "musician": "موسيقي",
+      "extra": "كومبارس",
+      "stuntPerformer": "مؤدي حركات خطرة",
+      "host": "مقدم برامج"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "لوحة تحكم المسؤول",
+      "welcome": "مرحبا، {name}",
+      "overview": "نظرة عامة",
+      "recentActivity": "النشاط الاخير",
+      "quickActions": "اجراءات سريعة",
+      "totalTalents": "اجمالي المواهب",
+      "pendingApprovals": "الموافقات المعلقة",
+      "activeProjects": "المشاريع النشطة",
+      "monthlySignups": "التسجيلات الشهرية"
+    },
+    "validation": {
+      "title": "التحقق من الملفات",
+      "pendingProfiles": "الملفات المعلقة",
+      "approvedProfiles": "الملفات الموافق عليها",
+      "rejectedProfiles": "الملفات المرفوضة",
+      "approve": "موافقة",
+      "reject": "رفض",
+      "requestChanges": "طلب تعديلات",
+      "viewDetails": "عرض التفاصيل",
+      "noProfilesPending": "لا توجد ملفات معلقة للتحقق.",
+      "rejectionReason": "سبب الرفض",
+      "rejectionReasonPlaceholder": "يرجى تقديم سبب الرفض..."
+    },
+    "users": {
+      "title": "ادارة المستخدمين",
+      "allUsers": "جميع المستخدمين",
+      "admins": "المسؤولين",
+      "talents": "المواهب",
+      "addUser": "اضافة مستخدم",
+      "editUser": "تعديل المستخدم",
+      "deleteUser": "حذف المستخدم",
+      "userRole": "الدور",
+      "lastActive": "اخر نشاط"
+    }
+  },
+  "errors": {
+    "general": {
+      "somethingWentWrong": "حدث خطا ما",
+      "tryAgain": "يرجى المحاولة مرة اخرى لاحقا.",
+      "pageNotFound": "الصفحة غير موجودة",
+      "pageNotFoundMessage": "الصفحة التي تبحث عنها غير موجودة او تم نقلها.",
+      "unauthorized": "غير مصرح",
+      "unauthorizedMessage": "ليس لديك صلاحية للوصول الى هذه الصفحة.",
+      "serverError": "خطا في الخادم",
+      "serverErrorMessage": "نواجه صعوبات تقنية. يرجى المحاولة مرة اخرى لاحقا."
+    },
+    "validation": {
+      "required": "هذا الحقل مطلوب",
+      "email": "يرجى ادخال بريد الكتروني صحيح",
+      "minLength": "يجب ان يحتوي على {min} احرف على الاقل",
+      "maxLength": "يجب الا يزيد عن {max} حرف",
+      "minValue": "يجب ان يكون {min} على الاقل",
+      "maxValue": "يجب الا يزيد عن {max}",
+      "invalidFormat": "صيغة غير صحيحة",
+      "invalidDate": "يرجى ادخال تاريخ صحيح",
+      "invalidPhone": "يرجى ادخال رقم هاتف صحيح",
+      "fileTooLarge": "يجب ان يكون حجم الملف اقل من {size}",
+      "invalidFileType": "نوع ملف غير صالح. الانواع المسموحة: {types}"
+    },
+    "network": {
+      "offline": "يبدو انك غير متصل بالانترنت",
+      "offlineMessage": "يرجى التحقق من اتصالك بالانترنت والمحاولة مرة اخرى.",
+      "timeout": "انتهت مهلة الطلب",
+      "timeoutMessage": "استغرق الخادم وقتا طويلا للاستجابة. يرجى المحاولة مرة اخرى.",
+      "connectionFailed": "فشل الاتصال",
+      "connectionFailedMessage": "تعذر الاتصال بالخادم."
+    }
+  },
+  "metadata": {
+    "siteTitle": "منصة المواهب - اكتشف المواهب المغربية",
+    "siteDescription": "تواصل مع الممثلين والعارضين والفنانين الموهوبين من المغرب.",
+    "keywords": "تمثيل، مواهب، المغرب، كاستنج، عارضين، فنانين"
+  }
+}

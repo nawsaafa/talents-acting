@@ -60,7 +60,8 @@
     "phase03-session05-activity_dashboard",
     "phase04-session01-schema_enhancement",
     "phase04-session02-seed_data_population",
-    "phase04-session03-legacy_data_migration"
+    "phase04-session03-legacy_data_migration",
+    "phase04-session04-internationalization"
   ],
   "next_session_history": [
     {
@@ -646,6 +647,31 @@
     {
       "date": "2026-01-25",
       "session": "phase04-session03-legacy_data_migration",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-25",
+      "session": "phase04-session04-internationalization",
+      "status": "recommended"
+    },
+    {
+      "date": "2026-01-25",
+      "session": "phase04-session04-internationalization",
+      "status": "spec_created"
+    },
+    {
+      "date": "2026-01-25",
+      "session": "phase04-session04-internationalization",
+      "status": "tasks_created"
+    },
+    {
+      "date": "2026-01-25",
+      "session": "phase04-session04-internationalization",
+      "status": "validated"
+    },
+    {
+      "date": "2026-01-25",
+      "session": "phase04-session04-internationalization",
       "status": "completed"
     }
   ]

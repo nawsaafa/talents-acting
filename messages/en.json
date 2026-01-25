@@ -1,0 +1,242 @@
+{
+  "common": {
+    "buttons": {
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "save": "Save",
+      "delete": "Delete",
+      "edit": "Edit",
+      "close": "Close",
+      "confirm": "Confirm",
+      "back": "Back",
+      "next": "Next",
+      "loading": "Loading...",
+      "retry": "Retry",
+      "viewAll": "View All",
+      "learnMore": "Learn More",
+      "search": "Search",
+      "filter": "Filter",
+      "clear": "Clear",
+      "apply": "Apply"
+    },
+    "labels": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "city": "City",
+      "country": "Country",
+      "date": "Date",
+      "time": "Time",
+      "status": "Status",
+      "actions": "Actions",
+      "description": "Description",
+      "details": "Details",
+      "optional": "Optional",
+      "required": "Required"
+    },
+    "navigation": {
+      "home": "Home",
+      "talents": "Talents",
+      "about": "About",
+      "contact": "Contact",
+      "dashboard": "Dashboard",
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Logout",
+      "login": "Login",
+      "register": "Register"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "draft": "Draft",
+      "published": "Published"
+    },
+    "time": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month",
+      "ago": "{time} ago"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Welcome back! Please sign in to continue.",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "Enter your email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "submitButton": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up",
+      "orContinueWith": "Or continue with"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join our talent platform today.",
+      "firstNameLabel": "First Name",
+      "lastNameLabel": "Last Name",
+      "emailLabel": "Email Address",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm Password",
+      "termsAgreement": "I agree to the Terms of Service and Privacy Policy",
+      "submitButton": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signInLink": "Sign in"
+    },
+    "forgotPassword": {
+      "title": "Reset Password",
+      "subtitle": "Enter your email to receive a reset link.",
+      "emailLabel": "Email Address",
+      "submitButton": "Send Reset Link",
+      "backToLogin": "Back to login",
+      "checkEmail": "Check your email for the reset link."
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "emailRequired": "Email is required",
+      "passwordRequired": "Password is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "accountLocked": "Your account has been locked. Please contact support.",
+      "sessionExpired": "Your session has expired. Please sign in again."
+    }
+  },
+  "talents": {
+    "profile": {
+      "title": "Talent Profile",
+      "editProfile": "Edit Profile",
+      "viewPublicProfile": "View Public Profile",
+      "personalInfo": "Personal Information",
+      "physicalAttributes": "Physical Attributes",
+      "skills": "Skills & Talents",
+      "experience": "Experience",
+      "portfolio": "Portfolio",
+      "availability": "Availability",
+      "bio": "Biography",
+      "age": "Age",
+      "height": "Height",
+      "weight": "Weight",
+      "eyeColor": "Eye Color",
+      "hairColor": "Hair Color",
+      "languages": "Languages",
+      "yearsExperience": "{count, plural, =0 {No experience} =1 {1 year} other {# years}} of experience"
+    },
+    "search": {
+      "title": "Find Talents",
+      "placeholder": "Search by name, skill, or location...",
+      "noResults": "No talents found matching your criteria.",
+      "resultsCount": "{count, plural, =0 {No talents} =1 {1 talent} other {# talents}} found",
+      "sortBy": "Sort by",
+      "sortNewest": "Newest First",
+      "sortRelevance": "Most Relevant",
+      "sortName": "Name A-Z"
+    },
+    "filters": {
+      "title": "Filters",
+      "category": "Category",
+      "location": "Location",
+      "ageRange": "Age Range",
+      "heightRange": "Height Range",
+      "gender": "Gender",
+      "availability": "Availability",
+      "experience": "Experience Level",
+      "clearAll": "Clear All Filters",
+      "apply": "Apply Filters"
+    },
+    "categories": {
+      "actor": "Actor",
+      "model": "Model",
+      "voiceArtist": "Voice Artist",
+      "dancer": "Dancer",
+      "musician": "Musician",
+      "extra": "Extra",
+      "stuntPerformer": "Stunt Performer",
+      "host": "Host/Presenter"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "welcome": "Welcome, {name}",
+      "overview": "Overview",
+      "recentActivity": "Recent Activity",
+      "quickActions": "Quick Actions",
+      "totalTalents": "Total Talents",
+      "pendingApprovals": "Pending Approvals",
+      "activeProjects": "Active Projects",
+      "monthlySignups": "Monthly Sign-ups"
+    },
+    "validation": {
+      "title": "Profile Validation",
+      "pendingProfiles": "Pending Profiles",
+      "approvedProfiles": "Approved Profiles",
+      "rejectedProfiles": "Rejected Profiles",
+      "approve": "Approve",
+      "reject": "Reject",
+      "requestChanges": "Request Changes",
+      "viewDetails": "View Details",
+      "noProfilesPending": "No profiles pending validation.",
+      "rejectionReason": "Rejection Reason",
+      "rejectionReasonPlaceholder": "Please provide a reason for rejection..."
+    },
+    "users": {
+      "title": "User Management",
+      "allUsers": "All Users",
+      "admins": "Administrators",
+      "talents": "Talents",
+      "addUser": "Add User",
+      "editUser": "Edit User",
+      "deleteUser": "Delete User",
+      "userRole": "Role",
+      "lastActive": "Last Active"
+    }
+  },
+  "errors": {
+    "general": {
+      "somethingWentWrong": "Something went wrong",
+      "tryAgain": "Please try again later.",
+      "pageNotFound": "Page not found",
+      "pageNotFoundMessage": "The page you're looking for doesn't exist or has been moved.",
+      "unauthorized": "Unauthorized",
+      "unauthorizedMessage": "You don't have permission to access this page.",
+      "serverError": "Server Error",
+      "serverErrorMessage": "We're experiencing technical difficulties. Please try again later."
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address",
+      "minLength": "Must be at least {min} characters",
+      "maxLength": "Must be no more than {max} characters",
+      "minValue": "Must be at least {min}",
+      "maxValue": "Must be no more than {max}",
+      "invalidFormat": "Invalid format",
+      "invalidDate": "Please enter a valid date",
+      "invalidPhone": "Please enter a valid phone number",
+      "fileTooLarge": "File size must be less than {size}",
+      "invalidFileType": "Invalid file type. Allowed types: {types}"
+    },
+    "network": {
+      "offline": "You appear to be offline",
+      "offlineMessage": "Please check your internet connection and try again.",
+      "timeout": "Request timed out",
+      "timeoutMessage": "The server took too long to respond. Please try again.",
+      "connectionFailed": "Connection failed",
+      "connectionFailedMessage": "Unable to connect to the server."
+    }
+  },
+  "metadata": {
+    "siteTitle": "Acting Platform - Discover Moroccan Talent",
+    "siteDescription": "Connect with talented actors, models, and performers from Morocco.",
+    "keywords": "acting, talents, Morocco, casting, models, performers"
+  }
+}

@@ -1,0 +1,358 @@
+/**
+ * RTL (Right-to-Left) Language Support Styles
+ *
+ * These styles provide specific overrides for Arabic and other RTL languages.
+ * The styles are automatically applied when dir="rtl" is set on the html element.
+ *
+ * Design Principles:
+ * 1. Use CSS logical properties (margin-inline-start, padding-inline-end, etc.)
+ * 2. Use the :dir() pseudo-class or [dir="rtl"] attribute selectors
+ * 3. Mirror icons and directional elements
+ * 4. Maintain visual hierarchy and reading flow
+ */
+
+/* =============================================================================
+   BASE RTL OVERRIDES
+   ============================================================================= */
+
+/* Text direction and alignment */
+[dir='rtl'] {
+  text-align: right;
+}
+
+/* Form elements */
+[dir='rtl'] input,
+[dir='rtl'] textarea,
+[dir='rtl'] select {
+  text-align: right;
+}
+
+[dir='rtl'] input[type='email'],
+[dir='rtl'] input[type='url'],
+[dir='rtl'] input[type='tel'] {
+  /* Keep LTR for email, url, and phone inputs */
+  direction: ltr;
+  text-align: left;
+}
+
+/* =============================================================================
+   LAYOUT ADJUSTMENTS
+   ============================================================================= */
+
+/* Flex row reverse for RTL */
+[dir='rtl'] .flex-row {
+  flex-direction: row-reverse;
+}
+
+/* Preserve row direction for specific elements */
+[dir='rtl'] .flex-row-preserve {
+  flex-direction: row;
+}
+
+/* Grid adjustments - reverse grid flow */
+[dir='rtl'] .grid-flow-rtl {
+  direction: rtl;
+}
+
+/* =============================================================================
+   NAVIGATION
+   ============================================================================= */
+
+/* Navigation items */
+[dir='rtl'] nav ul {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+/* Breadcrumbs */
+[dir='rtl'] .breadcrumb-separator {
+  transform: scaleX(-1);
+}
+
+/* =============================================================================
+   ICONS AND DIRECTIONAL ELEMENTS
+   ============================================================================= */
+
+/* Mirror directional icons (arrows, chevrons) */
+[dir='rtl'] .icon-arrow-right,
+[dir='rtl'] .icon-chevron-right,
+[dir='rtl'] .icon-arrow-left,
+[dir='rtl'] .icon-chevron-left {
+  transform: scaleX(-1);
+}
+
+/* Back button icon */
+[dir='rtl'] .icon-back {
+  transform: scaleX(-1);
+}
+
+/* Progress indicators */
+[dir='rtl'] .progress-bar {
+  transform: scaleX(-1);
+}
+
+[dir='rtl'] .progress-bar-inner {
+  transform-origin: right;
+}
+
+/* =============================================================================
+   LISTS
+   ============================================================================= */
+
+/* Ordered and unordered lists */
+[dir='rtl'] ul,
+[dir='rtl'] ol {
+  padding-right: 1.5rem;
+  padding-left: 0;
+}
+
+/* List markers */
+[dir='rtl'] li::marker {
+  unicode-bidi: normal;
+}
+
+/* =============================================================================
+   TABLES
+   ============================================================================= */
+
+/* Table alignment */
+[dir='rtl'] table {
+  text-align: right;
+}
+
+[dir='rtl'] th,
+[dir='rtl'] td {
+  text-align: right;
+}
+
+/* Table header alignment for numeric columns */
+[dir='rtl'] .text-right-number {
+  text-align: left;
+}
+
+/* =============================================================================
+   CARDS AND CONTAINERS
+   ============================================================================= */
+
+/* Card with icon on left (should be on right in RTL) */
+[dir='rtl'] .card-icon-left {
+  flex-direction: row-reverse;
+}
+
+/* Avatar with content */
+[dir='rtl'] .avatar-content {
+  flex-direction: row-reverse;
+}
+
+/* =============================================================================
+   MODALS AND DIALOGS
+   ============================================================================= */
+
+/* Close button position */
+[dir='rtl'] .modal-close {
+  right: auto;
+  left: 1rem;
+}
+
+/* Dialog actions */
+[dir='rtl'] .dialog-actions {
+  flex-direction: row-reverse;
+}
+
+/* =============================================================================
+   FORMS
+   ============================================================================= */
+
+/* Form labels with required indicator */
+[dir='rtl'] .label-required::after {
+  margin-right: 0.25rem;
+  margin-left: 0;
+}
+
+/* Input with icon */
+[dir='rtl'] .input-icon-left {
+  padding-right: 2.5rem;
+  padding-left: 0.75rem;
+}
+
+[dir='rtl'] .input-icon-left .icon {
+  right: 0.75rem;
+  left: auto;
+}
+
+[dir='rtl'] .input-icon-right {
+  padding-left: 2.5rem;
+  padding-right: 0.75rem;
+}
+
+[dir='rtl'] .input-icon-right .icon {
+  left: 0.75rem;
+  right: auto;
+}
+
+/* Checkbox and radio labels */
+[dir='rtl'] .checkbox-label,
+[dir='rtl'] .radio-label {
+  padding-right: 1.5rem;
+  padding-left: 0;
+}
+
+[dir='rtl'] .checkbox-label input,
+[dir='rtl'] .radio-label input {
+  right: 0;
+  left: auto;
+}
+
+/* =============================================================================
+   BUTTONS
+   ============================================================================= */
+
+/* Button with icon */
+[dir='rtl'] .btn-icon-left .icon {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+[dir='rtl'] .btn-icon-right .icon {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+/* =============================================================================
+   NOTIFICATIONS AND ALERTS
+   ============================================================================= */
+
+/* Alert with icon */
+[dir='rtl'] .alert-icon {
+  margin-left: 0.75rem;
+  margin-right: 0;
+}
+
+/* Toast notifications */
+[dir='rtl'] .toast {
+  right: auto;
+  left: 1rem;
+}
+
+/* =============================================================================
+   PAGINATION
+   ============================================================================= */
+
+/* Pagination controls */
+[dir='rtl'] .pagination {
+  flex-direction: row-reverse;
+}
+
+[dir='rtl'] .pagination-prev .icon,
+[dir='rtl'] .pagination-next .icon {
+  transform: scaleX(-1);
+}
+
+/* =============================================================================
+   SIDEBAR AND MENUS
+   ============================================================================= */
+
+/* Sidebar position */
+[dir='rtl'] .sidebar-left {
+  right: 0;
+  left: auto;
+}
+
+/* Submenu indicator */
+[dir='rtl'] .submenu-indicator {
+  transform: scaleX(-1);
+}
+
+/* Dropdown menu alignment */
+[dir='rtl'] .dropdown-menu {
+  right: 0;
+  left: auto;
+}
+
+/* =============================================================================
+   ANIMATIONS
+   ============================================================================= */
+
+/* Slide in from right (should be from left in RTL) */
+@keyframes slideInFromRight-rtl {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft-rtl {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+[dir='rtl'] .slide-in-right {
+  animation: slideInFromRight-rtl 0.3s ease-out;
+}
+
+[dir='rtl'] .slide-in-left {
+  animation: slideInFromLeft-rtl 0.3s ease-out;
+}
+
+/* =============================================================================
+   SCROLLBAR
+   ============================================================================= */
+
+/* Custom scrollbar for RTL */
+[dir='rtl'] ::-webkit-scrollbar {
+  width: 8px;
+}
+
+[dir='rtl'] ::-webkit-scrollbar-track {
+  background: var(--color-neutral-100);
+}
+
+[dir='rtl'] ::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-400);
+  border-radius: 4px;
+}
+
+/* =============================================================================
+   UTILITY CLASSES FOR RTL
+   ============================================================================= */
+
+/* Force LTR for specific content (e.g., code, numbers) */
+.force-ltr {
+  direction: ltr !important;
+  unicode-bidi: embed;
+}
+
+/* Force RTL */
+.force-rtl {
+  direction: rtl !important;
+  unicode-bidi: embed;
+}
+
+/* Bidirectional isolation */
+.bdi {
+  unicode-bidi: isolate;
+}
+
+/* Mirror element */
+.mirror-rtl {
+  transform: scaleX(1);
+}
+
+[dir='rtl'] .mirror-rtl {
+  transform: scaleX(-1);
+}
+
+/* No mirror in RTL */
+.no-mirror-rtl {
+  transform: scaleX(1) !important;
+}
