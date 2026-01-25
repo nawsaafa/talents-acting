@@ -11,6 +11,8 @@ interface TalentCardProps {
   searchQuery?: string;
   /** Optional action buttons to render in the card's photo area */
   actions?: ReactNode;
+  /** Whether this image should be prioritized for loading (above the fold) */
+  priority?: boolean;
 }
 
 const GENDER_LABELS: Record<string, string> = {
@@ -20,26 +22,37 @@ const GENDER_LABELS: Record<string, string> = {
   OTHER: 'Other',
 };
 
-export function TalentCard({ talent, searchQuery, actions }: TalentCardProps) {
+// Low-quality placeholder for blur effect (1x1 gray pixel)
+const BLUR_DATA_URL =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88P/BfwYABQcB0wHNqwAAAABJRU5ErkJggg==';
+
+export function TalentCard({ talent, searchQuery, actions, priority = false }: TalentCardProps) {
   // Use primary photo, or first from photos array, or null
   const displayPhoto =
     talent.photo || (talent.photos && talent.photos.length > 0 ? talent.photos[0] : null);
 
   return (
-    <Link href={`/talents/${talent.id}`}>
+    <Link href={`/talents/${talent.id}`} aria-label={`View ${talent.firstName}'s profile`}>
       <Card className="group overflow-hidden hover:shadow-lg transition-shadow duration-200">
         {/* Photo */}
         <div className="relative aspect-[3/4] bg-gray-100">
           {displayPhoto ? (
             <Image
               src={displayPhoto}
-              alt={talent.firstName}
+              alt={`${talent.firstName}'s headshot photo`}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-200"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              priority={priority}
+              loading={priority ? 'eager' : 'lazy'}
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+            <div
+              className="absolute inset-0 flex items-center justify-center bg-gray-200"
+              aria-hidden="true"
+            >
               <span className="text-4xl text-gray-400">{talent.firstName.charAt(0)}</span>
             </div>
           )}

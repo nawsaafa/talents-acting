@@ -8,6 +8,8 @@ import { TalentListItem } from './TalentListItem';
 import { InfiniteScrollLoader } from './InfiniteScrollLoader';
 import { QuickViewModal } from './QuickViewModal';
 import { ViewToggle, type ViewMode } from './ViewToggle';
+import { TalentGallerySkeleton } from '@/components/ui/Skeleton';
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 import { loadMoreTalents } from '@/lib/talents/actions';
 import { parseFilterParams } from '@/lib/talents/filters';
 import type { PublicTalentProfile } from '@/lib/talents/queries';
@@ -122,10 +124,10 @@ export function TalentGallery({
   }
 
   return (
-    <>
+    <ErrorBoundary>
       {/* Header with count and view toggle */}
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600" aria-live="polite">
           Showing {talents.length} of {initialTotal} talents
         </p>
         <ViewToggle view={view} onChange={setView} />
@@ -133,31 +135,44 @@ export function TalentGallery({
 
       {/* Grid View */}
       {view === 'grid' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+          role="list"
+          aria-label="Talent gallery"
+        >
           {talents.map((talent, index) => (
-            <TalentCardEnhanced
-              key={talent.id}
-              talent={talent}
-              searchQuery={searchQuery}
-              onQuickView={handleQuickView}
-              index={index}
-              priority={index < 6}
-            />
+            <div key={talent.id} role="listitem">
+              <TalentCardEnhanced
+                talent={talent}
+                searchQuery={searchQuery}
+                onQuickView={handleQuickView}
+                index={index}
+                priority={index < 6}
+              />
+            </div>
           ))}
         </div>
       )}
 
       {/* List View */}
       {view === 'list' && (
-        <div className="space-y-4">
+        <div className="space-y-4" role="list" aria-label="Talent list">
           {talents.map((talent) => (
-            <TalentListItem
-              key={talent.id}
-              talent={talent}
-              searchQuery={searchQuery}
-              onQuickView={handleQuickView}
-            />
+            <div key={talent.id} role="listitem">
+              <TalentListItem
+                talent={talent}
+                searchQuery={searchQuery}
+                onQuickView={handleQuickView}
+              />
+            </div>
           ))}
+        </div>
+      )}
+
+      {/* Loading skeleton while fetching more */}
+      {(isLoading || isPending) && (
+        <div className="mt-6" aria-busy="true">
+          <TalentGallerySkeleton count={3} />
         </div>
       )}
 
@@ -170,6 +185,6 @@ export function TalentGallery({
 
       {/* Quick View Modal */}
       <QuickViewModal talent={selectedTalent} isOpen={isModalOpen} onClose={handleCloseModal} />
-    </>
+    </ErrorBoundary>
   );
 }

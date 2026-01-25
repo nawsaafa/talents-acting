@@ -32,7 +32,7 @@
     "4": {
       "name": "Data Migration & Polish",
       "description": "Schema enhancement, seed data, legacy migration, internationalization, and performance optimization",
-      "status": "in_progress",
+      "status": "complete",
       "session_count": 5
     }
   },
@@ -61,7 +61,8 @@
     "phase04-session01-schema_enhancement",
     "phase04-session02-seed_data_population",
     "phase04-session03-legacy_data_migration",
-    "phase04-session04-internationalization"
+    "phase04-session04-internationalization",
+    "phase04-session05-performance_polish"
   ],
   "next_session_history": [
     {
@@ -672,6 +673,31 @@
     {
       "date": "2026-01-25",
       "session": "phase04-session04-internationalization",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-25",
+      "session": "phase04-session05-performance_polish",
+      "status": "recommended"
+    },
+    {
+      "date": "2026-01-25",
+      "session": "phase04-session05-performance_polish",
+      "status": "spec_created"
+    },
+    {
+      "date": "2026-01-25",
+      "session": "phase04-session05-performance_polish",
+      "status": "tasks_created"
+    },
+    {
+      "date": "2026-01-25",
+      "session": "phase04-session05-performance_polish",
+      "status": "validated"
+    },
+    {
+      "date": "2026-01-25",
+      "session": "phase04-session05-performance_polish",
       "status": "completed"
     }
   ]
