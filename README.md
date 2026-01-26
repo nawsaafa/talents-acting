@@ -121,3 +121,5 @@ Acting-app/
 Private - All rights reserved.
 
 # Trigger rebuild with new env vars
+
+<!-- Deploy trigger: 1769454181 -->
