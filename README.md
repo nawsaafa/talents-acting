@@ -119,3 +119,5 @@ Acting-app/
 ## License
 
 Private - All rights reserved.
+
+# Trigger rebuild with new env vars
