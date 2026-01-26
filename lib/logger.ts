@@ -1,14 +1,6 @@
 import pino from 'pino';
-import fs from 'fs';
-import path from 'path';
 
 const isDev = process.env.NODE_ENV !== 'production';
-
-// Create logs directory if it doesn't exist
-const logsDir = path.join(process.cwd(), 'logs');
-if (!fs.existsSync(logsDir)) {
-  fs.mkdirSync(logsDir, { recursive: true });
-}
 
 // Configure pino logger
 export const logger = pino({
@@ -34,47 +26,13 @@ interface ErrorContext {
   [key: string]: unknown;
 }
 
-interface CapturedError {
-  timestamp: string;
-  level: 'error';
-  msg: string;
-  error: {
-    type: string;
-    message: string;
-    stack?: string;
-  };
-  context: ErrorContext;
-}
-
 /**
- * Captures error to logs/last_error_<timestamp>.json for AI-friendly debugging
+ * Captures error to logs for AI-friendly debugging
+ * In serverless environments, only logs to stdout (no file writes)
  */
 export function captureError(error: Error, message: string, context: ErrorContext = {}): void {
-  const timestamp = new Date().toISOString();
-  const errorData: CapturedError = {
-    timestamp,
-    level: 'error',
-    msg: message,
-    error: {
-      type: error.name || 'Error',
-      message: error.message,
-      stack: error.stack,
-    },
-    context,
-  };
-
-  // Log to pino
+  // Log to pino (stdout in serverless, which gets captured by platform logging)
   logger.error({ err: error, ...context }, message);
-
-  // Write to last_error file for AI debugging
-  const filename = `last_error_${timestamp.replace(/:/g, '-')}.json`;
-  const filepath = path.join(logsDir, filename);
-
-  try {
-    fs.writeFileSync(filepath, JSON.stringify(errorData, null, 2));
-  } catch (writeError) {
-    logger.error({ err: writeError }, 'Failed to write error file');
-  }
 }
 
 // Convenience methods
