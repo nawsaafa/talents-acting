@@ -27,6 +27,8 @@ export interface ExtendedJWT extends JWT {
  * Used by middleware for route protection
  */
 export const authConfig: NextAuthConfig = {
+  // Required for Vercel/serverless deployments
+  trustHost: true,
   pages: {
     signIn: '/login',
     newUser: '/register',

@@ -283,8 +283,18 @@ export async function login(formData: FormData): Promise<ActionResult> {
     });
 
     return { success: true };
-  } catch (error) {
-    console.error('Login error:', error);
+  } catch (error: unknown) {
+    // Handle NextAuth v5 errors
+    if (error && typeof error === 'object' && 'type' in error) {
+      const authError = error as { type: string; cause?: { err?: { message?: string } } };
+      if (authError.type === 'CredentialsSignin') {
+        return { success: false, error: 'Invalid email or password' };
+      }
+      // Log the full error for debugging
+      console.error('Auth error:', JSON.stringify(authError, null, 2));
+    } else {
+      console.error('Login error:', error);
+    }
     return { success: false, error: 'Invalid email or password' };
   }
 }
