@@ -94,7 +94,10 @@ export async function migrateProfile(
         connect: { id: userId },
       },
       // Set primary photo from photos array if available
-      photo: profile.photos && profile.photos.length > 0 ? profile.photos[0] : undefined,
+      photo:
+        profile.photos && Array.isArray(profile.photos) && profile.photos.length > 0
+          ? profile.photos[0]
+          : undefined,
     };
 
     // Dry run - don't actually create

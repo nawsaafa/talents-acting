@@ -1,22 +1,19 @@
 /**
- * Server request configuration for next-intl
+ * Server request configuration for i18n
  * Provides locale and messages for server components
  */
 
-import { getRequestConfig } from 'next-intl/server';
-import { locales, defaultLocale, type Locale } from './config';
+import { routing, type Locale } from './routing';
 
-export default getRequestConfig(async ({ requestLocale }) => {
-  // Get the locale from the request or use default
-  let locale = await requestLocale;
+function hasLocale(locales: readonly string[], locale: string | undefined): locale is Locale {
+  return locale !== undefined && locales.includes(locale);
+}
 
-  // Validate locale
-  if (!locale || !locales.includes(locale as Locale)) {
-    locale = defaultLocale;
-  }
+export async function getMessages(locale: string) {
+  const validLocale = hasLocale(routing.locales, locale) ? locale : routing.defaultLocale;
+  return (await import(`../messages/${validLocale}.json`)).default;
+}
 
-  return {
-    locale,
-    messages: (await import(`../messages/${locale}.json`)).default,
-  };
-});
+export function getValidLocale(requestedLocale: string | undefined): Locale {
+  return hasLocale(routing.locales, requestedLocale) ? requestedLocale : routing.defaultLocale;
+}
