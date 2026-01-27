@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { getUsers } from '@/lib/admin/queries';
 import { auth } from '@/lib/auth/auth';
-import { Card } from '@/components/ui/Card';
 import { UserStatusToggle } from '@/components/admin/UserStatusToggle';
 
 interface PageProps {
@@ -14,11 +13,23 @@ interface PageProps {
 }
 
 const ROLE_STYLES = {
-  ADMIN: { bg: 'bg-purple-100', text: 'text-purple-700' },
-  TALENT: { bg: 'bg-blue-100', text: 'text-blue-700' },
-  PROFESSIONAL: { bg: 'bg-green-100', text: 'text-green-700' },
-  COMPANY: { bg: 'bg-orange-100', text: 'text-orange-700' },
-  VISITOR: { bg: 'bg-gray-100', text: 'text-gray-700' },
+  ADMIN: { bg: 'bg-purple-500/20', text: 'text-purple-400', border: 'border-purple-500/30' },
+  TALENT: { bg: 'bg-blue-500/20', text: 'text-blue-400', border: 'border-blue-500/30' },
+  PROFESSIONAL: {
+    bg: 'bg-emerald-500/20',
+    text: 'text-emerald-400',
+    border: 'border-emerald-500/30',
+  },
+  COMPANY: {
+    bg: 'bg-[var(--color-gold)]/20',
+    text: 'text-[var(--color-gold)]',
+    border: 'border-[var(--color-gold)]/30',
+  },
+  VISITOR: {
+    bg: 'bg-[var(--color-surface-light)]/30',
+    text: 'text-[var(--color-text-muted)]',
+    border: 'border-[var(--color-surface-light)]/30',
+  },
 };
 
 export default async function UsersPage({ searchParams }: PageProps) {
@@ -69,11 +80,19 @@ export default async function UsersPage({ searchParams }: PageProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Page Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-[var(--color-neutral-900)]">User Management</h1>
-        <p className="mt-1 text-[var(--color-neutral-600)]">View and manage all registered users</p>
+      <div className="relative">
+        <div className="absolute -top-4 -left-4 w-32 h-32 bg-[var(--color-gold)]/10 rounded-full blur-3xl" />
+        <h1
+          className="relative text-4xl font-bold text-[var(--color-text-primary)]"
+          style={{ fontFamily: 'Playfair Display, serif' }}
+        >
+          User Management
+        </h1>
+        <p className="relative mt-2 text-[var(--color-text-secondary)]">
+          View and manage all registered users
+        </p>
       </div>
 
       {/* Filters */}
@@ -85,11 +104,11 @@ export default async function UsersPage({ searchParams }: PageProps) {
               key={tab.value}
               href={`/admin/users?role=${tab.value}&status=${status}${search ? `&search=${search}` : ''}`}
               className={`
-                px-3 py-1.5 text-sm font-medium rounded-full transition-colors
+                px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300
                 ${
                   role === tab.value
-                    ? 'bg-[var(--color-primary)] text-white'
-                    : 'bg-[var(--color-neutral-100)] text-[var(--color-neutral-600)] hover:bg-[var(--color-neutral-200)]'
+                    ? 'bg-gradient-to-r from-[var(--color-gold)]/20 to-[var(--color-gold)]/10 text-[var(--color-gold)] border border-[var(--color-gold)]/30 shadow-lg shadow-[var(--color-gold)]/10'
+                    : 'bg-[var(--color-surface)]/50 text-[var(--color-text-secondary)] border border-[var(--color-surface-light)]/20 hover:border-[var(--color-gold)]/20 hover:text-[var(--color-text-primary)]'
                 }
               `}
             >
@@ -105,11 +124,11 @@ export default async function UsersPage({ searchParams }: PageProps) {
               key={tab.value}
               href={`/admin/users?role=${role}&status=${tab.value}${search ? `&search=${search}` : ''}`}
               className={`
-                px-3 py-1.5 text-sm font-medium rounded-full transition-colors
+                px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300
                 ${
                   status === tab.value
-                    ? 'bg-[var(--color-neutral-800)] text-white'
-                    : 'bg-[var(--color-neutral-100)] text-[var(--color-neutral-600)] hover:bg-[var(--color-neutral-200)]'
+                    ? 'bg-[var(--color-surface-light)] text-[var(--color-text-primary)] border border-[var(--color-surface-light)]/50'
+                    : 'bg-[var(--color-surface)]/30 text-[var(--color-text-muted)] border border-transparent hover:border-[var(--color-surface-light)]/30'
                 }
               `}
             >
@@ -119,7 +138,7 @@ export default async function UsersPage({ searchParams }: PageProps) {
         </div>
 
         {/* Search */}
-        <form action="/admin/users" method="GET" className="flex gap-2">
+        <form action="/admin/users" method="GET" className="flex gap-3">
           <input type="hidden" name="role" value={role} />
           <input type="hidden" name="status" value={status} />
           <input
@@ -127,18 +146,18 @@ export default async function UsersPage({ searchParams }: PageProps) {
             name="search"
             defaultValue={search}
             placeholder="Search by email or name..."
-            className="flex-1 max-w-md px-4 py-2 border border-[var(--color-neutral-300)] rounded-[var(--radius-md)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent"
+            className="flex-1 max-w-md px-4 py-3 bg-[var(--color-surface)]/50 border border-[var(--color-surface-light)]/20 rounded-xl text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)]/50 focus:border-[var(--color-gold)]/50 transition-all duration-300"
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-[var(--color-primary)] text-white font-medium rounded-[var(--radius-md)] hover:bg-[var(--color-primary-dark)] transition-colors"
+            className="px-5 py-3 bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-dark)] text-[var(--color-black)] font-semibold rounded-xl shadow-lg shadow-[var(--color-gold)]/25 hover:shadow-[var(--color-gold)]/40 transition-all duration-300"
           >
             Search
           </button>
           {search && (
             <Link
               href={`/admin/users?role=${role}&status=${status}`}
-              className="px-4 py-2 bg-[var(--color-neutral-200)] text-[var(--color-neutral-700)] font-medium rounded-[var(--radius-md)] hover:bg-[var(--color-neutral-300)] transition-colors"
+              className="px-5 py-3 bg-[var(--color-surface-light)]/30 text-[var(--color-text-secondary)] font-medium rounded-xl hover:bg-[var(--color-surface-light)]/50 transition-all duration-300"
             >
               Clear
             </Link>
@@ -147,119 +166,140 @@ export default async function UsersPage({ searchParams }: PageProps) {
       </div>
 
       {/* Results Count */}
-      <p className="text-sm text-[var(--color-neutral-600)]">
-        Showing {users.length} of {total} users
+      <p className="text-sm text-[var(--color-text-muted)]">
+        Showing <span className="text-[var(--color-gold)] font-medium">{users.length}</span> of{' '}
+        <span className="text-[var(--color-text-primary)]">{total}</span> users
       </p>
 
       {/* User List */}
       {users.length === 0 ? (
-        <Card padding="lg">
-          <div className="text-center py-8">
-            <svg
-              className="mx-auto h-12 w-12 text-[var(--color-neutral-400)]"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        <div className="relative overflow-hidden rounded-2xl p-12 bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-gold)]/5 rounded-full blur-3xl" />
+          <div className="relative text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[var(--color-surface-light)]/30 mb-4">
+              <svg
+                className="w-8 h-8 text-[var(--color-text-muted)]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+            </div>
+            <h3
+              className="text-xl font-semibold text-[var(--color-text-primary)]"
+              style={{ fontFamily: 'Playfair Display, serif' }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-              />
-            </svg>
-            <h3 className="mt-4 text-lg font-medium text-[var(--color-neutral-900)]">
               No users found
             </h3>
-            <p className="mt-2 text-[var(--color-neutral-600)]">
+            <p className="mt-2 text-[var(--color-text-muted)]">
               {search
                 ? `No users matching "${search}"`
                 : 'There are no users matching your filters.'}
             </p>
           </div>
-        </Card>
+        </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-[var(--color-neutral-200)]">
-                <th className="text-left py-3 px-4 text-sm font-medium text-[var(--color-neutral-500)]">
-                  User
-                </th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-[var(--color-neutral-500)]">
-                  Role
-                </th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-[var(--color-neutral-500)]">
-                  Joined
-                </th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-[var(--color-neutral-500)]">
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[var(--color-neutral-100)]">
-              {users.map((user) => {
-                const roleStyle = ROLE_STYLES[user.role];
-                const isCurrentUser = user.id === currentUserId;
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-[var(--color-surface-light)]/20">
+                  <th className="text-left py-4 px-5 text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">
+                    User
+                  </th>
+                  <th className="text-left py-4 px-5 text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">
+                    Role
+                  </th>
+                  <th className="text-left py-4 px-5 text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">
+                    Joined
+                  </th>
+                  <th className="text-left py-4 px-5 text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--color-surface-light)]/10">
+                {users.map((user, index) => {
+                  const roleStyle = ROLE_STYLES[user.role];
+                  const isCurrentUser = user.id === currentUserId;
 
-                return (
-                  <tr key={user.id} className="hover:bg-[var(--color-neutral-50)]">
-                    <td className="py-3 px-4">
-                      <div>
-                        <p className="font-medium text-[var(--color-neutral-900)]">
-                          {getUserDisplayName(user)}
-                          {isCurrentUser && (
-                            <span className="ml-2 text-xs text-[var(--color-neutral-500)]">
-                              (you)
+                  return (
+                    <tr
+                      key={user.id}
+                      className="hover:bg-[var(--color-surface-light)]/10 transition-colors animate-fade-in"
+                      style={{ animationDelay: `${index * 30}ms` }}
+                    >
+                      <td className="py-4 px-5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-gold)]/20 to-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 flex items-center justify-center">
+                            <span className="text-sm font-bold text-[var(--color-gold)]">
+                              {getUserDisplayName(user)[0].toUpperCase()}
                             </span>
-                          )}
-                        </p>
-                        <p className="text-sm text-[var(--color-neutral-500)]">{user.email}</p>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span
-                        className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${roleStyle.bg} ${roleStyle.text}`}
-                      >
-                        {user.role}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-sm text-[var(--color-neutral-600)]">
-                      {new Date(user.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="py-3 px-4">
-                      <UserStatusToggle
-                        userId={user.id}
-                        isActive={user.isActive}
-                        disabled={isCurrentUser}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                          </div>
+                          <div>
+                            <p className="font-medium text-[var(--color-text-primary)]">
+                              {getUserDisplayName(user)}
+                              {isCurrentUser && (
+                                <span className="ml-2 text-xs px-2 py-0.5 bg-[var(--color-gold)]/10 text-[var(--color-gold)] rounded-full">
+                                  you
+                                </span>
+                              )}
+                            </p>
+                            <p className="text-sm text-[var(--color-text-muted)]">{user.email}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-4 px-5">
+                        <span
+                          className={`inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg border ${roleStyle.bg} ${roleStyle.text} ${roleStyle.border}`}
+                        >
+                          {user.role}
+                        </span>
+                      </td>
+                      <td className="py-4 px-5 text-sm text-[var(--color-text-muted)]">
+                        {new Date(user.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="py-4 px-5">
+                        <UserStatusToggle
+                          userId={user.id}
+                          isActive={user.isActive}
+                          disabled={isCurrentUser}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex justify-center gap-2">
+        <div className="flex justify-center gap-3 pt-4">
           {page > 1 && (
             <Link
               href={`/admin/users?role=${role}&status=${status}${search ? `&search=${search}` : ''}&page=${page - 1}`}
-              className="px-4 py-2 text-sm font-medium text-[var(--color-neutral-600)] bg-white border border-[var(--color-neutral-300)] rounded-[var(--radius-md)] hover:bg-[var(--color-neutral-50)]"
+              className="px-5 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] bg-[var(--color-surface)] border border-[var(--color-surface-light)]/30 rounded-xl hover:border-[var(--color-gold)]/30 hover:text-[var(--color-gold)] transition-all duration-300"
             >
               Previous
             </Link>
           )}
-          <span className="px-4 py-2 text-sm text-[var(--color-neutral-600)]">
-            Page {page} of {totalPages}
+          <span className="px-5 py-2.5 text-sm text-[var(--color-text-muted)]">
+            Page <span className="text-[var(--color-gold)] font-medium">{page}</span> of{' '}
+            {totalPages}
           </span>
           {page < totalPages && (
             <Link
               href={`/admin/users?role=${role}&status=${status}${search ? `&search=${search}` : ''}&page=${page + 1}`}
-              className="px-4 py-2 text-sm font-medium text-[var(--color-neutral-600)] bg-white border border-[var(--color-neutral-300)] rounded-[var(--radius-md)] hover:bg-[var(--color-neutral-50)]"
+              className="px-5 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] bg-[var(--color-surface)] border border-[var(--color-surface-light)]/30 rounded-xl hover:border-[var(--color-gold)]/30 hover:text-[var(--color-gold)] transition-all duration-300"
             >
               Next
             </Link>

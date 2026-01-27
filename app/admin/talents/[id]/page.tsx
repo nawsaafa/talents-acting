@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTalentForReview } from '@/lib/admin/queries';
-import { Card } from '@/components/ui/Card';
 import { ValidationActions } from '@/components/admin/ValidationActions';
 
 interface PageProps {
@@ -11,23 +10,27 @@ interface PageProps {
 
 const VALIDATION_STATUS_STYLES = {
   PENDING: {
-    bg: 'bg-[var(--color-warning-50)]',
-    text: 'text-[var(--color-warning)]',
+    bg: 'bg-[var(--color-gold)]/20',
+    text: 'text-[var(--color-gold)]',
+    border: 'border-[var(--color-gold)]/30',
     label: 'Pending Review',
   },
   APPROVED: {
-    bg: 'bg-[var(--color-success-50)]',
-    text: 'text-[var(--color-success)]',
+    bg: 'bg-emerald-500/20',
+    text: 'text-emerald-400',
+    border: 'border-emerald-500/30',
     label: 'Approved',
   },
   REJECTED: {
-    bg: 'bg-[var(--color-error-50)]',
-    text: 'text-[var(--color-error)]',
+    bg: 'bg-red-500/20',
+    text: 'text-red-400',
+    border: 'border-red-500/30',
     label: 'Rejected',
   },
   SUSPENDED: {
-    bg: 'bg-[var(--color-neutral-100)]',
-    text: 'text-[var(--color-neutral-600)]',
+    bg: 'bg-[var(--color-surface-light)]/30',
+    text: 'text-[var(--color-text-muted)]',
+    border: 'border-[var(--color-surface-light)]/30',
     label: 'Suspended',
   },
 };
@@ -43,17 +46,22 @@ export default async function TalentDetailPage({ params }: PageProps) {
   const statusStyle = VALIDATION_STATUS_STYLES[talent.validationStatus];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Back Link */}
       <Link
         href="/admin/talents"
-        className="inline-flex items-center text-sm text-[var(--color-neutral-600)] hover:text-[var(--color-neutral-900)]"
+        className="inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-gold)] transition-colors group"
       >
-        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className="w-4 h-4 transition-transform group-hover:-translate-x-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth={2}
+            strokeWidth={1.5}
             d="M10 19l-7-7m0 0l7-7m-7 7h18"
           />
         </svg>
@@ -61,317 +69,222 @@ export default async function TalentDetailPage({ params }: PageProps) {
       </Link>
 
       {/* Header */}
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-4">
-          {talent.photo ? (
-            <Image
-              src={talent.photo}
-              alt={talent.firstName}
-              width={80}
-              height={80}
-              className="w-20 h-20 rounded-full object-cover"
-            />
-          ) : (
-            <div className="w-20 h-20 rounded-full bg-[var(--color-neutral-200)] flex items-center justify-center">
-              <span className="text-2xl font-medium text-[var(--color-neutral-500)]">
-                {talent.firstName[0]}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+        {/* Background glow */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-gold)]/5 rounded-full blur-3xl" />
+
+        <div className="relative flex items-start justify-between gap-6">
+          <div className="flex items-center gap-5">
+            {talent.photo ? (
+              <Image
+                src={talent.photo}
+                alt={talent.firstName}
+                width={96}
+                height={96}
+                className="w-24 h-24 rounded-2xl object-cover border-2 border-[var(--color-surface-light)]/30"
+              />
+            ) : (
+              <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-[var(--color-gold)]/20 to-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 flex items-center justify-center">
+                <span
+                  className="text-3xl font-bold text-[var(--color-gold)]"
+                  style={{ fontFamily: 'Playfair Display, serif' }}
+                >
+                  {talent.firstName[0]}
+                </span>
+              </div>
+            )}
+            <div>
+              <h1
+                className="text-3xl font-bold text-[var(--color-text-primary)]"
+                style={{ fontFamily: 'Playfair Display, serif' }}
+              >
+                {talent.firstName} {talent.lastName}
+              </h1>
+              <p className="mt-1 text-[var(--color-text-muted)]">{talent.user.email}</p>
+              <span
+                className={`inline-flex items-center gap-2 mt-3 px-4 py-1.5 text-sm font-medium rounded-xl border ${statusStyle.bg} ${statusStyle.text} ${statusStyle.border}`}
+              >
+                <span className="w-2 h-2 rounded-full bg-current animate-pulse" />
+                {statusStyle.label}
               </span>
             </div>
-          )}
-          <div>
-            <h1 className="text-2xl font-bold text-[var(--color-neutral-900)]">
-              {talent.firstName} {talent.lastName}
-            </h1>
-            <p className="text-[var(--color-neutral-600)]">{talent.user.email}</p>
-            <span
-              className={`inline-block mt-2 px-3 py-1 text-sm font-medium rounded-full ${statusStyle.bg} ${statusStyle.text}`}
-            >
-              {statusStyle.label}
-            </span>
           </div>
-        </div>
 
-        {talent.validationStatus === 'PENDING' && (
-          <ValidationActions profileId={talent.id} profileType="talent" showLabels />
-        )}
+          {talent.validationStatus === 'PENDING' && (
+            <ValidationActions profileId={talent.id} profileType="talent" showLabels />
+          )}
+        </div>
       </div>
 
       {/* Rejection Reason */}
       {talent.rejectionReason && (
-        <Card padding="md" className="border-l-4 border-l-[var(--color-error)]">
-          <h3 className="font-medium text-[var(--color-error)] mb-1">Rejection Reason</h3>
-          <p className="text-[var(--color-neutral-700)]">{talent.rejectionReason}</p>
-        </Card>
+        <div className="relative overflow-hidden rounded-2xl bg-red-500/10 border border-red-500/20 p-5">
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-red-500 to-red-600" />
+          <div className="pl-4">
+            <h3 className="font-semibold text-red-400 mb-2 flex items-center gap-2">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              Rejection Reason
+            </h3>
+            <p className="text-[var(--color-text-secondary)]">{talent.rejectionReason}</p>
+          </div>
+        </div>
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Basic Info */}
-        <Card padding="lg">
-          <h2 className="text-lg font-semibold text-[var(--color-neutral-900)] mb-4">
-            Basic Information
-          </h2>
-          <dl className="space-y-3">
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-neutral-500)]">Gender</dt>
-              <dd className="font-medium">{talent.gender}</dd>
-            </div>
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-neutral-500)]">Age Range</dt>
-              <dd className="font-medium">
-                {talent.ageRangeMin} - {talent.ageRangeMax}
-              </dd>
-            </div>
-            {talent.height && (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-neutral-500)]">Height</dt>
-                <dd className="font-medium">{talent.height} cm</dd>
-              </div>
-            )}
-            {talent.physique && (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-neutral-500)]">Physique</dt>
-                <dd className="font-medium">{talent.physique}</dd>
-              </div>
-            )}
-            {talent.ethnicAppearance && (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-neutral-500)]">Ethnic Appearance</dt>
-                <dd className="font-medium">{talent.ethnicAppearance}</dd>
-              </div>
-            )}
-            {talent.location && (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-neutral-500)]">Location</dt>
-                <dd className="font-medium">{talent.location}</dd>
-              </div>
-            )}
-          </dl>
-        </Card>
+        <InfoCard title="Basic Information">
+          <InfoRow label="Gender" value={talent.gender} />
+          <InfoRow label="Age Range" value={`${talent.ageRangeMin} - ${talent.ageRangeMax}`} />
+          {talent.height && <InfoRow label="Height" value={`${talent.height} cm`} />}
+          {talent.physique && <InfoRow label="Physique" value={talent.physique} />}
+          {talent.ethnicAppearance && (
+            <InfoRow label="Ethnic Appearance" value={talent.ethnicAppearance} />
+          )}
+          {talent.location && <InfoRow label="Location" value={talent.location} />}
+        </InfoCard>
 
         {/* Physical Attributes */}
-        <Card padding="lg">
-          <h2 className="text-lg font-semibold text-[var(--color-neutral-900)] mb-4">
-            Physical Attributes
-          </h2>
-          <dl className="space-y-3">
-            {talent.hairColor && (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-neutral-500)]">Hair Color</dt>
-                <dd className="font-medium">{talent.hairColor}</dd>
-              </div>
-            )}
-            {talent.hairLength && (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-neutral-500)]">Hair Length</dt>
-                <dd className="font-medium">{talent.hairLength}</dd>
-              </div>
-            )}
-            {talent.eyeColor && (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-neutral-500)]">Eye Color</dt>
-                <dd className="font-medium">{talent.eyeColor}</dd>
-              </div>
-            )}
-            {talent.beardType && (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-neutral-500)]">Beard Type</dt>
-                <dd className="font-medium">{talent.beardType}</dd>
-              </div>
-            )}
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-neutral-500)]">Tattoos</dt>
-              <dd className="font-medium">{talent.hasTattoos ? 'Yes' : 'No'}</dd>
-            </div>
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-neutral-500)]">Scars</dt>
-              <dd className="font-medium">{talent.hasScars ? 'Yes' : 'No'}</dd>
-            </div>
-          </dl>
-        </Card>
+        <InfoCard title="Physical Attributes">
+          {talent.hairColor && <InfoRow label="Hair Color" value={talent.hairColor} />}
+          {talent.hairLength && <InfoRow label="Hair Length" value={talent.hairLength} />}
+          {talent.eyeColor && <InfoRow label="Eye Color" value={talent.eyeColor} />}
+          {talent.beardType && <InfoRow label="Beard Type" value={talent.beardType} />}
+          <InfoRow label="Tattoos" value={talent.hasTattoos ? 'Yes' : 'No'} />
+          <InfoRow label="Scars" value={talent.hasScars ? 'Yes' : 'No'} />
+        </InfoCard>
 
         {/* Contact Info */}
-        <Card padding="lg">
-          <h2 className="text-lg font-semibold text-[var(--color-neutral-900)] mb-4">
-            Contact Information
-          </h2>
-          <dl className="space-y-3">
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-neutral-500)]">Account Email</dt>
-              <dd className="font-medium">{talent.user.email}</dd>
-            </div>
-            {talent.contactEmail && (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-neutral-500)]">Contact Email</dt>
-                <dd className="font-medium">{talent.contactEmail}</dd>
-              </div>
-            )}
-            {talent.contactPhone && (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-neutral-500)]">Phone</dt>
-                <dd className="font-medium">{talent.contactPhone}</dd>
-              </div>
-            )}
-          </dl>
-        </Card>
+        <InfoCard title="Contact Information">
+          <InfoRow label="Account Email" value={talent.user.email} />
+          {talent.contactEmail && <InfoRow label="Contact Email" value={talent.contactEmail} />}
+          {talent.contactPhone && <InfoRow label="Phone" value={talent.contactPhone} />}
+        </InfoCard>
 
         {/* Availability */}
-        <Card padding="lg">
-          <h2 className="text-lg font-semibold text-[var(--color-neutral-900)] mb-4">
-            Availability & Rates
-          </h2>
-          <dl className="space-y-3">
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-neutral-500)]">Available</dt>
-              <dd className="font-medium">{talent.isAvailable ? 'Yes' : 'No'}</dd>
-            </div>
-            {talent.dailyRate && (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-neutral-500)]">Daily Rate</dt>
-                <dd className="font-medium">${Number(talent.dailyRate)}</dd>
-              </div>
-            )}
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-neutral-500)]">Rate Negotiable</dt>
-              <dd className="font-medium">{talent.rateNegotiable ? 'Yes' : 'No'}</dd>
-            </div>
-          </dl>
-        </Card>
+        <InfoCard title="Availability & Rates">
+          <InfoRow
+            label="Available"
+            value={talent.isAvailable ? 'Yes' : 'No'}
+            highlight={talent.isAvailable}
+          />
+          {talent.dailyRate && (
+            <InfoRow label="Daily Rate" value={`$${Number(talent.dailyRate)}`} />
+          )}
+          <InfoRow label="Rate Negotiable" value={talent.rateNegotiable ? 'Yes' : 'No'} />
+        </InfoCard>
       </div>
 
       {/* Bio */}
       {talent.bio && (
-        <Card padding="lg">
-          <h2 className="text-lg font-semibold text-[var(--color-neutral-900)] mb-4">Bio</h2>
-          <p className="text-[var(--color-neutral-700)] whitespace-pre-wrap">{talent.bio}</p>
-        </Card>
+        <InfoCard title="Bio">
+          <p className="text-[var(--color-text-secondary)] whitespace-pre-wrap leading-relaxed">
+            {talent.bio}
+          </p>
+        </InfoCard>
       )}
 
       {/* Skills */}
-      <Card padding="lg">
-        <h2 className="text-lg font-semibold text-[var(--color-neutral-900)] mb-4">Skills</h2>
+      <InfoCard title="Skills">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {talent.languages.length > 0 && (
-            <div>
-              <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">
-                Languages
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {talent.languages.map((lang) => (
-                  <span
-                    key={lang}
-                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
-                  >
-                    {lang}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-          {talent.accents.length > 0 && (
-            <div>
-              <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">Accents</h3>
-              <div className="flex flex-wrap gap-2">
-                {talent.accents.map((accent) => (
-                  <span
-                    key={accent}
-                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
-                  >
-                    {accent}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
+          {talent.languages.length > 0 && <SkillGroup label="Languages" items={talent.languages} />}
+          {talent.accents.length > 0 && <SkillGroup label="Accents" items={talent.accents} />}
           {talent.performanceSkills.length > 0 && (
-            <div>
-              <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">
-                Performance
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {talent.performanceSkills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <SkillGroup label="Performance" items={talent.performanceSkills} />
           )}
           {talent.athleticSkills.length > 0 && (
-            <div>
-              <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">Athletic</h3>
-              <div className="flex flex-wrap gap-2">
-                {talent.athleticSkills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <SkillGroup label="Athletic" items={talent.athleticSkills} />
           )}
-          {talent.danceStyles.length > 0 && (
-            <div>
-              <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">Dance</h3>
-              <div className="flex flex-wrap gap-2">
-                {talent.danceStyles.map((style) => (
-                  <span
-                    key={style}
-                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
-                  >
-                    {style}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
+          {talent.danceStyles.length > 0 && <SkillGroup label="Dance" items={talent.danceStyles} />}
           {talent.musicalInstruments.length > 0 && (
-            <div>
-              <h3 className="text-sm font-medium text-[var(--color-neutral-500)] mb-2">Music</h3>
-              <div className="flex flex-wrap gap-2">
-                {talent.musicalInstruments.map((instrument) => (
-                  <span
-                    key={instrument}
-                    className="px-2 py-1 text-sm bg-[var(--color-neutral-100)] rounded"
-                  >
-                    {instrument}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <SkillGroup label="Music" items={talent.musicalInstruments} />
           )}
         </div>
-      </Card>
+      </InfoCard>
 
       {/* Meta Info */}
-      <Card padding="md" className="bg-[var(--color-neutral-50)]">
-        <div className="flex flex-wrap gap-6 text-sm text-[var(--color-neutral-500)]">
-          <div>
-            <span className="font-medium">Profile ID:</span> {talent.id}
-          </div>
-          <div>
-            <span className="font-medium">User ID:</span> {talent.userId}
-          </div>
-          <div>
-            <span className="font-medium">Created:</span>{' '}
-            {new Date(talent.createdAt).toLocaleString()}
-          </div>
-          <div>
-            <span className="font-medium">Updated:</span>{' '}
-            {new Date(talent.updatedAt).toLocaleString()}
-          </div>
+      <div className="relative overflow-hidden rounded-2xl bg-[var(--color-surface)]/30 border border-[var(--color-surface-light)]/10 p-5">
+        <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-[var(--color-text-muted)]">
+          <MetaItem label="Profile ID" value={talent.id} mono />
+          <MetaItem label="User ID" value={talent.userId} mono />
+          <MetaItem label="Created" value={new Date(talent.createdAt).toLocaleString()} />
+          <MetaItem label="Updated" value={new Date(talent.updatedAt).toLocaleString()} />
           {talent.validatedAt && (
-            <div>
-              <span className="font-medium">Validated:</span>{' '}
-              {new Date(talent.validatedAt).toLocaleString()}
-            </div>
+            <MetaItem label="Validated" value={new Date(talent.validatedAt).toLocaleString()} />
           )}
         </div>
-      </Card>
+      </div>
+    </div>
+  );
+}
+
+function InfoCard({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-gold)]/5 rounded-bl-[100px]" />
+      <h2
+        className="relative text-lg font-semibold text-[var(--color-text-primary)] mb-4"
+        style={{ fontFamily: 'Playfair Display, serif' }}
+      >
+        {title}
+      </h2>
+      <div className="relative">{children}</div>
+    </div>
+  );
+}
+
+function InfoRow({
+  label,
+  value,
+  highlight,
+}: {
+  label: string;
+  value: string;
+  highlight?: boolean;
+}) {
+  return (
+    <div className="flex justify-between items-center py-2 border-b border-[var(--color-surface-light)]/10 last:border-0">
+      <dt className="text-[var(--color-text-muted)]">{label}</dt>
+      <dd
+        className={`font-medium ${highlight ? 'text-emerald-400' : 'text-[var(--color-text-primary)]'}`}
+      >
+        {value}
+      </dd>
+    </div>
+  );
+}
+
+function SkillGroup({ label, items }: { label: string; items: string[] }) {
+  return (
+    <div>
+      <h3 className="text-sm font-medium text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">
+        {label}
+      </h3>
+      <div className="flex flex-wrap gap-2">
+        {items.map((item) => (
+          <span
+            key={item}
+            className="px-3 py-1.5 text-sm bg-[var(--color-gold)]/10 text-[var(--color-gold)] border border-[var(--color-gold)]/20 rounded-lg"
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MetaItem({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div>
+      <span className="font-medium text-[var(--color-text-secondary)]">{label}:</span>{' '}
+      <span className={mono ? 'font-mono text-xs' : ''}>{value}</span>
     </div>
   );
 }
