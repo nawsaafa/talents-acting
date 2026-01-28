@@ -13,55 +13,49 @@ export const metadata: Metadata = {
   description: 'Manage your company account on Talents Acting',
 };
 
-function getStatusBadge(status: string) {
-  switch (status) {
-    case 'APPROVED':
-      return (
-        <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">
-          Approved
-        </span>
-      );
-    case 'PENDING':
-      return (
-        <span className="inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-sm font-medium text-yellow-800">
-          Pending Review
-        </span>
-      );
-    case 'REJECTED':
-      return (
-        <span className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-800">
-          Rejected
-        </span>
-      );
-    default:
-      return (
-        <span className="inline-flex items-center rounded-full bg-zinc-100 px-3 py-1 text-sm font-medium text-zinc-800">
-          {status}
-        </span>
-      );
-  }
-}
+const STATUS_CONFIG = {
+  PENDING: {
+    label: 'Pending Review',
+    color: 'text-[var(--color-gold)]',
+    bgColor: 'bg-[var(--color-gold)]/20',
+    borderColor: 'border-[var(--color-gold)]/30',
+  },
+  APPROVED: {
+    label: 'Approved',
+    color: 'text-emerald-400',
+    bgColor: 'bg-emerald-500/20',
+    borderColor: 'border-emerald-500/30',
+  },
+  REJECTED: {
+    label: 'Rejected',
+    color: 'text-red-400',
+    bgColor: 'bg-red-500/20',
+    borderColor: 'border-red-500/30',
+  },
+  SUSPENDED: {
+    label: 'Suspended',
+    color: 'text-[var(--color-text-muted)]',
+    bgColor: 'bg-[var(--color-surface-light)]/20',
+    borderColor: 'border-[var(--color-surface-light)]/30',
+  },
+};
 
-function SubscriptionBadge({ status }: { status: string }) {
-  const styles: Record<string, string> = {
-    NONE: 'bg-zinc-100 text-zinc-800',
-    TRIAL: 'bg-blue-100 text-blue-800',
-    ACTIVE: 'bg-green-100 text-green-800',
-    PAST_DUE: 'bg-amber-100 text-amber-800',
-    CANCELLED: 'bg-red-100 text-red-800',
-    EXPIRED: 'bg-zinc-100 text-zinc-800',
-  };
-
-  return (
-    <span
-      className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${
-        styles[status] || styles.NONE
-      }`}
-    >
-      {status === 'NONE' ? 'No Subscription' : status}
-    </span>
-  );
-}
+const SUBSCRIPTION_CONFIG = {
+  NONE: {
+    label: 'No Subscription',
+    color: 'text-[var(--color-text-muted)]',
+    bgColor: 'bg-[var(--color-surface-light)]/20',
+  },
+  TRIAL: { label: 'Trial', color: 'text-blue-400', bgColor: 'bg-blue-500/20' },
+  ACTIVE: { label: 'Active', color: 'text-emerald-400', bgColor: 'bg-emerald-500/20' },
+  PAST_DUE: { label: 'Past Due', color: 'text-amber-400', bgColor: 'bg-amber-500/20' },
+  CANCELLED: { label: 'Cancelled', color: 'text-red-400', bgColor: 'bg-red-500/20' },
+  EXPIRED: {
+    label: 'Expired',
+    color: 'text-[var(--color-text-muted)]',
+    bgColor: 'bg-[var(--color-surface-light)]/20',
+  },
+};
 
 export default async function CompanyDashboardPage() {
   const session = await auth();
@@ -83,127 +77,197 @@ export default async function CompanyDashboardPage() {
   const isPending = company.validationStatus === 'PENDING';
   const isRejected = company.validationStatus === 'REJECTED';
   const hasPremiumAccess = hasActiveAccess(subscription?.status || 'NONE');
+  const statusConfig = STATUS_CONFIG[company.validationStatus];
+  const subscriptionConfig = SUBSCRIPTION_CONFIG[subscription?.status || 'NONE'];
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-zinc-900">{company.companyName}</h1>
-          <p className="mt-1 text-sm text-zinc-600">Company Dashboard</p>
+    <div className="space-y-8">
+      {/* Page Header */}
+      <div className="relative">
+        <div className="absolute -top-4 -left-4 w-32 h-32 bg-[var(--color-gold)]/10 rounded-full blur-3xl" />
+        <div className="relative flex items-center justify-between">
+          <div>
+            <h1
+              className="text-4xl font-bold text-[var(--color-text-primary)]"
+              style={{ fontFamily: 'Playfair Display, serif' }}
+            >
+              {company.companyName}
+            </h1>
+            <p className="mt-2 text-[var(--color-text-secondary)]">Company Dashboard</p>
+          </div>
+          <span
+            className={`inline-flex items-center rounded-xl px-4 py-2 text-sm font-medium ${statusConfig.bgColor} ${statusConfig.color} border ${statusConfig.borderColor}`}
+          >
+            <span className="w-2 h-2 rounded-full bg-current mr-2 animate-pulse" />
+            {statusConfig.label}
+          </span>
         </div>
+      </div>
 
-        {/* Status Banner */}
-        {isPending && (
-          <div className="mb-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4">
-            <div className="flex">
-              <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+      {/* Status Banners */}
+      {isPending && (
+        <div className="relative overflow-hidden rounded-2xl p-5 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30">
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[var(--color-gold)] to-[var(--color-gold-dark)]" />
+          <div className="flex items-start gap-4 pl-4">
+            <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[var(--color-gold)]/20 flex items-center justify-center">
+              <svg
+                className="w-5 h-5 text-[var(--color-gold)]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
-                  fillRule="evenodd"
-                  d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
-                  clipRule="evenodd"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-yellow-800">Account Pending Review</h3>
-                <p className="mt-1 text-sm text-yellow-700">
-                  Your company account is being reviewed by our team. You will receive an email once
-                  your account is approved.
-                </p>
-              </div>
+            </div>
+            <div>
+              <h3 className="font-semibold text-[var(--color-gold)]">Account Pending Review</h3>
+              <p className="text-sm text-[var(--color-text-muted)] mt-1">
+                Your company account is being reviewed by our team. You will receive an email once
+                your account is approved.
+              </p>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {isRejected && (
-          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
-            <div className="flex">
-              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+      {isRejected && (
+        <div className="relative overflow-hidden rounded-2xl p-5 bg-red-500/10 border border-red-500/30">
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-red-500 to-red-600" />
+          <div className="flex items-start gap-4 pl-4">
+            <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
+              <svg
+                className="w-5 h-5 text-red-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
-                  clipRule="evenodd"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">Account Rejected</h3>
-                <p className="mt-1 text-sm text-red-700">
-                  {company.rejectionReason ||
-                    'Your company account was not approved. Please contact support for more information.'}
-                </p>
-              </div>
+            </div>
+            <div>
+              <h3 className="font-semibold text-red-400">Account Rejected</h3>
+              <p className="text-sm text-[var(--color-text-muted)] mt-1">
+                {company.rejectionReason ||
+                  'Your company account was not approved. Please contact support for more information.'}
+              </p>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {!company.emailVerified && (
-          <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
-            <div className="flex">
-              <svg className="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
-                <path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+      {!company.emailVerified && (
+        <div className="relative overflow-hidden rounded-2xl p-5 bg-blue-500/10 border border-blue-500/30">
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-blue-600" />
+          <div className="flex items-start gap-4 pl-4">
+            <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
+              <svg
+                className="w-5 h-5 text-blue-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                />
               </svg>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-blue-800">Verify Your Email</h3>
-                <p className="mt-1 text-sm text-blue-700">
-                  Please check your email and click the verification link to complete your
-                  registration.
-                </p>
-              </div>
+            </div>
+            <div>
+              <h3 className="font-semibold text-blue-400">Verify Your Email</h3>
+              <p className="text-sm text-[var(--color-text-muted)] mt-1">
+                Please check your email and click the verification link to complete your
+                registration.
+              </p>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Activity Section */}
-        {isApproved && (
-          <div className="mb-8">
+      {/* Activity Section */}
+      {isApproved && (
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-gold)]/5 rounded-bl-[80px]" />
+          <h2
+            className="relative text-lg font-semibold text-[var(--color-text-primary)] mb-4"
+            style={{ fontFamily: 'Playfair Display, serif' }}
+          >
+            Activity Overview
+          </h2>
+          <div className="relative">
             <CompanyActivitySection />
           </div>
-        )}
+        </div>
+      )}
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* Main Content */}
-          <div className="space-y-6 lg:col-span-2">
-            {/* Company Overview Card */}
-            <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
-              <div className="flex items-start justify-between">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Main Content */}
+        <div className="space-y-6 lg:col-span-2">
+          {/* Company Overview Card */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-[var(--color-gold)]/5 rounded-bl-[100px]" />
+            <div className="relative">
+              <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h2 className="text-lg font-semibold text-zinc-900">Company Overview</h2>
-                  <p className="text-sm text-zinc-600">{company.industry || 'Industry not set'}</p>
+                  <h2
+                    className="text-lg font-semibold text-[var(--color-text-primary)]"
+                    style={{ fontFamily: 'Playfair Display, serif' }}
+                  >
+                    Company Overview
+                  </h2>
+                  <p className="text-sm text-[var(--color-text-muted)]">
+                    {company.industry || 'Industry not set'}
+                  </p>
                 </div>
-                {getStatusBadge(company.validationStatus)}
               </div>
 
               {company.description && (
-                <p className="mt-4 text-sm text-zinc-600">{company.description}</p>
+                <p className="text-sm text-[var(--color-text-secondary)] mb-6">
+                  {company.description}
+                </p>
               )}
 
-              <dl className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+              <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="p-4 rounded-xl bg-[var(--color-surface-light)]/10 border border-[var(--color-surface-light)]/20">
+                  <dt className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
                     Contact Email
                   </dt>
-                  <dd className="mt-1 text-sm text-zinc-900">{company.contactEmail}</dd>
+                  <dd className="mt-2 text-sm text-[var(--color-text-primary)]">
+                    {company.contactEmail}
+                  </dd>
                 </div>
                 {company.contactPhone && (
-                  <div>
-                    <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+                  <div className="p-4 rounded-xl bg-[var(--color-surface-light)]/10 border border-[var(--color-surface-light)]/20">
+                    <dt className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
                       Phone
                     </dt>
-                    <dd className="mt-1 text-sm text-zinc-900">{company.contactPhone}</dd>
+                    <dd className="mt-2 text-sm text-[var(--color-text-primary)]">
+                      {company.contactPhone}
+                    </dd>
                   </div>
                 )}
                 {company.website && (
-                  <div>
-                    <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+                  <div className="p-4 rounded-xl bg-[var(--color-surface-light)]/10 border border-[var(--color-surface-light)]/20">
+                    <dt className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
                       Website
                     </dt>
-                    <dd className="mt-1 text-sm text-zinc-900">
+                    <dd className="mt-2 text-sm">
                       <a
                         href={company.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-700"
+                        className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors"
                       >
                         {company.website}
                       </a>
@@ -211,11 +275,11 @@ export default async function CompanyDashboardPage() {
                   </div>
                 )}
                 {(company.city || company.country) && (
-                  <div>
-                    <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+                  <div className="p-4 rounded-xl bg-[var(--color-surface-light)]/10 border border-[var(--color-surface-light)]/20">
+                    <dt className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
                       Location
                     </dt>
-                    <dd className="mt-1 text-sm text-zinc-900">
+                    <dd className="mt-2 text-sm text-[var(--color-text-primary)]">
                       {[company.city, company.country].filter(Boolean).join(', ')}
                     </dd>
                   </div>
@@ -225,163 +289,198 @@ export default async function CompanyDashboardPage() {
               <div className="mt-6">
                 <Link
                   href="/dashboard/company/profile"
-                  className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors"
                 >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
                   Edit Company Profile
                 </Link>
               </div>
             </div>
+          </div>
 
-            {/* Team Management */}
-            <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
+          {/* Team Management */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-gold)]/5 rounded-bl-[80px]" />
+            <div className="relative">
               <TeamManagement members={company.members} companyName={company.companyName} />
             </div>
           </div>
+        </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Quick Actions */}
-            <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-semibold text-zinc-900">Quick Actions</h3>
-              <div className="mt-4 space-y-3">
-                {isApproved && (
-                  <Link
-                    href="/talents"
-                    className="flex items-center rounded-md border border-zinc-200 bg-white px-4 py-3 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
-                  >
-                    <svg
-                      className="mr-3 h-5 w-5 text-zinc-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                    Browse Talents
-                  </Link>
-                )}
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Quick Actions */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-gold)]/5 rounded-bl-[60px]" />
+            <h3
+              className="relative text-sm font-semibold text-[var(--color-text-primary)] mb-4"
+              style={{ fontFamily: 'Playfair Display, serif' }}
+            >
+              Quick Actions
+            </h3>
+            <div className="relative space-y-2">
+              {isApproved && (
                 <Link
-                  href="/dashboard/company/team"
-                  className="flex items-center rounded-md border border-zinc-200 bg-white px-4 py-3 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                  href="/talents"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--color-surface-light)]/20 hover:bg-[var(--color-surface-light)]/40 text-[var(--color-text-primary)] transition-all duration-300 group"
                 >
                   <svg
-                    className="mr-3 h-5 w-5 text-zinc-400"
+                    className="w-5 h-5 text-[var(--color-gold)] group-hover:scale-110 transition-transform"
                     fill="none"
-                    viewBox="0 0 24 24"
                     stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      strokeWidth={1.5}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     />
                   </svg>
-                  Manage Team
+                  <span className="text-sm font-medium">Browse Talents</span>
                 </Link>
-                <Link
-                  href="/dashboard/company/profile"
-                  className="flex items-center rounded-md border border-zinc-200 bg-white px-4 py-3 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+              )}
+              <Link
+                href="/dashboard/company/team"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--color-surface-light)]/20 hover:bg-[var(--color-surface-light)]/40 text-[var(--color-text-primary)] transition-all duration-300 group"
+              >
+                <svg
+                  className="w-5 h-5 text-[var(--color-gold)] group-hover:scale-110 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <svg
-                    className="mr-3 h-5 w-5 text-zinc-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                    />
-                  </svg>
-                  Edit Profile
-                </Link>
-                <Link
-                  href="/dashboard/company/billing"
-                  className="flex items-center rounded-md border border-zinc-200 bg-white px-4 py-3 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
+                  />
+                </svg>
+                <span className="text-sm font-medium">Manage Team</span>
+              </Link>
+              <Link
+                href="/dashboard/company/profile"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--color-surface-light)]/20 hover:bg-[var(--color-surface-light)]/40 text-[var(--color-text-primary)] transition-all duration-300 group"
+              >
+                <svg
+                  className="w-5 h-5 text-[var(--color-gold)] group-hover:scale-110 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <svg
-                    className="mr-3 h-5 w-5 text-zinc-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                    />
-                  </svg>
-                  Billing
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+                <span className="text-sm font-medium">Edit Profile</span>
+              </Link>
+              <Link
+                href="/dashboard/company/billing"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--color-surface-light)]/20 hover:bg-[var(--color-surface-light)]/40 text-[var(--color-text-primary)] transition-all duration-300 group"
+              >
+                <svg
+                  className="w-5 h-5 text-[var(--color-gold)] group-hover:scale-110 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
+                  />
+                </svg>
+                <span className="text-sm font-medium">Billing</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Subscription Status */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-gold)]/5 rounded-bl-[60px]" />
+            <h3
+              className="relative text-sm font-semibold text-[var(--color-text-primary)] mb-4"
+              style={{ fontFamily: 'Playfair Display, serif' }}
+            >
+              Subscription
+            </h3>
+            <div className="relative">
+              <span
+                className={`inline-flex items-center rounded-xl px-3 py-1.5 text-sm font-medium ${subscriptionConfig.bgColor} ${subscriptionConfig.color}`}
+              >
+                {subscriptionConfig.label}
+              </span>
+              {subscription?.endsAt && (
+                <p className="mt-3 text-sm text-[var(--color-text-muted)]">
+                  {subscription.status === 'CANCELLED' ? 'Expires: ' : 'Renews: '}
+                  {new Date(subscription.endsAt).toLocaleDateString()}
+                </p>
+              )}
+              {hasPremiumAccess && (
+                <p className="mt-2 text-sm text-emerald-400">
+                  You have access to premium talent data
+                </p>
+              )}
+              {!hasPremiumAccess && isApproved && (
+                <Link
+                  href="/dashboard/company/payment"
+                  className="mt-4 inline-block text-sm font-medium text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors"
+                >
+                  Subscribe to access premium talent data
                 </Link>
+              )}
+            </div>
+          </div>
+
+          {/* Account Stats */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-gold)]/5 rounded-bl-[60px]" />
+            <h3
+              className="relative text-sm font-semibold text-[var(--color-text-primary)] mb-4"
+              style={{ fontFamily: 'Playfair Display, serif' }}
+            >
+              Account Statistics
+            </h3>
+            <dl className="relative space-y-4">
+              <div className="flex justify-between items-center p-3 rounded-lg bg-[var(--color-surface-light)]/10">
+                <dt className="text-sm text-[var(--color-text-muted)]">Team Members</dt>
+                <dd className="text-sm font-medium text-[var(--color-gold)]">
+                  {company.members.filter((m) => m.status === 'ACTIVE').length}
+                </dd>
               </div>
-            </div>
-
-            {/* Subscription Status */}
-            <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-semibold text-zinc-900">Subscription</h3>
-              <div className="mt-4">
-                <SubscriptionBadge status={subscription?.status || 'NONE'} />
-                {subscription?.endsAt && (
-                  <p className="mt-3 text-sm text-zinc-600">
-                    {subscription.status === 'CANCELLED' ? 'Expires: ' : 'Renews: '}
-                    {new Date(subscription.endsAt).toLocaleDateString()}
-                  </p>
-                )}
-                {hasPremiumAccess && (
-                  <p className="mt-2 text-sm text-green-600">
-                    You have access to premium talent data
-                  </p>
-                )}
-                {!hasPremiumAccess && isApproved && (
-                  <Link
-                    href="/dashboard/company/payment"
-                    className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
-                  >
-                    Subscribe to access premium talent data
-                  </Link>
-                )}
+              <div className="flex justify-between items-center p-3 rounded-lg bg-[var(--color-surface-light)]/10">
+                <dt className="text-sm text-[var(--color-text-muted)]">Pending Invites</dt>
+                <dd className="text-sm font-medium text-[var(--color-gold)]">
+                  {company.members.filter((m) => m.status === 'PENDING').length}
+                </dd>
               </div>
-            </div>
-
-            {/* Account Stats */}
-            <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-semibold text-zinc-900">Account Statistics</h3>
-              <dl className="mt-4 space-y-4">
-                <div className="flex justify-between">
-                  <dt className="text-sm text-zinc-500">Team Members</dt>
-                  <dd className="text-sm font-medium text-zinc-900">
-                    {company.members.filter((m) => m.status === 'ACTIVE').length}
-                  </dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-sm text-zinc-500">Pending Invites</dt>
-                  <dd className="text-sm font-medium text-zinc-900">
-                    {company.members.filter((m) => m.status === 'PENDING').length}
-                  </dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-sm text-zinc-500">Email Verified</dt>
-                  <dd className="text-sm font-medium text-zinc-900">
-                    {company.emailVerified ? 'Yes' : 'No'}
-                  </dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-sm text-zinc-500">Member Since</dt>
-                  <dd className="text-sm font-medium text-zinc-900">
-                    {new Date(company.createdAt).toLocaleDateString()}
-                  </dd>
-                </div>
-              </dl>
-            </div>
+              <div className="flex justify-between items-center p-3 rounded-lg bg-[var(--color-surface-light)]/10">
+                <dt className="text-sm text-[var(--color-text-muted)]">Email Verified</dt>
+                <dd
+                  className={`text-sm font-medium ${company.emailVerified ? 'text-emerald-400' : 'text-amber-400'}`}
+                >
+                  {company.emailVerified ? 'Yes' : 'No'}
+                </dd>
+              </div>
+              <div className="flex justify-between items-center p-3 rounded-lg bg-[var(--color-surface-light)]/10">
+                <dt className="text-sm text-[var(--color-text-muted)]">Member Since</dt>
+                <dd className="text-sm font-medium text-[var(--color-text-primary)]">
+                  {new Date(company.createdAt).toLocaleDateString()}
+                </dd>
+              </div>
+            </dl>
           </div>
         </div>
       </div>

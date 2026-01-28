@@ -11,45 +11,49 @@ export const metadata: Metadata = {
   description: 'Professional dashboard for Talents Acting',
 };
 
-function StatusBadge({ status }: { status: string }) {
-  const styles: Record<string, string> = {
-    PENDING: 'bg-amber-100 text-amber-800',
-    APPROVED: 'bg-green-100 text-green-800',
-    REJECTED: 'bg-red-100 text-red-800',
-    SUSPENDED: 'bg-zinc-100 text-zinc-800',
-  };
+const STATUS_CONFIG = {
+  PENDING: {
+    label: 'Pending Review',
+    color: 'text-[var(--color-gold)]',
+    bgColor: 'bg-[var(--color-gold)]/20',
+    borderColor: 'border-[var(--color-gold)]/30',
+  },
+  APPROVED: {
+    label: 'Approved',
+    color: 'text-emerald-400',
+    bgColor: 'bg-emerald-500/20',
+    borderColor: 'border-emerald-500/30',
+  },
+  REJECTED: {
+    label: 'Rejected',
+    color: 'text-red-400',
+    bgColor: 'bg-red-500/20',
+    borderColor: 'border-red-500/30',
+  },
+  SUSPENDED: {
+    label: 'Suspended',
+    color: 'text-[var(--color-text-muted)]',
+    bgColor: 'bg-[var(--color-surface-light)]/20',
+    borderColor: 'border-[var(--color-surface-light)]/30',
+  },
+};
 
-  return (
-    <span
-      className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${
-        styles[status] || styles.PENDING
-      }`}
-    >
-      {status}
-    </span>
-  );
-}
-
-function SubscriptionBadge({ status }: { status: string }) {
-  const styles: Record<string, string> = {
-    NONE: 'bg-zinc-100 text-zinc-800',
-    TRIAL: 'bg-blue-100 text-blue-800',
-    ACTIVE: 'bg-green-100 text-green-800',
-    PAST_DUE: 'bg-amber-100 text-amber-800',
-    CANCELLED: 'bg-red-100 text-red-800',
-    EXPIRED: 'bg-zinc-100 text-zinc-800',
-  };
-
-  return (
-    <span
-      className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${
-        styles[status] || styles.NONE
-      }`}
-    >
-      {status === 'NONE' ? 'No Subscription' : status}
-    </span>
-  );
-}
+const SUBSCRIPTION_CONFIG = {
+  NONE: {
+    label: 'No Subscription',
+    color: 'text-[var(--color-text-muted)]',
+    bgColor: 'bg-[var(--color-surface-light)]/20',
+  },
+  TRIAL: { label: 'Trial', color: 'text-blue-400', bgColor: 'bg-blue-500/20' },
+  ACTIVE: { label: 'Active', color: 'text-emerald-400', bgColor: 'bg-emerald-500/20' },
+  PAST_DUE: { label: 'Past Due', color: 'text-amber-400', bgColor: 'bg-amber-500/20' },
+  CANCELLED: { label: 'Cancelled', color: 'text-red-400', bgColor: 'bg-red-500/20' },
+  EXPIRED: {
+    label: 'Expired',
+    color: 'text-[var(--color-text-muted)]',
+    bgColor: 'bg-[var(--color-surface-light)]/20',
+  },
+};
 
 export default async function ProfessionalDashboardPage() {
   const session = await auth();
@@ -68,137 +72,190 @@ export default async function ProfessionalDashboardPage() {
   const isPending = profile.validationStatus === 'PENDING';
   const isRejected = profile.validationStatus === 'REJECTED';
   const hasPremiumAccess = hasActiveAccess(profile.subscriptionStatus);
+  const statusConfig = STATUS_CONFIG[profile.validationStatus];
+  const subscriptionConfig = SUBSCRIPTION_CONFIG[profile.subscriptionStatus];
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-zinc-900">Welcome, {profile.firstName}!</h1>
-          <p className="mt-1 text-zinc-600">
-            Manage your professional account and access the talent database.
-          </p>
+    <div className="space-y-8">
+      {/* Page Header */}
+      <div className="relative">
+        <div className="absolute -top-4 -left-4 w-32 h-32 bg-[var(--color-gold)]/10 rounded-full blur-3xl" />
+        <h1
+          className="relative text-4xl font-bold text-[var(--color-text-primary)]"
+          style={{ fontFamily: 'Playfair Display, serif' }}
+        >
+          Welcome, {profile.firstName}!
+        </h1>
+        <p className="relative mt-2 text-[var(--color-text-secondary)]">
+          Manage your professional account and access the talent database.
+        </p>
+      </div>
+
+      {/* Status Cards */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* Account Status */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-gold)]/5 rounded-bl-[60px]" />
+          <h2 className="relative text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-3">
+            Account Status
+          </h2>
+          <div className="relative">
+            <span
+              className={`inline-flex items-center rounded-xl px-3 py-1.5 text-sm font-medium ${statusConfig.bgColor} ${statusConfig.color} border ${statusConfig.borderColor}`}
+            >
+              <span className="w-2 h-2 rounded-full bg-current mr-2 animate-pulse" />
+              {statusConfig.label}
+            </span>
+          </div>
+          {isPending && (
+            <p className="mt-3 text-sm text-[var(--color-text-muted)]">
+              Your account is pending admin approval.
+            </p>
+          )}
+          {isRejected && profile.rejectionReason && (
+            <p className="mt-3 text-sm text-red-400 bg-red-500/10 p-2 rounded-lg border border-red-500/20">
+              Reason: {profile.rejectionReason}
+            </p>
+          )}
         </div>
 
-        {/* Status Cards */}
-        <div className="mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {/* Account Status */}
-          <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
-            <h2 className="text-sm font-medium text-zinc-500">Account Status</h2>
-            <div className="mt-2">
-              <StatusBadge status={profile.validationStatus} />
-            </div>
-            {isPending && (
-              <p className="mt-3 text-sm text-zinc-600">Your account is pending admin approval.</p>
-            )}
-            {isRejected && profile.rejectionReason && (
-              <p className="mt-3 text-sm text-red-600">Reason: {profile.rejectionReason}</p>
-            )}
-          </div>
-
-          {/* Email Verification */}
-          <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
-            <h2 className="text-sm font-medium text-zinc-500">Email Verification</h2>
-            <div className="mt-2">
-              {profile.emailVerified ? (
-                <span className="inline-flex items-center gap-1.5 text-green-700">
-                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Verified
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 text-amber-700">
-                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Not Verified
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* Subscription Status */}
-          <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
-            <h2 className="text-sm font-medium text-zinc-500">Subscription</h2>
-            <div className="mt-2">
-              <SubscriptionBadge status={profile.subscriptionStatus} />
-            </div>
-            {profile.subscriptionEndsAt && (
-              <p className="mt-3 text-sm text-zinc-600">
-                Expires: {new Date(profile.subscriptionEndsAt).toLocaleDateString()}
-              </p>
-            )}
-            {!hasPremiumAccess && isApproved && (
-              <Link
-                href="/dashboard/professional/payment"
-                className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
-              >
-                Subscribe to access premium talent data
-              </Link>
-            )}
-          </div>
-        </div>
-
-        {/* Pending Approval Message */}
-        {isPending && (
-          <div className="mb-8 rounded-lg border border-amber-200 bg-amber-50 p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+        {/* Email Verification */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-gold)]/5 rounded-bl-[60px]" />
+          <h2 className="relative text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-3">
+            Email Verification
+          </h2>
+          <div className="relative">
+            {profile.emailVerified ? (
+              <span className="inline-flex items-center gap-2 text-emerald-400">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
-                    fillRule="evenodd"
-                    d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
-                    clipRule="evenodd"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-amber-800">Account Pending Approval</h3>
-                <p className="mt-2 text-sm text-amber-700">
-                  Your professional account is currently being reviewed by our team. You will
-                  receive an email once your account is approved.
-                </p>
-              </div>
+                <span className="font-medium">Verified</span>
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-2 text-amber-400">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+                <span className="font-medium">Not Verified</span>
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Subscription Status */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-gold)]/5 rounded-bl-[60px]" />
+          <h2 className="relative text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-3">
+            Subscription
+          </h2>
+          <div className="relative">
+            <span
+              className={`inline-flex items-center rounded-xl px-3 py-1.5 text-sm font-medium ${subscriptionConfig.bgColor} ${subscriptionConfig.color}`}
+            >
+              {subscriptionConfig.label}
+            </span>
+          </div>
+          {profile.subscriptionEndsAt && (
+            <p className="mt-3 text-sm text-[var(--color-text-muted)]">
+              Expires: {new Date(profile.subscriptionEndsAt).toLocaleDateString()}
+            </p>
+          )}
+          {!hasPremiumAccess && isApproved && (
+            <Link
+              href="/dashboard/professional/payment"
+              className="mt-4 inline-block text-sm font-medium text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors"
+            >
+              Subscribe to access premium talent data
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* Pending Approval Message */}
+      {isPending && (
+        <div className="relative overflow-hidden rounded-2xl p-5 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30">
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[var(--color-gold)] to-[var(--color-gold-dark)]" />
+          <div className="flex items-start gap-4 pl-4">
+            <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[var(--color-gold)]/20 flex items-center justify-center">
+              <svg
+                className="w-5 h-5 text-[var(--color-gold)]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-semibold text-[var(--color-gold)]">Account Pending Approval</h3>
+              <p className="text-sm text-[var(--color-text-muted)] mt-1">
+                Your professional account is currently being reviewed by our team. You will receive
+                an email once your account is approved.
+              </p>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Activity Section */}
-        {isApproved && (
-          <div className="mb-8">
+      {/* Activity Section */}
+      {isApproved && (
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-gold)]/5 rounded-bl-[80px]" />
+          <h2
+            className="relative text-lg font-semibold text-[var(--color-text-primary)] mb-4"
+            style={{ fontFamily: 'Playfair Display, serif' }}
+          >
+            Activity Overview
+          </h2>
+          <div className="relative">
             <ProfessionalActivitySection />
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Quick Actions */}
-        <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-zinc-900">Quick Actions</h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {/* Browse Talents */}
-            <Link
-              href="/talents"
-              className={`flex items-center gap-3 rounded-lg border border-zinc-200 p-4 transition-colors ${
-                isApproved
-                  ? 'hover:border-blue-300 hover:bg-blue-50'
-                  : 'cursor-not-allowed opacity-50'
-              }`}
-              aria-disabled={!isApproved}
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
+      {/* Quick Actions */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-charcoal)] border border-[var(--color-surface-light)]/20 p-6">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-gold)]/5 rounded-bl-[80px]" />
+        <h2
+          className="relative text-lg font-semibold text-[var(--color-text-primary)] mb-6"
+          style={{ fontFamily: 'Playfair Display, serif' }}
+        >
+          Quick Actions
+        </h2>
+        <div className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Browse Talents */}
+          <Link
+            href="/talents"
+            className={`group relative overflow-hidden rounded-xl border p-5 transition-all duration-300 ${
+              isApproved
+                ? 'border-[var(--color-surface-light)]/30 hover:border-blue-500/30 hover:bg-blue-500/5'
+                : 'border-[var(--color-surface-light)]/20 opacity-50 cursor-not-allowed pointer-events-none'
+            }`}
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/20 group-hover:bg-blue-500/30 transition-colors">
                 <svg
-                  className="h-5 w-5 text-blue-600"
+                  className="h-6 w-6 text-blue-400"
                   fill="none"
                   viewBox="0 0 24 24"
-                  strokeWidth="2"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                 >
                   <path
@@ -209,22 +266,24 @@ export default async function ProfessionalDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="font-medium text-zinc-900">Browse Talents</p>
-                <p className="text-sm text-zinc-500">Search the database</p>
+                <p className="font-medium text-[var(--color-text-primary)]">Browse Talents</p>
+                <p className="text-sm text-[var(--color-text-muted)]">Search the database</p>
               </div>
-            </Link>
+            </div>
+          </Link>
 
-            {/* Edit Profile */}
-            <Link
-              href="/dashboard/professional/profile"
-              className="flex items-center gap-3 rounded-lg border border-zinc-200 p-4 transition-colors hover:border-blue-300 hover:bg-blue-50"
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100">
+          {/* Edit Profile */}
+          <Link
+            href="/dashboard/professional/profile"
+            className="group relative overflow-hidden rounded-xl border border-[var(--color-surface-light)]/30 p-5 transition-all duration-300 hover:border-purple-500/30 hover:bg-purple-500/5"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20 group-hover:bg-purple-500/30 transition-colors">
                 <svg
-                  className="h-5 w-5 text-purple-600"
+                  className="h-6 w-6 text-purple-400"
                   fill="none"
                   viewBox="0 0 24 24"
-                  strokeWidth="2"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                 >
                   <path
@@ -235,22 +294,24 @@ export default async function ProfessionalDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="font-medium text-zinc-900">Edit Profile</p>
-                <p className="text-sm text-zinc-500">Update your info</p>
+                <p className="font-medium text-[var(--color-text-primary)]">Edit Profile</p>
+                <p className="text-sm text-[var(--color-text-muted)]">Update your info</p>
               </div>
-            </Link>
+            </div>
+          </Link>
 
-            {/* Account Settings */}
-            <Link
-              href="/settings"
-              className="flex items-center gap-3 rounded-lg border border-zinc-200 p-4 transition-colors hover:border-blue-300 hover:bg-blue-50"
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-100">
+          {/* Account Settings */}
+          <Link
+            href="/settings"
+            className="group relative overflow-hidden rounded-xl border border-[var(--color-surface-light)]/30 p-5 transition-all duration-300 hover:border-[var(--color-surface-light)]/50 hover:bg-[var(--color-surface-light)]/5"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-surface-light)]/30 group-hover:bg-[var(--color-surface-light)]/50 transition-colors">
                 <svg
-                  className="h-5 w-5 text-zinc-600"
+                  className="h-6 w-6 text-[var(--color-text-muted)]"
                   fill="none"
                   viewBox="0 0 24 24"
-                  strokeWidth="2"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                 >
                   <path
@@ -266,22 +327,24 @@ export default async function ProfessionalDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="font-medium text-zinc-900">Settings</p>
-                <p className="text-sm text-zinc-500">Account settings</p>
+                <p className="font-medium text-[var(--color-text-primary)]">Settings</p>
+                <p className="text-sm text-[var(--color-text-muted)]">Account settings</p>
               </div>
-            </Link>
+            </div>
+          </Link>
 
-            {/* Help */}
-            <Link
-              href="/contact"
-              className="flex items-center gap-3 rounded-lg border border-zinc-200 p-4 transition-colors hover:border-blue-300 hover:bg-blue-50"
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100">
+          {/* Help */}
+          <Link
+            href="/contact"
+            className="group relative overflow-hidden rounded-xl border border-[var(--color-surface-light)]/30 p-5 transition-all duration-300 hover:border-emerald-500/30 hover:bg-emerald-500/5"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/20 group-hover:bg-emerald-500/30 transition-colors">
                 <svg
-                  className="h-5 w-5 text-green-600"
+                  className="h-6 w-6 text-emerald-400"
                   fill="none"
                   viewBox="0 0 24 24"
-                  strokeWidth="2"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                 >
                   <path
@@ -292,11 +355,11 @@ export default async function ProfessionalDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="font-medium text-zinc-900">Help</p>
-                <p className="text-sm text-zinc-500">Get support</p>
+                <p className="font-medium text-[var(--color-text-primary)]">Help</p>
+                <p className="text-sm text-[var(--color-text-muted)]">Get support</p>
               </div>
-            </Link>
-          </div>
+            </div>
+          </Link>
         </div>
       </div>
     </div>
